@@ -25,9 +25,8 @@ The "public" ID for the compendium is stored in `compendium_id`.
 Example:
 
 ```json
-[...]
+(...])
 "hits": {
-
     "total": 5,
     "max_score": 1.0,
     "hits": [
@@ -43,8 +42,11 @@ Example:
                 "created": "2016-08-16T10:28:15.744Z",
                 "compendium_id": "szSuZ"
             }
-        },
-[...]
+        }
+    ]
+    (...)
+}
+(...)
 ```
 
 ## Requirements
@@ -52,7 +54,7 @@ Example:
 - Elasticsearch server
 - Docker
 - Node.js
-- MondoDB, running with a replication set
+- MondoDB, running with a replication set (!)
 
 ## Dockerfile
 
@@ -70,40 +72,53 @@ The image can then be run and configured via environment variables.
 - `FINDER_MONGODB_DATABASE` **Required** Database name in MongodB, defaults to `muncher`
 - `FINDER_ELASTICSEARCH` **Required** Elasticsearch endpoint, defaults to `elasticsearch:9200`
 - `FINDER_ELASTICSEARCH_INDEX` **Required** Name of the index in Elasticsearch, defaults to `o2r`
+- `FINDER_MONGODB_COLL_COMPENDIA` Name of the MongoDB collection for compendia, default is `compendia`
+- `FINDER_MONGODB_COLL_JOBS` Name of the MongoDB collection for jobs, default is `jobs`
+- `FINDER_ELASTICSEARCH_TYPE_COMPENDIA` Name of the Elasticsearch type for compendia, default is `compendia`
+- `FINDER_ELASTICSEARCH_TYPE_JOBS` Name of the Elasticsearch type for jobs, default is `jobs`
 
 ## Development
 
-Start an Elasticsearch instance, mounting a local configuratione file (see [documentation](https://hub.docker.com/_/elasticsearch/)).
+Start an Elasticsearch instance, mounting a local configuratione file (see [documentation](https://hub.docker.com/_/elasticsearch/)), and exposing the default port on the host.
 
 ```bash
-docker run -it --name elasticsearch -v "$(pwd)/esconfig/elasticsearch.yml":/usr/share/elasticsearch/config/elasticsearch.yml elasticsearch:2
+docker run -it --name elasticsearch -v "$(pwd)/esconfig/elasticsearch.yml":/usr/share/elasticsearch/config/elasticsearch.yml -p 9200:9200 elasticsearch:2
 ```
 
 You can then explore the state of Elasticsearch, e.g.
 
-- http://172.17.0.3:9200/
-- http://172.17.0.3:9200/_nodes
-- http://172.17.0.3:9200/_cat/health?v
-- http://172.17.0.3:9200/_cat/indices?v
+- http://localhost:9200/
+- http://localhost:9200/_nodes
+- http://localhost:9200/_cat/health?v
+- http://localhost:9200/_cat/indices?v
 
 Start finder (potentially adjust Elasticsearch container's IP, see `docker inspect elasticsearch`)
 
 ```bash
 npm install
-DEBUG=finder FINDER_ELASTICSEARCH=172.17.0.3:9200 npm start;
+DEBUG=finder FINDER_ELASTICSEARCH=localhost:9200 npm start;
 ```
+
+You can set `DEBUG=*` to see MongoDB oplog messages.
 
 Now check out the transferred documents:
 
-- http://172.17.0.3:9200/o2r
-- http://172.17.0.3:9200/o2r/compendia/_search?q=*&pretty
-
+- http://localhost:9200/o2r
+- http://localhost:9200/o2r/compendia/_search?q=*&pretty
+- http://localhost:9200/o2r/compendia/57b2eabfa0cd335b5d1192cc (use an ID from before)
+  - Looking at this response, you can also see the `_version` field, which is increased every time you restart finder (and full batch processing takes place) or a document is changed.
 
 Delete the index with
 
 ```bash
 curl -XDELETE 'http://172.17.0.3:9200/o2r/'
 ```
+
+### Local test proxy
+
+If you run the local test proxy from the project [o2r-platform](https://github.com/o2r-project/o2r-platform), you can run queries directly at the o2r api:
+
+http://localhost/api/v1/search?q=*
 
 ## License
 

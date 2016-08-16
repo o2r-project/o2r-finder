@@ -51,17 +51,17 @@ var transformJob = function (watcher, job, cb) {
 // watchers
 var watchers = [];
 var compendiaWatcher = {
-  collectionName: 'compendia',
+  collectionName: c.mongo.collection.compendia,
   index: c.elasticsearch.index, // elastic search index
-  type: 'compendia', // elastic search type
+  type: c.elasticsearch.type.compendia, // elastic search type
   transformFunction: transformCompendium, // can be null if no transformation is needed to be done
   fetchExistingDocuments: c.sync.fetchExisting.compendia, // this will fetch all existing document in collection and index in elastic search
   priority: 0 // defines order of watcher processing. Watchers with low priorities get processed ahead of those with high priorities
 };
 var jobsWatcher = {
-  collectionName: 'jobs',
+  collectionName: c.mongo.collection.jobs,
   index: c.elasticsearch.index,
-  type: 'jobs',
+  type: c.elasticsearch.type.jobs,
   transformFunction: transformJob,
   fetchExistingDocuments: c.sync.fetchExisting.jobs,
   priority: 10

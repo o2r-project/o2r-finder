@@ -31,9 +31,15 @@ c.version.api    = 1;
 //c.net.port         = env.FINDER_PORT || 8084;
 c.mongo.location   = env.FINDER_MONGODB || 'mongodb://localhost/';
 c.mongo.database   = env.FINDER_MONGODB_DATABASE || 'muncher';
+c.mongo.collection = {};
+c.mongo.collection.compendia = env.FINDER_MONGODB_COLL_COMPENDIA || 'compendia';
+c.mongo.collection.jobs = env.FINDER_MONGODB_COLL_JOBS || 'jobs';
 
 c.elasticsearch.location   = env.FINDER_ELASTICSEARCH || 'elasticsearch:9200';
 c.elasticsearch.index = env.FINDER_ELASTICSEARCH_INDEX || 'o2r';
+c.elasticsearch.type = {};
+c.elasticsearch.type.compendia = env.FINDER_ELASTICSEARCH_TYPE_COMPENDIA || 'compendia';
+c.elasticsearch.type.jobs = env.FINDER_ELASTICSEARCH_TYPE_JOBS || 'jobs';
 
 // fix mongo location if trailing slash was omitted
 if (c.mongo.location[c.mongo.location.length-1] !== '/') {
