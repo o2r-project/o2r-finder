@@ -1,0 +1,13 @@
+// http://eslint.org/docs/user-guide/configuring
+{
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "extends": [
+        "eslint:recommended"
+    ],
+    "rules":{
+        "no-console": 0
+    }
+}

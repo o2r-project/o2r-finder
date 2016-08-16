@@ -1,0 +1,23 @@
+{
+  "name": "finde",
+  "version": "0.1.0",
+  "description": "all about discovery within o2r",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "debug": "DEBUG=finder,executor node index.js"
+  },
+  "author": "o2r-project",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/o2r-finder/o2r-finder.git"
+  },
+  "dependencies": {
+    "debug": "^2.2.0",
+    "express": "^4.13.4",
+    "kerberos": "0.0.21",
+    "mongoose": "^4.4.20",
+    "node-elasticsearch-sync": "^0.0.8"
+  }
+}
