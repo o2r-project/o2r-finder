@@ -23,24 +23,65 @@ const debug = require('debug')('finder');
 
 const ESMongoSync = require('node-elasticsearch-sync');
 
-/*
- * initialize node-elasticsearch-sync
- */
+var fs = require('fs');
+var dirTree = require('directory-tree');
+var rewriteTree = require('./lib/tree').rewriteTree;
+var mimeTree = require('./lib/tree').mimeTree;
+var readTextfileTree = require('./lib/tree').readTextfileTree;
+var cloneDeep = require('clone-deep');
 
-// transform functions
+
+// transform functions for node-elasticsearch-sync
 var transformCompendium = function (watcher, compendium, cb) {
-  // user.fullName = user.firstName + ' ' + user.lastName;
-  debug('transforming compendium %s', compendium.id);
+  var id = compendium.id;
+  debug('Transforming compendium %s', id);
+  
+  // shift IDs
   compendium.compendium_id = compendium.id;
   compendium.id = compendium._id;
   delete compendium._id;
   delete compendium.__v;
+
+  // load file tree
+  var tree = null;
+  try {
+    fs.accessSync(c.fs.compendium + id); // throws if does not exist
+
+    tree = dirTree(c.fs.compendium + id);
+  } catch (e) {
+    debug("Error loading file tree while transforming %s : %s", id, e);
+  }
+
+  tree = mimeTree(tree);
+
+  // create file index for metadata
+  if(tree) {
+    // rewrite copy of tree to API urls, taken from o2r-muncher
+    compendium.files = rewriteTree(cloneDeep(tree),
+      c.fs.compendium.length + c.id_length, // remove local fs path and id
+      '/api/v1/compendium/' + id + '/data' // prepend proper location
+    );
+  }
+
+  // load content of txt files
+  if(tree) {
+    compendium.texts = readTextfileTree(cloneDeep(tree));
+    delete compendium.texts.path;
+  }
+
+  // attach binary files as base64
+  // > https://www.elastic.co/guide/en/elasticsearch/plugins/current/mapper-attachments-usage.html
+  // > as nested documents to have many
+  //   > http://grokbase.com/t/gg/elasticsearch/148v29ymaf/how-can-we-index-array-of-attachments
+  //   > https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
+
   cb(compendium);
 };
 
 var transformJob = function (watcher, job, cb) {
-  // user.fullName = user.firstName + ' ' + user.lastName;
-  debug('transforming compendium %s', job.id);
+  debug('Transforming job %s', job.id);
+
+  // shift IDs
   job.job_id = job.id;
   job.id = job._id;
   delete job._id;
@@ -48,7 +89,7 @@ var transformJob = function (watcher, job, cb) {
   cb(job);
 };
 
-// watchers
+// watchers for node-elasticsearch-sync
 var watchers = [];
 var compendiaWatcher = {
   collectionName: c.mongo.collection.compendia,

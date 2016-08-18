@@ -1,10 +1,12 @@
 # o2r-finder
 
-Implementation of search features for the o2r API
+Implementation of search features for the o2r API.
+
+## Architecture
 
 Since we want a simple auto-suggest search functionality, which is not readily available with MongoDB (though it has [full text search](https://github.com/o2r-project/o2r-finder/issues/1)), the finder utilizes Elasticsearch.
 
-Since we don't want to worry about keeping things in sync, the finder simply re-indices the whole database at startup and then subscribes to changes in the MongoDB using [node-elasticsearch-sync](https://github.com/toystars/node-elasticsearch-sync) for both steps.
+Since we don't want to worry about keeping things in sync, the finder simply re-indices the whole database at startup and then subscribes to changes in the MongoDB using [node-elasticsearch-sync](https://github.com/toystars/node-elasticsearch-sync) (for both steps).
 
 The Elasticsearch search endpoint is then published read-only via an nginx proxy.
 

@@ -14,9 +14,13 @@
     "url": "https://github.com/o2r-finder/o2r-finder.git"
   },
   "dependencies": {
+    "clone-deep": "^0.2.4",
     "debug": "^2.2.0",
+    "directory-tree": "^1.1.0",
     "express": "^4.13.4",
+    "fs": "0.0.2",
     "kerberos": "0.0.21",
+    "mimos": "^3.0.3",
     "mongoose": "^4.4.20",
     "node-elasticsearch-sync": "^0.0.8"
   }

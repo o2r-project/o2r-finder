@@ -53,4 +53,9 @@ c.sync.fetchExisting.compendia = true;
 c.sync.fetchExisting.jobs = true;
 c.sync.bulkIndexingDocumentCount = 17;
 
+// fs paths
+c.fs = {};
+c.fs.base = env.FILE_BASEPATH || '/tmp/o2r/';
+c.fs.compendium = c.fs.base + 'compendium/';
+
 module.exports = c;
