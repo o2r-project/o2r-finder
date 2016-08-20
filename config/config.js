@@ -71,4 +71,6 @@ c.fs = {};
 c.fs.base = env.FILE_BASEPATH || '/tmp/o2r/';
 c.fs.compendium = c.fs.base + 'compendium/';
 
+c.id_length = 5; // must match other services
+
 module.exports = c;

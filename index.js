@@ -18,13 +18,22 @@
 const config = require('./config/config');
 const debug = require('debug')('finder');
 
+// MongoDB > Elasticsearch sync
 const ESMongoSync = require('node-elasticsearch-sync');
+
+// standalone Elasticsearch client
+const elasticsearch = require('elasticsearch');
+const esclient = new elasticsearch.Client({
+  host: config.elasticsearch.location,
+  log: 'info'
+});
 
 var fs = require('fs');
 var dirTree = require('directory-tree');
 var rewriteTree = require('./lib/tree').rewriteTree;
-var mimeTree = require('./lib/tree').mimeTree;
 var readTextfileTree = require('./lib/tree').readTextfileTree;
+var flattenTree = require('./lib/tree').flattenTree;
+var mimeTree = require('./lib/tree').mimeTree;
 var cloneDeep = require('clone-deep');
 
 // database connection for user authentication, ESMongoSync has own connection
@@ -105,19 +114,32 @@ app.get('/status', function (req, res) {
     filesystem: config.fs,
     transformationLog: transformLog.toarray()
   };
-  res.send(response);
+
+  // add status info from elasticsearch to response
+  Promise.all([
+    esclient.indices.stats({ human: true }),
+    esclient.info()
+  ]).then(values => {
+    response.elasticsearch = {};
+    response.elasticsearch.status = values[1];
+    response.elasticsearch.indices = values[0].indices;
+    console.log(values);
+    res.send(response);
+  }, error => {
+    debug("Error getting info from Elasticsearch: %s", error.message);
+    response.elasticsearch = error;
+  }).catch(error => {
+    debug("Error handling promises' results from Elasticsearch: %s", error.message);
+    res.send(response);
+  });
 });
 
 app.listen(config.net.port, () => {
-  debug('finder '+  config.version.major + '.' + config.version.minor + '.' +
-      config.version.bug + ' with api version ' + config.version.api +
-      ' waiting for requests on port ' + config.net.port);
+  debug('finder ' + config.version.major + '.' + config.version.minor + '.' +
+    config.version.bug + ' with api version ' + config.version.api +
+    ' waiting for requests on port ' + config.net.port);
 });
 
-
-/*
- * MongoDB to Elasticsearch syncing
- */
 
 // transform functions for node-elasticsearch-sync
 var transformCompendium = function (watcher, compendium, cb) {
@@ -135,21 +157,26 @@ var transformCompendium = function (watcher, compendium, cb) {
     var tree = null;
     fs.accessSync(config.fs.compendium + id); // throws if does not exist
     tree = dirTree(config.fs.compendium + id);
-    tree = mimeTree(tree);
 
-    // create file index for metadata
+    // create file tree for metadata
     if (tree) {
       // rewrite copy of tree to API urls, taken from o2r-muncher
-      compendium.files = rewriteTree(cloneDeep(tree),
+      var apiTree = rewriteTree(cloneDeep(tree),
         config.fs.compendium.length + config.id_length, // remove local fs path and id
         '/api/v1/compendium/' + id + '/data' // prepend proper location
       );
+      compendium.files = apiTree;
     }
 
-    // load content of txt files
+    // load content of txt files as flat list
     if (tree) {
-      compendium.texts = readTextfileTree(cloneDeep(tree));
-      delete compendium.texts.path;
+      var textTree = mimeTree(cloneDeep(tree));
+      readTextfileTree(textTree);
+      var list = [];
+      flattenTree(textTree,
+        config.fs.compendium.length + config.id_length + 1, // make path relative to compendium root
+        list);
+      compendium.texts = list;
     }
 
     // attach binary files as base64
