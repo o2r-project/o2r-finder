@@ -14,7 +14,7 @@ The Elasticsearch search endpoint is then published read-only via an nginx proxy
 
 - whole database _muncher_ (an _index_ in Elasticsearch)
   - all compendia (_collection_ in MongodB, a _type_ in Elasticsearch)
-    - txt __[TODO]__
+    - `text` documents (detected via mime type of the files) as fields in Elasticsearch
     - pdf __[TODO]__
   - all jobs (_collection_ in MongodB, a _type_ in Elasticsearch)
 
@@ -70,14 +70,18 @@ The image can then be run and configured via environment variables.
 
 ### Available environment variables
 
+- `FINDER_PORT` **Required** Port for HTTP requests, defaults to `8084'
 - `FINDER_MONGODB` **Required** Hostname for the MongoDB, defaults to `localhost'
 - `FINDER_MONGODB_DATABASE` **Required** Database name in MongodB, defaults to `muncher`
 - `FINDER_ELASTICSEARCH` **Required** Elasticsearch endpoint, defaults to `elasticsearch:9200`
 - `FINDER_ELASTICSEARCH_INDEX` **Required** Name of the index in Elasticsearch, defaults to `o2r`
-- `FINDER_MONGODB_COLL_COMPENDIA` Name of the MongoDB collection for compendia, default is `compendia`
-- `FINDER_MONGODB_COLL_JOBS` Name of the MongoDB collection for jobs, default is `jobs`
+- `FINDER_MONGODB_COLL_COMPENDIA` **Required** Name of the MongoDB collection for compendia, default is `compendia`
+- `FINDER_MONGODB_COLL_JOBS` **Required** Name of the MongoDB collection for jobs, default is `jobs`
+- `FINDER_MONGODB_COLL_SESSION` **Required** Name of the MongoDB collection for session information, default is `sessions` (must match other microservices)
 - `FINDER_ELASTICSEARCH_TYPE_COMPENDIA` Name of the Elasticsearch type for compendia, default is `compendia`
 - `FINDER_ELASTICSEARCH_TYPE_JOBS` Name of the Elasticsearch type for jobs, default is `jobs`
+- `SESSION_SECRET` Secret used for session encryption, must match other services, default is `o2r`
+- `FINDER_STATUS_LOGSIZE` Number of transformation results in the status log, default is `20`
 
 ## Development
 

@@ -23,17 +23,18 @@ var env = process.env;
 
 // Information about finder
 c.version.major  = 0;
-c.version.minor  = 1;
+c.version.minor  = 2;
 c.version.bug    = 0;
 c.version.api    = 1;
 
 // network & databases
-//c.net.port         = env.FINDER_PORT || 8084;
+c.net.port         = env.FINDER_PORT || 8084;
 c.mongo.location   = env.FINDER_MONGODB || 'mongodb://localhost/';
 c.mongo.database   = env.FINDER_MONGODB_DATABASE || 'muncher';
 c.mongo.collection = {};
 c.mongo.collection.compendia = env.FINDER_MONGODB_COLL_COMPENDIA || 'compendia';
 c.mongo.collection.jobs = env.FINDER_MONGODB_COLL_JOBS || 'jobs';
+c.mongo.collection.session = env.FINDER_MONGODB_COLL_SESSION || 'sessions';
 
 c.elasticsearch.location   = env.FINDER_ELASTICSEARCH || 'elasticsearch:9200';
 c.elasticsearch.index = env.FINDER_ELASTICSEARCH_INDEX || 'o2r';
@@ -52,6 +53,18 @@ c.sync.fetchExisting = {};
 c.sync.fetchExisting.compendia = true;
 c.sync.fetchExisting.jobs = true;
 c.sync.bulkIndexingDocumentCount = 17;
+c.sync.logsize = parseInt(env.FINDER_STATUS_LOGSIZE) || 20;
+
+// session secret
+c.sessionsecret = env.SESSION_SECRET || 'o2r';
+
+// authentication levels
+c.user = {};
+c.user.level = {};
+c.user.level.view_status = 500;
+
+c.session = {};
+c.session.cookieMaxAge = 60 * 60 * 24 * 7; // one week
 
 // fs paths
 c.fs = {};
