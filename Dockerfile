@@ -18,11 +18,20 @@ MAINTAINER o2r-project, https://o2r.info
 RUN apk add --no-cache \
     nodejs \
     git \
+    ca-certificates \
+    wget \
+  && update-ca-certificates \
   && git clone --depth 1 -b master https://github.com/o2r-project/o2r-finder /finder \
-  && apk del git \
+  && wget -O /sbin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.1.3/dumb-init_1.1.3_amd64 \
+  && chmod +x /sbin/dumb-init \
+  && apk del \
+    git \
+    wget \
+    ca-certificates \
   && rm -rf /var/cache
 
 WORKDIR /finder
 RUN npm install --production
 
-CMD npm start
+ENTRYPOINT ["/sbin/dumb-init", "--"]
+CMD ["npm", "start" ]
