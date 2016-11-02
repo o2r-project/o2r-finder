@@ -232,4 +232,5 @@ var init = function () {
 }
 
 // See https://github.com/toystars/node-elasticsearch-sync/blob/master/SAMPLE.js for options
+debug('Starting ESMongoSync with %s | %s | %s | %s', config.mongo.location + config.mongo.database, config.elasticsearch.location, watchers, config.sync.bulkIndexingDocumentCount);
 ESMongoSync.init(config.mongo.location + config.mongo.database, config.elasticsearch.location, init, watchers, config.sync.bulkIndexingDocumentCount);

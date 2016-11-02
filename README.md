@@ -71,13 +71,13 @@ The image can then be run and configured via environment variables.
 ### Available environment variables
 
 - `FINDER_PORT` **Required** Port for HTTP requests, defaults to `8084'
-- `FINDER_MONGODB` **Required** Hostname for the MongoDB, defaults to `localhost'
+- `FINDER_MONGODB` **Required** Location for the MongoDB, defaults to `mongodb://localhost/'
 - `FINDER_MONGODB_DATABASE` **Required** Database name in MongodB, defaults to `muncher`
-- `FINDER_ELASTICSEARCH` **Required** Elasticsearch endpoint, defaults to `elasticsearch:9200`
-- `FINDER_ELASTICSEARCH_INDEX` **Required** Name of the index in Elasticsearch, defaults to `o2r`
 - `FINDER_MONGODB_COLL_COMPENDIA` **Required** Name of the MongoDB collection for compendia, default is `compendia`
 - `FINDER_MONGODB_COLL_JOBS` **Required** Name of the MongoDB collection for jobs, default is `jobs`
 - `FINDER_MONGODB_COLL_SESSION` **Required** Name of the MongoDB collection for session information, default is `sessions` (must match other microservices)
+- `FINDER_ELASTICSEARCH` **Required** Elasticsearch endpoint, defaults to `elasticsearch:9200`
+- `FINDER_ELASTICSEARCH_INDEX` **Required** Name of the index in Elasticsearch, defaults to `o2r`
 - `FINDER_ELASTICSEARCH_TYPE_COMPENDIA` Name of the Elasticsearch type for compendia, default is `compendia`
 - `FINDER_ELASTICSEARCH_TYPE_JOBS` Name of the Elasticsearch type for jobs, default is `jobs`
 - `SESSION_SECRET` Secret used for session encryption, must match other services, default is `o2r`
@@ -85,7 +85,7 @@ The image can then be run and configured via environment variables.
 
 ## Development
 
-Start an Elasticsearch instance, mounting local configuration files (see [documentation](https://hub.docker.com/_/elasticsearch/) and the corresponding GitHub repository, which is the base for the directory `/esconfig`; and empty `scripts` directory is needed so that the whole directory `config` can be mounted without error), and exposing the default port on the host.
+Start an Elasticsearch instance, mounting local configuration files (see [documentation](https://hub.docker.com/_/elasticsearch/) and the corresponding GitHub repository, which is the base for the directory `/esconfig`; an empty `scripts` directory is needed so that the whole directory `config` can be mounted without error), and exposing the default port on the host.
 
 ```bash
 docker run -it --name elasticsearch -v "$(pwd)/esconfig":/usr/share/elasticsearch/config -p 9200:9200 elasticsearch:5
