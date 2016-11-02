@@ -85,11 +85,13 @@ The image can then be run and configured via environment variables.
 
 ## Development
 
-Start an Elasticsearch instance, mounting a local configuratione file (see [documentation](https://hub.docker.com/_/elasticsearch/)), and exposing the default port on the host.
+Start an Elasticsearch instance, mounting local configuration files (see [documentation](https://hub.docker.com/_/elasticsearch/) and the corresponding GitHub repository, which is the base for the directory `/esconfig`; and empty `scripts` directory is needed so that the whole directory `config` can be mounted without error), and exposing the default port on the host.
 
 ```bash
-docker run -it --name elasticsearch -v "$(pwd)/esconfig/elasticsearch.yml":/usr/share/elasticsearch/config/elasticsearch.yml -p 9200:9200 elasticsearch:2
+docker run -it --name elasticsearch -v "$(pwd)/esconfig":/usr/share/elasticsearch/config -p 9200:9200 elasticsearch:5
 ```
+
+**Important**: Starting with Elasticsearch 5, virtual memory configuration of the system (and in our case the host) requires some configuration, particularly of the `vm.max_map_count` setting, see https://www.elastic.co/guide/en/elasticsearch/reference/5.0/vm-max-map-count.html
 
 You can then explore the state of Elasticsearch, e.g.
 
