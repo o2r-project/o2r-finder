@@ -147,9 +147,9 @@ var transformCompendium = function (watcher, compendium, cb) {
   debug('Transforming compendium %s', id);
 
   try {
-    // shift IDs
+    // shift IDs so that matching is made based on Mongo's _id
     compendium.compendium_id = compendium.id;
-    compendium.id = compendium._id;
+    compendium.id = compendium._id.toString(); // see https://github.com/toystars/node-elasticsearch-sync/issues/13
     delete compendium._id;
     delete compendium.__v;
 
@@ -186,7 +186,7 @@ var transformCompendium = function (watcher, compendium, cb) {
     //   > https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
 
     transformLog.enq({ time: new Date().toISOString(), compendium: id, transform: "successful" });
-    debug("Done with compendium %s", id);
+    debug("Transformed compendium %s", id);
     cb(compendium);
   } catch (e) {
     transformLog.enq({ time: new Date().toISOString(), compendium: id, transform: "error: " + e.message });
@@ -203,6 +203,8 @@ var transformJob = function (watcher, job, cb) {
   job.id = job._id;
   delete job._id;
   delete job.__v;
+
+  debug("Transformed job %s", job.id);
   cb(job);
 };
 
@@ -214,7 +216,7 @@ var compendiaWatcher = {
   type: config.elasticsearch.type.compendia, // elastic search type
   transformFunction: transformCompendium, // can be null if no transformation is needed to be done
   fetchExistingDocuments: config.sync.fetchExisting.compendia, // this will fetch all existing document in collection and index in elastic search
-  priority: 0 // defines order of watcher processing. Watchers with low priorities get processed ahead of those with high priorities
+  priority: 1 // defines order of watcher processing. Watchers with low priorities get processed ahead of those with high priorities
 };
 var jobsWatcher = {
   collectionName: config.mongo.collection.jobs,
