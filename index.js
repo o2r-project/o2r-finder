@@ -18,6 +18,8 @@
 const config = require('./config/config');
 const debug = require('debug')('finder');
 
+const ElasticSearch = require('elasticsearch');
+
 // MongoDB > Elasticsearch sync
 const ESMongoSync = require('node-elasticsearch-sync');
 
@@ -40,8 +42,8 @@ var cloneDeep = require('clone-deep');
 const mongoose = require('mongoose');
 mongoose.connect(config.mongo.userDatabase);
 mongoose.connection.on('error', () => {
-  console.log('could not connect to mongodb on ' + config.mongo.location + config.mongo.collection + ', ABORT');
-  process.exit(2);
+  debug('ERROR could not connect to mongodb on ' + config.mongo.location + config.mongo.collection + ', ABORT');
+  process.exit(1);
 });
 
 // rolling queue of the last n transformations
@@ -86,6 +88,7 @@ var mongoStore = new MongoDBStore({
 mongoStore.on('error', err => {
   debug(err);
 });
+
 app.use(session({
   secret: config.sessionsecret,
   resave: true,
@@ -123,7 +126,7 @@ app.get('/status', function (req, res) {
     response.elasticsearch = {};
     response.elasticsearch.status = values[1];
     response.elasticsearch.indices = values[0].indices;
-    console.log(values);
+    //console.log(values);
     res.send(response);
   }, error => {
     debug("Error getting info from Elasticsearch: %s", error.message);
@@ -133,13 +136,6 @@ app.get('/status', function (req, res) {
     res.send(response);
   });
 });
-
-app.listen(config.net.port, () => {
-  debug('finder ' + config.version.major + '.' + config.version.minor + '.' +
-    config.version.bug + ' with api version ' + config.version.api +
-    ' waiting for requests on port ' + config.net.port);
-});
-
 
 // transform functions for node-elasticsearch-sync
 var transformCompendium = function (watcher, compendium, cb) {
@@ -229,13 +225,56 @@ var jobsWatcher = {
 
 watchers.push(compendiaWatcher, jobsWatcher);
 
-// See https://github.com/toystars/node-elasticsearch-sync/blob/master/SAMPLE.js for options
-// See also https://github.com/toystars/node-elasticsearch-sync/issues/10
+// http://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-debug('Starting ESMongoSync with mongo data "%s" | mongo oplog "%s" | elasticsearch "%s" | batch count "%s" | watchers: \n',
-  process.env['MONGO_DATA_URL'],
-  process.env['MONGO_OPLOG_URL'],
-  process.env['ELASTIC_SEARCH_URL'],
-  process.env['BATCH_COUNT'],
-  JSON.stringify(watchers));
-ESMongoSync.init(watchers, null);
+var attempts = 1;
+
+function startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds) {
+  if (attempts > maximumNumberOfAttempts) {
+    debug('NOT STARTED, number of attempts to connect to Elasticsearch at %s (%s) has been reached.', process.env['ELASTIC_SEARCH_URL'], maximumNumberOfAttempts);
+
+    process.exit(1);
+  }
+
+  // try to connect to ES before starting sync
+  let EsClient = new ElasticSearch.Client({
+    host: process.env['ELASTIC_SEARCH_URL'],
+    keepAlive: true
+  });
+  EsClient.ping({
+    requestTimeout: 2000
+  }, function (error, response, status) {
+    if (error) {
+      debug('ElasticSearch no reachable, trying again in %s seconds', pauseSeconds);
+      attempts++;
+      sleep(pauseSeconds * 1000).then(() => {
+        startSyncWithRetry(watchers, maximumNumberOfAttempts, pauseSeconds);
+      });
+    } else {
+      debug('Pinged ElasticSearch at %s with result %s (status %s)', process.env['ELASTIC_SEARCH_URL'], response, status);
+
+      // See https://github.com/toystars/node-elasticsearch-sync/blob/master/SAMPLE.js for options
+      // See also https://github.com/toystars/node-elasticsearch-sync/issues/10
+      debug('Starting ESMongoSync with mongo data "%s" | mongo oplog "%s" | elasticsearch "%s" | batch count "%s" | watchers: \n',
+        process.env['MONGO_DATA_URL'],
+        process.env['MONGO_OPLOG_URL'],
+        process.env['ELASTIC_SEARCH_URL'],
+        process.env['BATCH_COUNT'],
+        JSON.stringify(watchers));
+      ESMongoSync.init(watcherArray, null, null);
+    }
+  });
+
+}
+
+app.listen(config.net.port, () => {
+  startSyncWithRetry(watchers, config.start.attempts, config.start.pauseSeconds);
+
+  debug('finder ' + config.version.major + '.' + config.version.minor + '.' +
+    config.version.bug + ' with api version ' + config.version.api +
+    ' waiting for requests on port ' + config.net.port);
+});
+
