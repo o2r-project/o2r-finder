@@ -38,7 +38,7 @@ var cloneDeep = require('clone-deep');
 
 // database connection for user authentication, ESMongoSync has own connection
 const mongoose = require('mongoose');
-mongoose.connect(config.mongo.location + config.mongo.database);
+mongoose.connect(config.mongo.userDatabase);
 mongoose.connection.on('error', () => {
   console.log('could not connect to mongodb on ' + config.mongo.location + config.mongo.collection + ', ABORT');
   process.exit(2);
@@ -229,10 +229,13 @@ var jobsWatcher = {
 
 watchers.push(compendiaWatcher, jobsWatcher);
 
-var init = function () {
-  debug('Initialized finder in version %s.%s.%s', config.version.major, config.version.minor, config.version.bug);
-}
-
 // See https://github.com/toystars/node-elasticsearch-sync/blob/master/SAMPLE.js for options
-debug('Starting ESMongoSync with %s | %s | %s | %s', config.mongo.location + config.mongo.database, config.elasticsearch.location, watchers, config.sync.bulkIndexingDocumentCount);
-ESMongoSync.init(config.mongo.location + config.mongo.database, config.elasticsearch.location, init, watchers, config.sync.bulkIndexingDocumentCount);
+// See also https://github.com/toystars/node-elasticsearch-sync/issues/10
+
+debug('Starting ESMongoSync with mongo data "%s" | mongo oplog "%s" | elasticsearch "%s" | batch count "%s" | watchers: \n',
+  process.env['MONGO_DATA_URL'],
+  process.env['MONGO_OPLOG_URL'],
+  process.env['ELASTIC_SEARCH_URL'],
+  process.env['BATCH_COUNT'],
+  JSON.stringify(watchers));
+ESMongoSync.init(watchers, null);

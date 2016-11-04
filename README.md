@@ -71,17 +71,20 @@ The image can then be run and configured via environment variables.
 ### Available environment variables
 
 - `FINDER_PORT` **Required** Port for HTTP requests, defaults to `8084'
-- `FINDER_MONGODB` **Required** Location for the MongoDB, defaults to `mongodb://localhost/'
-- `FINDER_MONGODB_DATABASE` **Required** Database name in MongodB, defaults to `muncher`
+- `FINDER_MONGODB_USER_DATABASE` **Required** Full database connection URL and name for MongoDB for user authentication, defaults to `mongodb://localhost/muncher`
 - `FINDER_MONGODB_COLL_COMPENDIA` **Required** Name of the MongoDB collection for compendia, default is `compendia`
 - `FINDER_MONGODB_COLL_JOBS` **Required** Name of the MongoDB collection for jobs, default is `jobs`
 - `FINDER_MONGODB_COLL_SESSION` **Required** Name of the MongoDB collection for session information, default is `sessions` (must match other microservices)
-- `FINDER_ELASTICSEARCH` **Required** Elasticsearch endpoint, defaults to `elasticsearch:9200`
-- `FINDER_ELASTICSEARCH_INDEX` **Required** Name of the index in Elasticsearch, defaults to `o2r`
+- `FINDER_ELASTICSEARCH_INDEX` Name of the index in Elasticsearch, defaults to `o2r`
 - `FINDER_ELASTICSEARCH_TYPE_COMPENDIA` Name of the Elasticsearch type for compendia, default is `compendia`
 - `FINDER_ELASTICSEARCH_TYPE_JOBS` Name of the Elasticsearch type for jobs, default is `jobs`
 - `SESSION_SECRET` Secret used for session encryption, must match other services, default is `o2r`
 - `FINDER_STATUS_LOGSIZE` Number of transformation results in the status log, default is `20`
+- [node-elasticsearch-sync](https://github.com/toystars/node-elasticsearch-sync) parameters
+  - `ELASTIC_SEARCH_URL` **Required**, e.g. `localhost:9200`
+  - `MONGO_OPLOG_URL` **Required**, e.g. `mongodb://localhost/muncher`
+  - `MONGO_DATA_URL` **Required**, e.g. `mongodb://localhost/muncher`
+  - `BATCH_COUNT` **Required**, e.g. `20`
 
 ## Development
 
