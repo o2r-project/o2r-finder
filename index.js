@@ -244,6 +244,7 @@ function startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds)
     host: process.env['ELASTIC_SEARCH_URL'],
     keepAlive: true
   });
+  debug('Ping Elasticsearch @ %s using %s', process.env['ELASTIC_SEARCH_URL'], JSON.stringify(EsClient));
   EsClient.ping({
     requestTimeout: 2000
   }, function (error, response, status) {
