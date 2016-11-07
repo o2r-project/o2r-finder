@@ -244,7 +244,7 @@ function startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds)
     host: process.env['ELASTIC_SEARCH_URL'],
     keepAlive: true
   });
-  debug('Ping Elasticsearch @ %s using %s', process.env['ELASTIC_SEARCH_URL'], JSON.stringify(EsClient));
+  debug('Ping Elasticsearch @ %s', process.env['ELASTIC_SEARCH_URL']);
   EsClient.ping({
     requestTimeout: 2000
   }, function (error, response, status) {
@@ -265,7 +265,7 @@ function startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds)
         process.env['ELASTIC_SEARCH_URL'],
         process.env['BATCH_COUNT'],
         JSON.stringify(watchers));
-      ESMongoSync.init(watcherArray, null, null);
+      ESMongoSync.init(watcherArray, null);
     }
   });
 

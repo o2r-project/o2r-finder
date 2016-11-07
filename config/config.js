@@ -23,7 +23,7 @@ var env = process.env;
 
 // Information about finder
 c.version.major  = 0;
-c.version.minor  = 2;
+c.version.minor  = 3;
 c.version.bug    = 0;
 c.version.api    = 1;
 
