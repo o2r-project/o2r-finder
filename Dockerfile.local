@@ -35,4 +35,4 @@ RUN npm install --production
 ENTRYPOINT ["/sbin/dumb-init", "--"]
 CMD ["npm", "start" ]
 
-# docker build --tag o2rproject-finder-local --file Dockerfile.local .
+# docker build --tag finder --file Dockerfile.local --no-cache .
