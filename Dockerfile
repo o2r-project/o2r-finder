@@ -25,7 +25,8 @@ RUN apk add --no-cache \
   && wget -O /sbin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.1.3/dumb-init_1.1.3_amd64 \
   && chmod +x /sbin/dumb-init \
   && apk del \
-    git \
+    # needed for installed updated node-elasticsearch-sync from GitHub
+    #git \
     wget \
     ca-certificates \
   && rm -rf /var/cache
