@@ -70,7 +70,7 @@ The image can then be run and configured via environment variables.
 
 ### Available environment variables
 
-- `FINDER_PORT` **Required** Port for HTTP requests, defaults to `8084'
+- `FINDER_PORT` **Required** Port for HTTP requests, defaults to `8084`
 - `FINDER_MONGODB_USER_DATABASE` **Required** Full database connection URL and name for MongoDB for user authentication, defaults to `mongodb://localhost/muncher`
 - `FINDER_MONGODB_COLL_COMPENDIA` **Required** Name of the MongoDB collection for compendia, default is `compendia`
 - `FINDER_MONGODB_COLL_JOBS` **Required** Name of the MongoDB collection for jobs, default is `jobs`

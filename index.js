@@ -265,7 +265,9 @@ function startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds)
         process.env['ELASTIC_SEARCH_URL'],
         process.env['BATCH_COUNT'],
         JSON.stringify(watchers));
-      ESMongoSync.init(watcherArray, null);
+      ESMongoSync.init(watcherArray, null, () => {
+        debug('ESMongoSync initialized');
+      });
     }
   });
 
