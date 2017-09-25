@@ -16,6 +16,7 @@
  */
 
 const config = require('./config/config');
+const mapping = require('./esconfig/mapping');
 const debug = require('debug')('finder');
 
 const ElasticSearch = require('elasticsearch');
@@ -274,10 +275,29 @@ function startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds)
 }
 
 app.listen(config.net.port, () => {
-  startSyncWithRetry(watchers, config.start.attempts, config.start.pauseSeconds);
+  //delete existing index and create new index with spatial mapping 
+  esclient.indices.exists({ index: config.elasticsearch.index })
+  .then(function (resp) {
+    if (resp) { //if config.elasticsearch.index already exists
+      //delete existing index
+      return esclient.indices.delete({ index: config.elasticsearch.index });
+    }
+  }).then(function (resp) {
+    //(re)create index
+    return esclient.indices.create({ index: config.elasticsearch.index });
+  }).then(function (resp) {
+    //add spatial mapping
+    return esclient.indices.putMapping({ index: config.elasticsearch.index, type: "compendia", body: mapping });
+  }).then(function (resp) {
+    debug("Created elasticsearch index and mapping");
+    // start listening when the elasticsearch index was created
+    startSyncWithRetry(watchers, config.start.attempts, config.start.pauseSeconds);
 
-  debug('finder ' + config.version.major + '.' + config.version.minor + '.' +
-    config.version.bug + ' with api version ' + config.version.api +
-    ' waiting for requests on port ' + config.net.port);
+    debug('finder ' + config.version.major + '.' + config.version.minor + '.' +
+      config.version.bug + ' with api version ' + config.version.api +
+      ' waiting for requests on port ' + config.net.port);
+  }).catch(function (err) {
+    debug("Error creating index: %s %s", err);
+  });
 });
 

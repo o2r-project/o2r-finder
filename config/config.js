@@ -41,6 +41,8 @@ c.elasticsearch.type = {};
 c.elasticsearch.type.compendia = env.FINDER_ELASTICSEARCH_TYPE_COMPENDIA || 'compendia';
 c.elasticsearch.type.jobs = env.FINDER_ELASTICSEARCH_TYPE_JOBS || 'jobs';
 
+c.elasticsearch.location = env.ELASTIC_SEARCH_URL || 'http://localhost:9200';
+
 // startup
 c.start = {};
 c.start.attempts = env.FINDER_START_PING_ATTEMPS || 6;
