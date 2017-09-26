@@ -1,6 +1,6 @@
 {
   "name": "finder",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "all about discovery within o2r",
   "main": "index.js",
   "scripts": {
