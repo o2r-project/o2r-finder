@@ -22,10 +22,8 @@ c.elasticsearch = {};
 var env = process.env;
 
 // Information about finder
-c.version.major  = 0;
-c.version.minor  = 3;
-c.version.bug    = 0;
-c.version.api    = 1;
+c.version = require('../package.json').version;
+c.api_version = 1;
 
 // network & databases
 c.net.port         = env.FINDER_PORT || 8084;
@@ -37,9 +35,13 @@ c.mongo.collection.jobs = env.FINDER_MONGODB_COLL_JOBS || 'jobs';
 c.mongo.collection.session = env.FINDER_MONGODB_COLL_SESSION || 'sessions';
 
 c.elasticsearch.index = env.FINDER_ELASTICSEARCH_INDEX || 'o2r';
+c.elasticsearch.deleteIndexOnStartup = true;
+c.elasticsearch.putMappingOnStartup = true;
 c.elasticsearch.type = {};
 c.elasticsearch.type.compendia = env.FINDER_ELASTICSEARCH_TYPE_COMPENDIA || 'compendia';
 c.elasticsearch.type.jobs = env.FINDER_ELASTICSEARCH_TYPE_JOBS || 'jobs';
+
+c.elasticsearch.location = env.ELASTIC_SEARCH_URL || 'http://localhost:9200';
 
 // startup
 c.start = {};

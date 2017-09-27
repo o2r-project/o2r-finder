@@ -38,3 +38,4 @@ jspm_packages
 
 # Local dev config
 .vscode
+.idea
