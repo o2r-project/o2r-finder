@@ -135,4 +135,4 @@ http://localhost/api/v1/search?q=*
 
 o2r-informer is licensed under Apache License, Version 2.0, see file LICENSE.
 
-Copyright (C) 2016 - o2r project.
+Copyright (C) 2017 - o2r project.
