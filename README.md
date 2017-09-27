@@ -1,5 +1,7 @@
 # o2r-finder
 
+[![](https://images.microbadger.com/badges/version/o2rproject/o2r-finder.svg)](https://microbadger.com/images/o2rproject/o2r-finder "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/o2rproject/o2r-finder.svg)](https://microbadger.com/images/o2rproject/o2r-finder "Get your own image badge on microbadger.com")
+
 Implementation of search features for the o2r API.
 
 ## Architecture
@@ -13,10 +15,9 @@ The Elasticsearch search endpoint is then published read-only via an nginx proxy
 ## Indexed information
 
 - whole database _muncher_ (an _index_ in Elasticsearch)
-  - all compendia (_collection_ in MongodB, a _type_ in Elasticsearch)
+  - all compendia (_collection_ in MongoDB, a _type_ in Elasticsearch)
     - `text` documents (detected via mime type of the files) as fields in Elasticsearch
-    - pdf __[TODO]__
-  - all jobs (_collection_ in MongodB, a _type_ in Elasticsearch)
+  - all jobs (_collection_ in MongoDB, a _type_ in Elasticsearch)
 
 ### Compendia
 
@@ -127,7 +128,7 @@ curl -XDELETE 'http://172.17.0.3:9200/o2r/'
 
 ### Local test proxy
 
-If you run the local test proxy from the project [o2r-platform](https://github.com/o2r-project/o2r-platform), you can run queries directly at the o2r api:
+If you run the local test proxy from the project [o2r-platform](https://github.com/o2r-project/o2r-platform), you can run queries directly at the o2r API:
 
 http://localhost/api/v1/search?q=*
 
