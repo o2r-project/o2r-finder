@@ -1,4 +1,4 @@
-# (C) Copyright 2016 The o2r project. https://o2r.info
+# (C) Copyright 2017 The o2r project. https://o2r.info
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-FROM alpine:3.4
-MAINTAINER o2r-project, https://o2r.info
+FROM alpine:3.6
+
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" > /etc/apk/repositories \
+  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
 
 RUN apk add --no-cache \
-    nodejs \
-    wget \
-    # needed for installed updated node-elasticsearch-sync from GitHub
     git \
-    ca-certificates \
-  && wget -O /sbin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.1.3/dumb-init_1.1.3_amd64 \
-  && chmod +x /sbin/dumb-init
+    wget \
+    nodejs \
+    dumb-init
 
 WORKDIR /finder
 COPY config config
@@ -32,7 +32,7 @@ COPY package.json package.json
 
 RUN npm install --production
 
-ENTRYPOINT ["/sbin/dumb-init", "--"]
-CMD ["npm", "start" ]
 
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["npm", "start" ]
 # docker build --tag finder --file Dockerfile.local --no-cache .
