@@ -272,22 +272,36 @@ function startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds)
 }
 
 app.listen(config.net.port, () => {
-  // delete existing index and create new index with spatial mapping
 
+  // delete existing index and create new index with spatial mapping
   esclient.indices.exists({ index: config.elasticsearch.index })
   .then(function (resp) {
-    if (resp) {
+    if (resp && config.elasticsearch.deleteIndexOnStartup) {
       debug('Index %s already exists: %s', config.elasticsearch.index, resp);
       return esclient.indices.delete({ index: config.elasticsearch.index });
+    } else {
+      return resp;
     }
   }).then(function (resp) {
-    debug('Existing index delted: %s', resp);
-    return esclient.indices.create({ index: config.elasticsearch.index });
+    debug('Existing index deleted: %s', JSON.stringify(resp));
+
+    // create a new index if: 1) index was deleted in the last step 2) index didn't exist in the beginning
+    if (typeof resp === 'object' && resp.acknowledged) {
+      return esclient.indices.create({ index: config.elasticsearch.index });
+    } else if (!resp) {
+      return esclient.indices.create({ index: config.elasticsearch.index });
+    } else {
+      return false;
+    }
   }).then(function (resp) {
-    debug('Index (re)creation response: %s', resp);
-    return esclient.indices.putMapping({ index: config.elasticsearch.index, type: 'compendia', body: mapping });
+    debug('Index (re)created: %s', JSON.stringify(resp));
+    if (config.elasticsearch.putMappingOnStartup) {
+      return esclient.indices.putMapping({ index: config.elasticsearch.index, type: config.elasticsearch.type.compendia, body: mapping });
+    } else {
+      return false;
+    }
   }).then(function (resp) {
-    debug('Successfully created elasticsearch index and mapping: %s', resp);
+    debug('Successfully created elasticsearch index and mapping. Mapping response: %s', JSON.stringify(resp));
     startSyncWithRetry(watchers, config.start.attempts, config.start.pauseSeconds);
 
     debug('finder %s with API version %s waiting for requests on port %s',
