@@ -1,4 +1,4 @@
-# (C) Copyright 2016 The o2r project. https://o2r.info
+# (C) Copyright 2017 The o2r project. https://o2r.info
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,27 +12,48 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-FROM alpine:3.4
-MAINTAINER o2r-project, https://o2r.info
+FROM alpine:3.6
+
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" > /etc/apk/repositories \
+  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
 
 RUN apk add --no-cache \
-    nodejs \
     git \
-    ca-certificates \
     wget \
+    nodejs \
+    dumb-init \
+    ca-certificates \
   && update-ca-certificates \
   && git clone --depth 1 -b master https://github.com/o2r-project/o2r-finder /finder \
-  && wget -O /sbin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.1.3/dumb-init_1.1.3_amd64 \
-  && chmod +x /sbin/dumb-init \
-  && apk del \
-    # needed for installed updated node-elasticsearch-sync from GitHub
-    #git \
-    wget \
-    ca-certificates \
-  && rm -rf /var/cache
 
 WORKDIR /finder
 RUN npm install --production
 
-ENTRYPOINT ["/sbin/dumb-init", "--"]
+# git needed for installed updated node-elasticsearch-sync from GitHub
+RUN apk del \
+    git \
+    wget \
+    ca-certificates \
+  && rm -rf /var/cache
+
+ARG VERSION=dev
+ARG VCS_URL
+ARG VCS_REF
+ARG BUILD_DATE
+ARG META_VERSION
+
+# Metadata http://label-schema.org/rc1/
+LABEL maintainer="o2r-project <https://o2r.info>" \
+  org.label-schema.vendor="o2r project" \
+  org.label-schema.url="http://o2r.info" \
+  org.label-schema.name="o2r finder" \
+  org.label-schema.description="ERC search and discovery" \    
+  org.label-schema.version=$VERSION \
+  org.label-schema.vcs-url=$VCS_URL \
+  org.label-schema.vcs-ref=$VCS_REF \
+  org.label-schema.build-date=$BUILD_DATE \
+  org.label-schema.docker.schema-version="rc1"
+
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["npm", "start" ]
