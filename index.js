@@ -276,6 +276,7 @@ app.listen(config.net.port, () => {
   // delete existing index and create new index with spatial mapping
   esclient.indices.exists({ index: config.elasticsearch.index })
   .then(function (resp) {
+    // delete possibly existing index if deleteIndexOnStartup is true
     if (resp && config.elasticsearch.deleteIndexOnStartup) {
       debug('Index %s already exists: %s', config.elasticsearch.index, resp);
       return esclient.indices.delete({ index: config.elasticsearch.index });
