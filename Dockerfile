@@ -23,14 +23,15 @@ RUN apk add --no-cache \
     wget \
     nodejs \
     dumb-init \
+    nodejs-npm \
     ca-certificates \
   && update-ca-certificates \
-  && git clone --depth 1 -b master https://github.com/o2r-project/o2r-finder /finder \
+  && git clone --depth 1 -b master https://github.com/o2r-project/o2r-finder /finder
 
 WORKDIR /finder
 RUN npm install --production
 
-# git needed for installed updated node-elasticsearch-sync from GitHub
+# git needed for installing updated node-elasticsearch-sync from GitHub, so clean up after install
 RUN apk del \
     git \
     wget \
@@ -41,7 +42,6 @@ ARG VERSION=dev
 ARG VCS_URL
 ARG VCS_REF
 ARG BUILD_DATE
-ARG META_VERSION
 
 # Metadata http://label-schema.org/rc1/
 LABEL maintainer="o2r-project <https://o2r.info>" \

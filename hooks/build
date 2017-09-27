@@ -2,7 +2,6 @@
 set -e
 
 PACKAGE_VERSION=$(sed -nE 's/^\s*"version": "(.*?)",$/\1/p' package.json)
-META_VERSION=$(curl https://api.github.com/repos/o2r-project/o2r-meta/commits/master -H "Accept: application/vnd.github.VERSION.sha")
 
 echo "Build hook running for version" $PACKAGE_VERSION
 docker build \
