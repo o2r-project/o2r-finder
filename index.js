@@ -54,12 +54,22 @@ debug('Logging last %s transformations in %s', transformLog.capacity(), transfor
 const compression = require('compression');
 const express = require('express');
 const app = express();
+const responseTime = require('response-time');
+const bodyParser = require('body-parser');
+
+// load controllers
+const search = require('./controllers/search');
+
 app.use(compression());
 
 app.use((req, res, next) => {
   debug(req.method + ' ' + req.path);
   next();
 });
+
+app.use(responseTime());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // passport & session modules for authenticating users.
 const User = require('./lib/model/user');
@@ -97,6 +107,14 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+//app.post('/')
+
+/*
+ * configure routes
+ */
+app.get('/api/v1/search', search.simpleSearch)
+app.post('/api/v1/search', search.complexSearch);
 
 /*
  * authentication-enabled status endpoint
