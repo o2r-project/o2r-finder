@@ -88,70 +88,91 @@ passport.deserializeUser((id, cb) => {
   });
 });
 
-// configure express-session, stores reference to authdetails in cookie.
-// authdetails themselves are stored in MongoDBStore
-const mongoStore = new MongoDBStore({
-  uri: config.mongo.location + config.mongo.database,
-  collection: config.mongo.collection.session
-});
-mongoStore.on('error', err => {
-  debug(err);
-});
+function initApp(callback) {
+    debug('Initialize application');
 
-app.use(session({
-  secret: config.sessionsecret,
-  resave: true,
-  saveUninitialized: true,
-  maxAge: config.session.cookieMaxAge,
-  store: mongoStore
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+    try {
+        // configure express-session, stores reference to authdetails in cookie.
+        // authdetails themselves are stored in MongoDBStore
+        const mongoStore = new MongoDBStore({
+            uri: config.mongo.location + config.mongo.database,
+            collection: config.mongo.collection.session
+        });
+        mongoStore.on('error', err => {
+            debug(err);
+        });
 
-//app.post('/')
+        app.use(session({
+            secret: config.sessionsecret,
+            resave: true,
+            saveUninitialized: true,
+            maxAge: config.session.cookieMaxAge,
+            store: mongoStore
+        }));
+        app.use(passport.initialize());
+        app.use(passport.session());
 
-/*
- * configure routes
- */
-app.get('/api/v1/search', search.simpleSearch)
-app.post('/api/v1/search', search.complexSearch);
+        /*
+         * configure routes
+         */
+        app.get('/api/v1/search', search.simpleSearch);
+        app.post('/api/v1/search', search.complexSearch);
 
-/*
- * authentication-enabled status endpoint
- */
-app.get('/status', function (req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  if (!req.isAuthenticated() || req.user.level < config.user.level.view_status) {
-    res.status(401).send('{"error":"not authenticated or not allowed"}');
-    return;
-  }
+        /*
+         * authentication-enabled status endpoint
+         */
+        app.get('/status', function (req, res) {
+            res.setHeader('Content-Type', 'application/json');
+            if (!req.isAuthenticated() || req.user.level < config.user.level.view_status) {
+                res.status(401).send('{"error":"not authenticated or not allowed"}');
+                return;
+            }
 
-  let response = {
-    name: 'finder',
-    version: config.version,
-    levels: config.user.level,
-    mongodb: config.mongo,
-    filesystem: config.fs,
-    transformationLog: transformLog.toarray()
-  };
+            let response = {
+                name: 'finder',
+                version: config.version,
+                levels: config.user.level,
+                mongodb: config.mongo,
+                filesystem: config.fs,
+                transformationLog: transformLog.toarray()
+            };
 
-  // add status info from elasticsearch to response
-  Promise.all([
-    esclient.indices.stats({ human: true }),
-    esclient.info()
-  ]).then(values => {
-    response.elasticsearch = {};
-    response.elasticsearch.status = values[1];
-    response.elasticsearch.indices = values[0].indices;
-    res.send(response);
-  }, error => {
-    debug('Error getting info from Elasticsearch: %s', error.message);
-    response.elasticsearch = error;
-  }).catch(error => {
-    debug('Error handling promises\' results from Elasticsearch: %s', error.message);
-    res.send(response);
-  });
-});
+            // add status info from elasticsearch to response
+            Promise.all([
+                esclient.indices.stats({ human: true }),
+                esclient.info()
+            ]).then(values => {
+                response.elasticsearch = {};
+                response.elasticsearch.status = values[1];
+                response.elasticsearch.indices = values[0].indices;
+                res.send(response);
+            }, error => {
+                debug('Error getting info from Elasticsearch: %s', error.message);
+                response.elasticsearch = error;
+            }).catch(error => {
+                debug('Error handling promises\' results from Elasticsearch: %s', error.message);
+                res.send(response);
+            });
+        });
+
+        setupElasticsearchIndex();
+
+        /*
+         * final startup message
+         */
+        const server = app.listen(config.net.port, () => {
+            debug('finder %s with API version %s waiting for requests on port %s',
+                config.version,
+                config.api_version,
+                config.net.port);
+        });
+
+    } catch (err) {
+        callback(err);
+    }
+
+    callback(null);
+}
 
 // transform functions for node-elasticsearch-sync
 const transformCompendium = function (watcher, compendium, cb) {
@@ -289,58 +310,62 @@ function startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds)
 
 }
 
-app.listen(config.net.port, () => {
+function setupElasticsearchIndex() {
 
-  esclient.indices.exists({ index: config.elasticsearch.index })
-  .then(function (resp) {
-    // Delete possibly existing index if deleteIndexOnStartup is true
-    if (resp) {
-      debug('Index %s already exists.', config.elasticsearch.index);
-      if (config.elasticsearch.deleteIndexOnStartup) {
-        debug('Deleting elasticsearch index %s.', config.elasticsearch.index);
-        return esclient.indices.delete({ index: config.elasticsearch.index });
-      } else {
-        debug('Index %s already exists and will not be recreated. Make sure that the mapping is compatible.', config.elasticsearch.index);
-        return resp;
-      }
-    } else {
-      debug('Index %s not found.', config.elasticsearch.index);
-      return false;
-    }
-  }).then(function (resp) {
-    // Create a new index if: 1) index was deleted in the last step 2) index didn't exist in the beginning
-    if (typeof resp === 'object' && resp.acknowledged) {
-      debug('Existing index %s successfully deleted. Response: %s', config.elasticsearch.index, JSON.stringify(resp));
-      return esclient.indices.create({ index: config.elasticsearch.index });
-    } else if (!resp) {
-      debug('Creating index %s because it does not exist yet.', config.elasticsearch.index);
-      return esclient.indices.create({ index: config.elasticsearch.index });
-    } else {
-      debug('Working with existing index %s.', config.elasticsearch.index);
-      return false;
-    }
-  }).then(function (resp) {
-    debug('Index (re)created: %s', JSON.stringify(resp));
-    if (config.elasticsearch.putMappingOnStartup) {
-      debug('Using mapping found in "esconfig/mapping.js" for index %s', config.elasticsearch.index);
-      return esclient.indices.putMapping({ index: config.elasticsearch.index, type: config.elasticsearch.type.compendia, body: mapping });
-    } else {
-      debug('Not creating mapping because "putMappingOnStartup" is deactivated.')
-      return false;
-    }
-  }).then(function (resp) {
-    debug('Index and mapping configured.');
-    if (typeof resp === 'object') {
-      debug('Mapping successfully created. Elasticsearch response: %s', JSON.stringify(resp));
-    }
-    startSyncWithRetry(watchers, config.start.attempts, config.start.pauseSeconds);
+    esclient.indices.exists({index: config.elasticsearch.index})
+        .then(function (resp) {
+            // Delete possibly existing index if deleteIndexOnStartup is true
+            if (resp) {
+                debug('Index %s already exists.', config.elasticsearch.index);
+                if (config.elasticsearch.deleteIndexOnStartup) {
+                    debug('Deleting elasticsearch index %s.', config.elasticsearch.index);
+                    return esclient.indices.delete({index: config.elasticsearch.index});
+                } else {
+                    debug('Index %s already exists and will not be recreated. Make sure that the mapping is compatible.', config.elasticsearch.index);
+                    return resp;
+                }
+            } else {
+                debug('Index %s not found.', config.elasticsearch.index);
+                return false;
+            }
+        }).then(function (resp) {
+        // Create a new index if: 1) index was deleted in the last step 2) index didn't exist in the beginning
+        if (typeof resp === 'object' && resp.acknowledged) {
+            debug('Existing index %s successfully deleted. Response: %s', config.elasticsearch.index, JSON.stringify(resp));
+            return esclient.indices.create({index: config.elasticsearch.index});
+        } else if (!resp) {
+            debug('Creating index %s because it does not exist yet.', config.elasticsearch.index);
+            return esclient.indices.create({index: config.elasticsearch.index});
+        } else {
+            debug('Working with existing index %s.', config.elasticsearch.index);
+            return false;
+        }
+    }).then(function (resp) {
+        debug('Index (re)created: %s', JSON.stringify(resp));
+        if (config.elasticsearch.putMappingOnStartup) {
+            debug('Using mapping found in "esconfig/mapping.js" for index %s', config.elasticsearch.index);
+            return esclient.indices.putMapping({
+                index: config.elasticsearch.index,
+                type: config.elasticsearch.type.compendia,
+                body: mapping
+            });
+        } else {
+            debug('Not creating mapping because "putMappingOnStartup" is deactivated.')
+            return false;
+        }
+    }).then(function (resp) {
+        debug('Index and mapping configured.');
+        if (typeof resp === 'object') {
+            debug('Mapping successfully created. Elasticsearch response: %s', JSON.stringify(resp));
+        }
+        startSyncWithRetry(watchers, config.start.attempts, config.start.pauseSeconds);
 
-    debug('finder %s with API version %s waiting for requests on port %s',
-        config.version,
-        config.api_version,
-        config.net.port);
-  }).catch(function (err) {
-    debug('Error creating index or mapping: %s', err);
-  });
-});
+        debug('finder %s with API version %s waiting for requests on port %s',
+            config.version,
+            config.api_version,
+            config.net.port);
+    }).catch(function (err) {
+        debug('Error creating index or mapping: %s', err);
+    });
+}
 
