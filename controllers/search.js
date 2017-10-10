@@ -51,10 +51,11 @@ exports.simpleSearch = (req, res) => {
 
     esclient.search({
         index: config.elasticsearch.index,
-        q: query
+        q: query,
+        analyzer: config.elasticsearch.analyzer
     }).then(function (resp) {
         //debug('Query successful. Got %s results', JSON.stringify(resp));
-        //todo send json response
+        //todo send proper json response
         res.status(200).send(resp);
     }).catch(function (err) {
         debug('Error querying index: %s', err);
@@ -87,10 +88,11 @@ exports.complexSearch = (req, res) => {
 
     esclient.search({
         index: config.elasticsearch.index,
-        body: req.body
+        body: req.body,
+        analyzer: config.elasticsearch.analyzer
     }).then(function (resp) {
         //debug('Query successful. Got %s results', JSON.stringify(resp));
-        //todo send json response
+        //todo send proper json response
         res.status(200).send(resp);
     }).catch(function (err) {
         debug('Error querying index: %s', err);

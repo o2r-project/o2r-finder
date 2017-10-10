@@ -49,6 +49,8 @@ c.elasticsearch.type.jobs = env.FINDER_ELASTICSEARCH_TYPE_JOBS || 'jobs';
 
 c.elasticsearch.location = env.ELASTIC_SEARCH_URL || 'http://localhost:9200';
 
+c.elasticsearch.analyzer = 'standard';
+
 // startup
 c.start = {};
 c.start.attempts = env.FINDER_START_PING_ATTEMPS || 6;
