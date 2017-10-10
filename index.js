@@ -22,6 +22,7 @@ const debug = require('debug')('finder');
 // MongoDB > Elasticsearch sync
 const ESMongoSync = require('node-elasticsearch-sync');
 
+
 // standalone Elasticsearch client
 const elasticsearch = require('elasticsearch');
 const esclient = new elasticsearch.Client({
@@ -39,10 +40,21 @@ const cloneDeep = require('clone-deep');
 
 // database connection for user authentication, ESMongoSync has own connection
 const mongoose = require('mongoose');
-mongoose.connect(config.mongo.userDatabase);
-mongoose.connection.on('error', () => {
-  debug('ERROR could not connect to mongodb on ' + config.mongo.location + config.mongo.collection + ', ABORT');
-  process.exit(1);
+const backoff = require('backoff');
+
+// use ES6 promises for mongoose
+mongoose.Promise = global.Promise;
+const dbURI = config.mongo.location + config.mongo.database;
+var dbOptions = {
+    autoReconnect: true,
+    reconnectTries: Number.MAX_VALUE,
+    keepAlive: 30000,
+    socketTimeoutMS: 30000,
+    useMongoClient: true,
+    promiseLibrary: mongoose.Promise
+};
+mongoose.connection.on('error', (err) => {
+    debug('Could not connect to MongoDB @ %s: %s', dbURI, err);
 });
 
 // rolling queue of the last n transformations
@@ -155,17 +167,16 @@ function initApp(callback) {
             });
         });
 
-        setupElasticsearchIndex();
+            /*
+             * final startup message
+             */
+            const server = app.listen(config.net.port, () => {
+                debug('finder %s with API version %s waiting for requests on port %s',
+                    config.version,
+                    config.api_version,
+                    config.net.port);
+            });
 
-        /*
-         * final startup message
-         */
-        const server = app.listen(config.net.port, () => {
-            debug('finder %s with API version %s waiting for requests on port %s',
-                config.version,
-                config.api_version,
-                config.net.port);
-        });
 
     } catch (err) {
         callback(err);
@@ -310,62 +321,99 @@ function startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds)
 
 }
 
-function setupElasticsearchIndex() {
+var dbBackoff = backoff.fibonacci({
+    randomisationFactor: 0,
+    initialDelay: config.mongo.initial_connection_initial_delay,
+    maxDelay: config.mongo.initial_connection_max_delay
+});
 
-    esclient.indices.exists({index: config.elasticsearch.index})
-        .then(function (resp) {
-            // Delete possibly existing index if deleteIndexOnStartup is true
-            if (resp) {
-                debug('Index %s already exists.', config.elasticsearch.index);
-                if (config.elasticsearch.deleteIndexOnStartup) {
-                    debug('Deleting elasticsearch index %s.', config.elasticsearch.index);
-                    return esclient.indices.delete({index: config.elasticsearch.index});
-                } else {
-                    debug('Index %s already exists and will not be recreated. Make sure that the mapping is compatible.', config.elasticsearch.index);
-                    return resp;
-                }
-            } else {
-                debug('Index %s not found.', config.elasticsearch.index);
-                return false;
-            }
-        }).then(function (resp) {
-        // Create a new index if: 1) index was deleted in the last step 2) index didn't exist in the beginning
-        if (typeof resp === 'object' && resp.acknowledged) {
-            debug('Existing index %s successfully deleted. Response: %s', config.elasticsearch.index, JSON.stringify(resp));
-            return esclient.indices.create({index: config.elasticsearch.index});
-        } else if (!resp) {
-            debug('Creating index %s because it does not exist yet.', config.elasticsearch.index);
-            return esclient.indices.create({index: config.elasticsearch.index});
-        } else {
-            debug('Working with existing index %s.', config.elasticsearch.index);
-            return false;
-        }
-    }).then(function (resp) {
-        debug('Index (re)created: %s', JSON.stringify(resp));
-        if (config.elasticsearch.putMappingOnStartup) {
-            debug('Using mapping found in "esconfig/mapping.js" for index %s', config.elasticsearch.index);
-            return esclient.indices.putMapping({
-                index: config.elasticsearch.index,
-                type: config.elasticsearch.type.compendia,
-                body: mapping
+dbBackoff.failAfter(config.mongo.initial_connection_attempts);
+dbBackoff.on('backoff', function (number, delay) {
+    debug('Trying to connect to MongoDB (#%s) in %sms', number, delay);
+});
+dbBackoff.on('ready', function (number, delay) {
+    debug('Connect to MongoDB (#%s)', number, delay);
+    mongoose.connect(dbURI, dbOptions, (err) => {
+        if (err) {
+            debug('Error during connect: %s', err);
+            mongoose.disconnect(() => {
+                debug('Mongoose: Disconnected all connections.');
             });
+            dbBackoff.backoff();
         } else {
-            debug('Not creating mapping because "putMappingOnStartup" is deactivated.')
+            // delay app startup to when MongoDB is available
+            debug('Initial connection open to %s: %s', dbURI, mongoose.connection.readyState);
+            initApp((err) => {
+                if (err) {
+                    debug('Error during init!\n%s', err);
+                    mongoose.disconnect(() => {
+                        debug('Mongoose: Disconnected all connections.');
+                    });
+                    dbBackoff.backoff();
+                }
+            });
+        }
+    });
+});
+dbBackoff.on('fail', function () {
+    debug('Eventually giving up to connect to MongoDB');
+    process.exit(1);
+});
+
+esclient.indices.exists({index: config.elasticsearch.index})
+    .then(function (resp) {
+        // Delete possibly existing index if deleteIndexOnStartup is true
+        if (resp) {
+            debug('Index %s already exists.', config.elasticsearch.index);
+            if (config.elasticsearch.deleteIndexOnStartup) {
+                debug('Deleting elasticsearch index %s.', config.elasticsearch.index);
+                return esclient.indices.delete({index: config.elasticsearch.index});
+            } else {
+                debug('Index %s already exists and will not be recreated. Make sure that the mapping is compatible.', config.elasticsearch.index);
+                return resp;
+            }
+        } else {
+            debug('Index %s not found.', config.elasticsearch.index);
             return false;
         }
     }).then(function (resp) {
-        debug('Index and mapping configured.');
-        if (typeof resp === 'object') {
-            debug('Mapping successfully created. Elasticsearch response: %s', JSON.stringify(resp));
-        }
-        startSyncWithRetry(watchers, config.start.attempts, config.start.pauseSeconds);
+    // Create a new index if: 1) index was deleted in the last step 2) index didn't exist in the beginning
+    if (typeof resp === 'object' && resp.acknowledged) {
+        debug('Existing index %s successfully deleted. Response: %s', config.elasticsearch.index, JSON.stringify(resp));
+        return esclient.indices.create({index: config.elasticsearch.index});
+    } else if (!resp) {
+        debug('Creating index %s because it does not exist yet.', config.elasticsearch.index);
+        return esclient.indices.create({index: config.elasticsearch.index});
+    } else {
+        debug('Working with existing index %s.', config.elasticsearch.index);
+        return false;
+    }
+}).then(function (resp) {
+    debug('Index (re)created: %s', JSON.stringify(resp));
+    if (config.elasticsearch.putMappingOnStartup) {
+        debug('Using mapping found in "esconfig/mapping.js" for index %s', config.elasticsearch.index);
+        return esclient.indices.putMapping({
+            index: config.elasticsearch.index,
+            type: config.elasticsearch.type.compendia,
+            body: mapping
+        });
+    } else {
+        debug('Not creating mapping because "putMappingOnStartup" is deactivated.');
+        return false;
+    }
+}).then(function (resp) {
+    debug('Index and mapping configured.');
+    if (typeof resp === 'object') {
+        debug('Mapping successfully created. Elasticsearch response: %s', JSON.stringify(resp));
+    }
 
-        debug('finder %s with API version %s waiting for requests on port %s',
-            config.version,
-            config.api_version,
-            config.net.port);
-    }).catch(function (err) {
-        debug('Error creating index or mapping: %s', err);
-    });
-}
+    startSyncWithRetry(watchers, config.start.attempts, config.start.pauseSeconds);
+    dbBackoff.backoff();
 
+    debug('finder %s with API version %s waiting for requests on port %s',
+        config.version,
+        config.api_version,
+        config.net.port);
+}).catch(function (err) {
+    debug('Error creating index or mapping: %s', err);
+});

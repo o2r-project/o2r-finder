@@ -27,7 +27,13 @@ c.api_version = 1;
 
 // network & databases
 c.net.port         = env.FINDER_PORT || 8084;
-c.mongo.userDatabase   = env.FINDER_MONGODB_USER_DATABASE || 'mongodb://localhost/muncher';
+c.mongo.location = env.LOADER_MONGODB || 'mongodb://localhost/';
+c.mongo.database = env.LOADER_MONGODB_DATABASE || 'muncher';
+// todo remove if checked for usage
+// c.mongo.userDatabase   = env.FINDER_MONGODB_USER_DATABASE || 'mongodb://localhost/muncher';
+c.mongo.initial_connection_attempts = 30;
+c.mongo.initial_connection_max_delay = 5000;
+c.mongo.initial_connection_initial_delay = 1000;
 
 c.mongo.collection = {};
 c.mongo.collection.compendia = env.FINDER_MONGODB_COLL_COMPENDIA || 'compendia';
