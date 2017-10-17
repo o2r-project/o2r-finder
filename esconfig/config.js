@@ -46,4 +46,23 @@ const mapping = {
     }
 };
 
-module.exports = mapping;
+const settings = {
+    "settings": {
+        "analysis": {
+            "analyzer": {
+                "o2r_analyzer": {
+                    "type": "custom",
+                    "filter": [
+                        "lowercase"
+                    ],
+                    "tokenizer": "whitespace"
+                }
+            }
+        }
+    }
+};
+
+module.exports = {
+    mapping: mapping,
+    settings: settings
+};
