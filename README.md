@@ -52,6 +52,14 @@ Example:
 (...)
 ```
 
+**Note**: If you update the metadata structure of `compendium` or `jobs` and you already have indexed these in elasticsearch, you have to drop the elasticsearch `o2r`-index via
+
+```bash
+curl -XDELETE 'http://172.17.0.3:9200/o2r'
+```
+
+Otherwise, new compendia will not be indexed anymore.
+
 ## Requirements
 
 - Elasticsearch server
