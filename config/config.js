@@ -29,8 +29,6 @@ c.api_version = 1;
 c.net.port         = env.FINDER_PORT || 8084;
 c.mongo.location = env.LOADER_MONGODB || 'mongodb://localhost/';
 c.mongo.database = env.LOADER_MONGODB_DATABASE || 'muncher';
-// todo remove if checked for usage
-// c.mongo.userDatabase   = env.FINDER_MONGODB_USER_DATABASE || 'mongodb://localhost/muncher';
 c.mongo.initial_connection_attempts = 30;
 c.mongo.initial_connection_max_delay = 5000;
 c.mongo.initial_connection_initial_delay = 1000;
@@ -49,7 +47,7 @@ c.elasticsearch.type.jobs = env.FINDER_ELASTICSEARCH_TYPE_JOBS || 'jobs';
 
 c.elasticsearch.location = env.ELASTIC_SEARCH_URL || 'http://localhost:9200';
 
-c.elasticsearch.analyzer = 'standard';
+c.elasticsearch.analyzer = 'o2r_analyzer';
 
 // startup
 c.start = {};

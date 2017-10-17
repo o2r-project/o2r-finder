@@ -16,7 +16,7 @@
  */
 
 const config = require('./config/config');
-const mapping = require('./esconfig/mapping');
+const esConfig = require('./esconfig/config');
 const debug = require('debug')('finder');
 
 // MongoDB > Elasticsearch sync
@@ -167,6 +167,9 @@ function initApp(callback) {
             });
         });
 
+        /*
+         * Elasticsearch index and mapping setup
+         */
         esclient.indices.exists({index: config.elasticsearch.index})
             .then(function (resp) {
                 // Delete possibly existing index if deleteIndexOnStartup is true
@@ -187,10 +190,16 @@ function initApp(callback) {
             // Create a new index if: 1) index was deleted in the last step 2) index didn't exist in the beginning
             if (typeof resp === 'object' && resp.acknowledged) {
                 debug('Existing index %s successfully deleted. Response: %s', config.elasticsearch.index, JSON.stringify(resp));
-                return esclient.indices.create({index: config.elasticsearch.index});
+                return esclient.indices.create({
+                    index: config.elasticsearch.index,
+                    body: esConfig.settings
+                });
             } else if (!resp) {
                 debug('Creating index %s because it does not exist yet.', config.elasticsearch.index);
-                return esclient.indices.create({index: config.elasticsearch.index});
+                return esclient.indices.create({
+                    index: config.elasticsearch.index,
+                    body: esConfig.settings
+                });
             } else {
                 debug('Working with existing index %s.', config.elasticsearch.index);
                 return false;
@@ -198,11 +207,11 @@ function initApp(callback) {
         }).then(function (resp) {
             debug('Index (re)created: %s', JSON.stringify(resp));
             if (config.elasticsearch.putMappingOnStartup) {
-                debug('Using mapping found in "esconfig/mapping.js" for index %s', config.elasticsearch.index);
+                debug('Using mapping found in "esconfig/config.js" for index %s', config.elasticsearch.index);
                 return esclient.indices.putMapping({
                     index: config.elasticsearch.index,
                     type: config.elasticsearch.type.compendia,
-                    body: mapping
+                    body: esConfig.mapping
                 });
             } else {
                 debug('Not creating mapping because "putMappingOnStartup" is deactivated.');
