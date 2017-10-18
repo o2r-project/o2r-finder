@@ -58,7 +58,7 @@ const settings = {
     "settings": {
         "analysis": {
             "analyzer": {
-                "o2r_analyzer": {
+                "doi_analyzer": {
                     "type": "custom",
                     "filter": [
                         "lowercase"
