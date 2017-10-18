@@ -37,6 +37,14 @@ const mapping = {
                                         }
                                     }
                                 }
+                            },
+                            "identifier": {
+                                "properties": {
+                                    "content": {
+                                        "type": "string",
+                                        "analyzer": "doi_analyzer"
+                                    }
+                                }
                             }
                         }
                     }
