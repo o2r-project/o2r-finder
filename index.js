@@ -190,12 +190,13 @@ function initApp(callback) {
             // Create a new index if: 1) index was deleted in the last step 2) index didn't exist in the beginning
             if (typeof resp === 'object' && resp.acknowledged) {
                 debug('Existing index %s successfully deleted. Response: %s', config.elasticsearch.index, JSON.stringify(resp));
+                debug('Recreating index with settings: %s', JSON.stringify(esConfig.settings));
                 return esclient.indices.create({
                     index: config.elasticsearch.index,
                     body: esConfig.settings
                 });
             } else if (!resp) {
-                debug('Creating index %s because it does not exist yet.', config.elasticsearch.index);
+                debug('Creating index %s with settings %s because it does not exist yet.', config.elasticsearch.index, JSON.stringify(esConfig.settings));
                 return esclient.indices.create({
                     index: config.elasticsearch.index,
                     body: esConfig.settings
@@ -207,7 +208,7 @@ function initApp(callback) {
         }).then(function (resp) {
             debug('Index (re)created: %s', JSON.stringify(resp));
             if (config.elasticsearch.putMappingOnStartup) {
-                debug('Using mapping found in "esconfig/config.js" for index %s', config.elasticsearch.index);
+                debug('Using mapping found in "esconfig/config.js" for index %s: %s', config.elasticsearch.index, JSON.stringify(esConfig.mapping));
                 return esclient.indices.putMapping({
                     index: config.elasticsearch.index,
                     type: config.elasticsearch.type.compendia,
