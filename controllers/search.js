@@ -28,26 +28,16 @@ const esclient = new elasticsearch.Client({
 
 
 exports.simpleSearch = (req, res) => {
-    // check user level
-    if (!req.isAuthenticated()) {
-        res.status(401).send('{"error":"user is not authenticated"}');
-        return;
-    }
-
-    // if (req.user.level < config.user.level.create_compendium) {
-    //     res.status(401).send('{"error":"user level does not allow compendium creation"}');
-    //     return;
-    // }
-
     if (typeof req.query.q === 'undefined') {
         debug('no query string provided, aborting');
         res.status(404).send('{"error":"no query provided"}');
         return;
     }
 
-    let query = req.query.q;
-    debug('Starting a simple search for query %s', query);
+    // escape forward slashes ("/") with ("\/")
+    let query = req.query.q.replace(/\//g, '\\$&');
 
+    debug('Starting a simple search for query %s', query);
 
     esclient.search({
         index: config.elasticsearch.index,
@@ -59,25 +49,11 @@ exports.simpleSearch = (req, res) => {
         res.status(200).send(resp);
     }).catch(function (err) {
         debug('Error querying index: %s', err);
-        //todo do not expose full elasticsearch error messages
-        res.status(500).send({error: err});
+        res.status(err.status).send({error: err.root_cause[err.root_cause.length-1].reason});
     });
 };
 
 exports.complexSearch = (req, res) => {
-    debug();
-
-    // check user level
-    if (!req.isAuthenticated()) {
-        res.status(401).send('{"error":"user is not authenticated"}');
-        return;
-    }
-
-    // if (req.user.level < config.user.level.create_compendium) {
-    //     res.status(401).send('{"error":"user level does not allow compendium creation"}');
-    //     return;
-    // }
-
     if (typeof req.body === 'undefined') {
         debug('no query defined, aborting');
         res.status(404).send('{"error":"no query provided"}');
@@ -96,8 +72,7 @@ exports.complexSearch = (req, res) => {
         res.status(200).send(resp);
     }).catch(function (err) {
         debug('Error querying index: %s', err);
-        //todo do not expose full elasticsearch error messages
-        res.status(500).send({error: err});
+        res.status(err.status).send({error: err.root_cause[err.root_cause.length-1].reason});
     });
 
 };
