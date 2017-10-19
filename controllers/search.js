@@ -44,8 +44,7 @@ exports.simpleSearch = (req, res) => {
         q: query,
         analyzer: config.elasticsearch.analyzer
     }).then(function (resp) {
-        //debug('Query successful. Got %s results', JSON.stringify(resp));
-        //todo send proper json response
+        debug('Simple query successful. Got %s results and took %s ms', resp.hits.total, resp.took);
         res.status(200).send(resp);
     }).catch(function (err) {
         debug('Error querying index: %s', err);
@@ -67,7 +66,7 @@ exports.complexSearch = (req, res) => {
         body: req.body,
         analyzer: config.elasticsearch.analyzer
     }).then(function (resp) {
-        //debug('Query successful. Got %s results', JSON.stringify(resp));
+        debug('Complex query successful. Got %s results and took %s ms', resp.hits.total, resp.took);
         //todo send proper json response
         res.status(200).send(resp);
     }).catch(function (err) {

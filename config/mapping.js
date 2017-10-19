@@ -54,23 +54,6 @@ const mapping = {
     }
 };
 
-const settings = {
-    "settings": {
-        "analysis": {
-            "analyzer": {
-                "doi_analyzer": {
-                    "type": "custom",
-                    "filter": [
-                        "lowercase"
-                    ],
-                    "tokenizer": "whitespace"
-                }
-            }
-        }
-    }
-};
-
 module.exports = {
-    mapping: mapping,
-    settings: settings
+    mapping: mapping
 };
