@@ -17,8 +17,7 @@
 
 // General modules
 const config = require('../config/config');
-const debug = require('debug')('finder:search');
-
+const debug = require('debug')('finder');
 // standalone Elasticsearch client
 const elasticsearch = require('elasticsearch');
 const esclient = new elasticsearch.Client({
@@ -35,14 +34,23 @@ exports.simpleSearch = (req, res) => {
     }
 
     // escape forward slashes ("/") with ("\/")
-    let query = req.query.q.replace(/\//g, '\\$&');
+    let queryString = req.query.q.replace(/\//g, '\\$&');
 
-    debug('Starting a simple search for query %s', query);
+    debug('Starting a simple search for query %s', queryString);
 
-    esclient.search({
+    let query = [
+        // query "_all" field
+        {index: config.elasticsearch.index, type: config.elasticsearch.type},
+        {query: {query_string: {default_field: "_all", query: queryString}}},
+
+        // additionally, query "_special" field to find DOIs and URLs
+        {index: config.elasticsearch.index, type: config.elasticsearch.type},
+        {query: {query_string: {default_field: "_special", query: queryString}}, analyzer: config.elasticsearch.analyzer}
+    ];
+
+    esclient.msearch({
         index: config.elasticsearch.index,
-        q: query,
-        analyzer: config.elasticsearch.analyzer
+        body: query
     }).then(function (resp) {
         debug('Simple query successful. Got %s results and took %s ms', resp.hits.total, resp.took);
         res.status(200).send(resp);
@@ -64,7 +72,7 @@ exports.complexSearch = (req, res) => {
     esclient.search({
         index: config.elasticsearch.index,
         body: req.body,
-        analyzer: config.elasticsearch.analyzer
+        //analyzer: config.elasticsearch.analyzer
     }).then(function (resp) {
         debug('Complex query successful. Got %s results and took %s ms', resp.hits.total, resp.took);
         //todo send proper json response

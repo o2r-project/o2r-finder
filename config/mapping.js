@@ -18,6 +18,10 @@
 const mapping = {
     "compendia": {
         "properties": {
+            "_special": {
+                "type": "string",
+                "analyzer": "doi_analyzer"
+            },
             "metadata": {
                 "properties": {
                     "o2r": {
@@ -40,9 +44,13 @@ const mapping = {
                             },
                             "identifier": {
                                 "properties": {
-                                    "content": {
+                                    "doi": {
                                         "type": "string",
-                                        "analyzer": "doi_analyzer"
+                                        "copy_to": "_special"
+                                    },
+                                    "doiurl": {
+                                        "type": "string",
+                                        "copy_to": "_special"
                                     }
                                 }
                             }
