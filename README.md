@@ -69,31 +69,39 @@ Otherwise, new compendia will not be indexed anymore.
 
 ## Dockerfile
 
-This project includes a Dockerfile which can be built with
+This project includes a Dockerfile which can be built and run as follows.
+This is not a complete configuration, useful for testing only.
 
 ```bash
-docker build -t o2r-finder .
+docker build -t finder .
+
+# start databases in containers (optional)
+docker run --name mongodb -d mongo:3.4
+docker run --name es -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "xpack.security.enabled=false" -v "$(pwd)/esconfig":/usr/share/elasticsearch/config docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+
+docker run -it --link mongodb --link es -e ELASTIC_SEARCH_URL=es:9200 -e FINDER_MONGODB=mongodb://mongodb -e MONGO_OPLOG_URL=mongodb://mongodb/muncher -e MONGO_DATA_URL=mongodb://mongodb/muncher -e DEBUG=finder -p 8084:8084 finder
 ```
 
-The image can then be run and configured via environment variables.
+The image can then be configured via environment variables.
 
 ### Available environment variables
 
-- `FINDER_PORT` **Required** Port for HTTP requests, defaults to `8084`
-- `FINDER_MONGODB_USER_DATABASE` **Required** Full database connection URL and name for MongoDB for user authentication, defaults to `mongodb://localhost/muncher`
-- `FINDER_MONGODB_COLL_COMPENDIA` **Required** Name of the MongoDB collection for compendia, default is `compendia`
-- `FINDER_MONGODB_COLL_JOBS` **Required** Name of the MongoDB collection for jobs, default is `jobs`
-- `FINDER_MONGODB_COLL_SESSION` **Required** Name of the MongoDB collection for session information, default is `sessions` (must match other microservices)
-- `FINDER_ELASTICSEARCH_INDEX` Name of the index in Elasticsearch, defaults to `o2r`
+- `FINDER_PORT` **Required** Port for HTTP requests, defaults to `8084`.
+- `FINDER_MONGODB` **Required** Location for the mongo db. Defaults to `mongodb://localhost/`. You will very likely need to change this (and maybe include the MongoDB port).
+- `FINDER_MONGODB_DATABASE` Which database inside the mongo db should be used. Defaults to `muncher`.
+- `FINDER_MONGODB_COLL_COMPENDIA` Name of the MongoDB collection for compendia, default is `compendia`.
+- `FINDER_MONGODB_COLL_JOBS` Name of the MongoDB collection for jobs, default is `jobs`.
+- `FINDER_MONGODB_COLL_SESSION` Name of the MongoDB collection for session information, default is `sessions` (must match other microservices).
+- `FINDER_ELASTICSEARCH_INDEX` Name of the index in Elasticsearch, defaults to `o2r`.
 - `FINDER_ELASTICSEARCH_TYPE_COMPENDIA` Name of the Elasticsearch type for compendia, default is `compendia`
-- `FINDER_ELASTICSEARCH_TYPE_JOBS` Name of the Elasticsearch type for jobs, default is `jobs`
-- `SESSION_SECRET` Secret used for session encryption, must match other services, default is `o2r`
-- `FINDER_STATUS_LOGSIZE` Number of transformation results in the status log, default is `20`
-- [node-elasticsearch-sync](https://github.com/toystars/node-elasticsearch-sync) parameters
-  - `ELASTIC_SEARCH_URL` **Required**, e.g. `localhost:9200`
-  - `MONGO_OPLOG_URL` **Required**, e.g. `mongodb://localhost/muncher`
-  - `MONGO_DATA_URL` **Required**, e.g. `mongodb://localhost/muncher`
-  - `BATCH_COUNT` **Required**, e.g. `20`
+- `FINDER_ELASTICSEARCH_TYPE_JOBS` Name of the Elasticsearch type for jobs, default is `jobs`.
+- `SESSION_SECRET` Secret used for session encryption, must match other services, default is `o2r`.
+- `FINDER_STATUS_LOGSIZE` Number of transformation results in the status log, default is `20`.
+- [node-elasticsearch-sync](https://github.com/o2r-project/node-elasticsearch-sync) parameters
+  - `ELASTIC_SEARCH_URL` **Required**, default is `http://localhost:9200`.
+  - `MONGO_OPLOG_URL` **Required**, defaults to `FINDER_MONGODB + FINDER_MONGODB_DATABASE`, e.g. `mongodb://localhost/muncher`.
+  - `MONGO_DATA_URL` **Required**, defaults to `FINDER_MONGODB + FINDER_MONGODB_DATABASE`, e.g. `mongodb://localhost/muncher`.
+  - `BATCH_COUNT` **Required**, defaults to`20`.
 
 ## Development
 
@@ -139,6 +147,14 @@ curl -XDELETE 'http://172.17.0.3:9200/o2r/'
 If you run the local test proxy from the project [o2r-platform](https://github.com/o2r-project/o2r-platform), you can run queries directly at the o2r API:
 
 http://localhost/api/v1/search?q=*
+
+### Local container testing
+
+The following code assumes the Docker host is available under IP `172.17.0.1` within the container.
+
+```bash
+ docker run -it -e DEBUG=finder -e FINDER_MONGODB=mongodb://172.17.0.1 -e ELASTIC_SEARCH_URL=http://172.17.0.1:9200 -p 8084:8084 finder
+```
 
 ## License
 

@@ -42,8 +42,6 @@ const cloneDeep = require('clone-deep');
 const mongoose = require('mongoose');
 const backoff = require('backoff');
 
-// use ES6 promises for mongoose
-mongoose.Promise = global.Promise;
 const dbURI = config.mongo.location + config.mongo.database;
 var dbOptions = {
     autoReconnect: true,
@@ -51,7 +49,7 @@ var dbOptions = {
     keepAlive: 30000,
     socketTimeoutMS: 30000,
     useMongoClient: true,
-    promiseLibrary: mongoose.Promise
+    promiseLibrary: global.Promise // use ES6 promises for mongoose    
 };
 mongoose.connection.on('error', (err) => {
     debug('Could not connect to MongoDB @ %s: %s', dbURI, err);
@@ -375,6 +373,7 @@ function startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds)
         process.env['ELASTIC_SEARCH_URL'],
         process.env['BATCH_COUNT'],
         JSON.stringify(watchers));
+
       ESMongoSync.init(watcherArray, null, () => {
         debug('ESMongoSync initialized');
       });
@@ -418,7 +417,7 @@ dbBackoff.on('ready', function (number, delay) {
     });
 });
 dbBackoff.on('fail', function () {
-    debug('Eventually giving up to connect to MongoDB');
+    debug('Eventually giving up to connect to databases');
     process.exit(1);
 });
 
