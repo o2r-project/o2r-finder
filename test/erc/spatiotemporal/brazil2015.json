@@ -1,0 +1,500 @@
+{
+    "_id": ObjectId("599aef06955d820010a87e5b"),
+    "createdAt": ISODate("2017-08-21T14:32:38.545Z"),
+    "updatedAt": ISODate("2017-08-21T14:32:38.545Z"),
+    "id": "0ShuS",
+    "user": "0000-0001-6230-4374",
+    "metadata": {
+        "zenodo": {
+            "metadata": {
+                "upload_type": "publication",
+                "title": "Environmental quality and development: is there a Kuznets curve for air pollution",
+                "publication_type": "other",
+                "publication_date": "2017-08-21",
+                "license": {
+                    "uibindings": "MIT",
+                    "text": "CC0-1.0",
+                    "data": "CC0-1.0",
+                    "code": "MIT"
+                },
+                "keywords": [
+                    "lorem",
+                    "ipsum",
+                    "dolor",
+                    "sit",
+                    "amet"
+                ],
+                "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
+                "creators": [
+                    {
+                        "name": "Thomas M. Selden",
+                        "affiliation": "University of Munster"
+                    },
+                    {
+                        "name": "Daqing Song",
+                        "affiliation": "N.O.N.E"
+                    }
+                ],
+                "communities": [
+                    {
+                        "identifier": "o2r"
+                    }
+                ],
+                "access_right": "open"
+            }
+        },
+        "o2r": {
+            "viewfiles": [
+                "0ShuS/data/document.html"
+            ],
+            "viewfile": null,
+            "version": null,
+            "upload_type": "publication",
+            "title": "Environmental quality and development: is there a Kuznets curve for air pollution",
+            "temporal": {
+                "end": "2015-01-01T00:00:00.000Z",
+                "begin": "2015-12-31T00:00:00.000Z"
+            },
+            "spatial": {
+                "spatial": {
+                    "union": {
+                        "geojson": {
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "Polygon",
+                                "coordinates": [
+                                    [
+                                        -54.36584472656249,
+                                        -8.836223192538503
+                                    ],
+                                    [
+                                        -53.06396484374999,
+                                        -8.836223192538503
+                                    ],
+                                    [
+                                        -53.06396484374999,
+                                        -8.059229627200192
+                                    ],
+                                    [
+                                        -54.36584472656249,
+                                        -8.059229627200192
+                                    ]
+                                ]
+                            },
+                            "bbox": [
+                                -54.36584472656249,
+                                -8.836223192538503,
+                                -53.06396484374999,
+                                -8.836223192538503
+                            ]
+                        }
+                    },
+                    "files": [
+                        {
+                            "source_file": "0ShuS/data/testshapefiles_brazil/POLYGON.shp",
+                            "geojson": {
+                                "type": "Feature",
+                                "geometry": {
+                                    "type": "Polygon",
+                                    "coordinates": [
+                                        [
+                                            [
+                                                -54.36584472656249,
+                                                -8.836223192538503
+                                            ],
+                                            [
+                                                -53.06396484374999,
+                                                -8.059229627200192
+                                            ]
+                                        ]
+                                    ]
+                                },
+                                "bbox": [
+                                    -54.36584472656249,
+                                    -8.836223192538503,
+                                    -53.06396484374999,
+                                    -8.059229627200192
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "softwarePaperCitation": null,
+            "researchQuestions": [],
+            "researchHypotheses": [],
+            "recordDateCreated": "2017-08-21",
+            "r_rdata": [],
+            "r_output": [
+                {
+                    "text": "42",
+                    "line": 14,
+                    "feature": "setseed"
+                },
+                {
+                    "text": "plot",
+                    "line": 23,
+                    "feature": "result"
+                },
+                {
+                    "text": "print",
+                    "line": 25,
+                    "feature": "result"
+                }
+            ],
+            "r_input": [],
+            "r_comment": [
+                {
+                    "text": "Trying some seperation lines:",
+                    "line": 9,
+                    "feature": "comment"
+                },
+                {
+                    "text": "chunk: random string",
+                    "line": 13,
+                    "feature": "comment"
+                },
+                {
+                    "text": "umlaut ö ä ü ß",
+                    "line": 18,
+                    "feature": "comment"
+                },
+                {
+                    "text": "some plot",
+                    "line": 22,
+                    "feature": "comment"
+                }
+            ],
+            "publication_type": "other",
+            "publicationDate": "2017-08-21",
+            "paperSource": "document.Rmd",
+            "paperLanguage": [],
+                "license": {
+                    "uibindings": "MIT",
+                    "text": "CC0-1.0",
+                    "data": "CC0-1.0",
+                    "code": "MIT"
+                },
+            "keywords": [
+                "lorem",
+                "ipsum",
+                "dolor",
+                "sit",
+                "amet"
+            ],
+            "interaction": {
+                "ui_binding": {
+                    "widget": null,
+                    "variable": null,
+                    "purpose": null,
+                    "code": {
+                        "shinyRenderFunction": null,
+                        "shinyInputFunction": null,
+                        "functionParameter": null,
+                        "function": null,
+                        "filename": null
+                    }
+                },
+                "interactive": false
+            },
+            "inputfiles": [],
+            "identifier": {
+                "reserveddoi": null,
+                "doiurl": "https://doi.org/10.1006/jeem.1994.1031",
+                "doi": "10.1006/jeem.1994.1031"
+            },
+            "generatedBy": "o2r-meta metaextract.py",
+            "file": {
+                "mimetype": "text/markdown",
+                "filepath": "0ShuS/data/document.Rmd",
+                "filename": "document.Rmd"
+            },
+            "ercIdentifier": "0ShuS",
+            "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
+            "depends": [
+                {
+                    "version": null,
+                    "packageSystem": "https://cloud.r-project.org/",
+                    "identifier": "RColorBrewer",
+                    "category": "geo sciences,CRAN Top100"
+                },
+                {
+                    "version": null,
+                    "packageSystem": "https://cloud.r-project.org/",
+                    "identifier": "dplyr",
+                    "category": "geo sciences,CRAN Top100"
+                },
+                {
+                    "version": null,
+                    "packageSystem": "https://cloud.r-project.org/",
+                    "identifier": "ggplot2",
+                    "category": "geo sciences,CRAN Top100"
+                },
+                {
+                    "version": null,
+                    "packageSystem": "https://cloud.r-project.org/",
+                    "identifier": "minqa",
+                    "category": "CRAN Top100"
+                },
+                {
+                    "version": null,
+                    "packageSystem": "https://cloud.r-project.org/",
+                    "identifier": "PBSmapping",
+                    "category": "geo sciences"
+                }
+            ],
+            "communities": [
+                {
+                    "identifier": "o2r"
+                }
+            ],
+            "codefiles": [],
+            "author": [
+                {
+                    "url": "\\url{http://404.awebsite8372930.org}",
+                    "orcid": "0000-0003-2699-3031",
+                    "name": "Thomas M. Selden",
+                    "email": "ted.tester@awebsite8372930.org",
+                    "affiliation2": "University of Nowhere",
+                    "affiliation": "University of Munster",
+                    "address": "This might be a correct address Yet it might also be lorem ipsum\\newline Another line 252b\\newline 00000 Anywhere, Nomansland\n",
+                    "Telephone": "+00/00/1000-2000"
+                },
+                {
+                    "orcid": "0000-0002-6943-9682",
+                    "name": "Daqing Song",
+                    "affiliation": "N.O.N.E"
+                }
+            ],
+            "access_right": "open"
+        },
+        "raw": {
+            "viewfiles": [
+                "0ShuS/data/document.html"
+            ],
+            "viewfile": null,
+            "version": null,
+            "upload_type": "publication",
+            "title": "Environmental quality and development: is there a Kuznets curve for air pollution",
+            "temporal": {
+                "end": null,
+                "begin": null
+            },
+            "spatial": {
+                "spatial": {
+                    "union": {
+                        "geojson": {
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "Polygon",
+                                "coordinates": [
+                                    [
+                                        -54.36584472656249,
+                                        -8.836223192538503
+                                    ],
+                                    [
+                                        -53.06396484374999,
+                                        -8.836223192538503
+                                    ],
+                                    [
+                                        -53.06396484374999,
+                                        -8.059229627200192
+                                    ],
+                                    [
+                                        -54.36584472656249,
+                                        -8.059229627200192
+                                    ]
+                                ]
+                            },
+                            "bbox": [
+                                -54.36584472656249,
+                                -8.836223192538503,
+                                -53.06396484374999,
+                                -8.836223192538503
+                            ]
+                        }
+                    },
+                    "files": [
+                        {
+                            "source_file": "0ShuS/data/testshapefiles_brazil/POLYGON.shp",
+                            "geojson": {
+                                "type": "Feature",
+                                "geometry": {
+                                    "type": "Polygon",
+                                    "coordinates": [
+                                        [
+                                            [
+                                                -54.36584472656249,
+                                                -8.836223192538503
+                                            ],
+                                            [
+                                                -53.06396484374999,
+                                                -8.059229627200192
+                                            ]
+                                        ]
+                                    ]
+                                },
+                                "bbox": [
+                                    -54.36584472656249,
+                                    -8.836223192538503,
+                                    -53.06396484374999,
+                                    -8.059229627200192
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "softwarePaperCitation": null,
+            "researchQuestions": [],
+            "researchHypotheses": [],
+            "recordDateCreated": "2017-08-21",
+            "r_rdata": [],
+            "r_output": [
+                {
+                    "text": "42",
+                    "line": 14,
+                    "feature": "setseed"
+                },
+                {
+                    "text": "plot",
+                    "line": 23,
+                    "feature": "result"
+                },
+                {
+                    "text": "print",
+                    "line": 25,
+                    "feature": "result"
+                }
+            ],
+            "r_input": [],
+            "r_comment": [
+                {
+                    "text": "Trying some seperation lines:",
+                    "line": 9,
+                    "feature": "comment"
+                },
+                {
+                    "text": "chunk: random string",
+                    "line": 13,
+                    "feature": "comment"
+                },
+                {
+                    "text": "umlaut ö ä ü ß",
+                    "line": 18,
+                    "feature": "comment"
+                },
+                {
+                    "text": "some plot",
+                    "line": 22,
+                    "feature": "comment"
+                }
+            ],
+            "publication_type": "other",
+            "publicationDate": "2017-08-21",
+            "paperSource": "document.Rmd",
+            "paperLanguage": [],
+                "license": {
+                    "uibindings": "MIT",
+                    "text": "CC0-1.0",
+                    "data": "CC0-1.0",
+                    "code": "MIT"
+                },
+            "keywords": [
+                "lorem",
+                "ipsum",
+                "dolor",
+                "sit",
+                "amet"
+            ],
+            "interaction": {
+                "ui_binding": {
+                    "widget": null,
+                    "variable": null,
+                    "purpose": null,
+                    "code": {
+                        "shinyRenderFunction": null,
+                        "shinyInputFunction": null,
+                        "functionParameter": null,
+                        "function": null,
+                        "filename": null
+                    }
+                },
+                "interactive": false
+            },
+            "inputfiles": [],
+            "identifier": {
+                "reserveddoi": null,
+                "doiurl": "https://doi.org/10.1006/jeem.1994.1031",
+                "doi": "10.1006/jeem.1994.1031"
+            },
+            "generatedBy": "o2r-meta metaextract.py",
+            "file": {
+                "mimetype": "text/markdown",
+                "filepath": "0ShuS/data/document.Rmd",
+                "filename": "document.Rmd"
+            },
+            "ercIdentifier": "0ShuS",
+            "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
+            "depends": [
+                {
+                    "version": null,
+                    "packageSystem": "https://cloud.r-project.org/",
+                    "identifier": "RColorBrewer",
+                    "category": "geo sciences,CRAN Top100"
+                },
+                {
+                    "version": null,
+                    "packageSystem": "https://cloud.r-project.org/",
+                    "identifier": "dplyr",
+                    "category": "geo sciences,CRAN Top100"
+                },
+                {
+                    "version": null,
+                    "packageSystem": "https://cloud.r-project.org/",
+                    "identifier": "ggplot2",
+                    "category": "geo sciences,CRAN Top100"
+                },
+                {
+                    "version": null,
+                    "packageSystem": "https://cloud.r-project.org/",
+                    "identifier": "minqa",
+                    "category": "CRAN Top100"
+                },
+                {
+                    "version": null,
+                    "packageSystem": "https://cloud.r-project.org/",
+                    "identifier": "PBSmapping",
+                    "category": "geo sciences"
+                }
+            ],
+            "communities": [
+                {
+                    "identifier": "o2r"
+                }
+            ],
+            "codefiles": [],
+            "author": [
+                {
+                    "url": "\\url{http://404.awebsite8372930.org}",
+                    "orcid": "0000-0003-2699-3031",
+                    "name": "Thomas M. Selden",
+                    "email": "ted.tester@awebsite8372930.org",
+                    "affiliation2": "University of Nowhere",
+                    "affiliation": "University of Munster",
+                    "address": "This might be a correct address Yet it might also be lorem ipsum\\newline Another line 252b\\newline 00000 Anywhere, Nomansland\n",
+                    "Telephone": "+00/00/1000-2000"
+                },
+                {
+                    "orcid": "0000-0002-6943-9682",
+                    "name": "Daqing Song",
+                    "affiliation": "N.O.N.E"
+                }
+            ],
+            "access_right": "open"
+        }
+    },
+    "jobs": [],
+    "created": ISODate("2017-08-21T14:32:38.544Z"),
+    "__v": 0
+}

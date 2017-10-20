@@ -38,19 +38,6 @@ exports.simpleSearch = (req, res) => {
 
     debug('Starting a simple search for query %s', queryString);
 
-    // multi query return 2 results in a "results" array
-
-    // let query = [
-    //     // query "_all" field
-    //     {index: config.elasticsearch.index, type: config.elasticsearch.type},
-    //     {query: {query_string: {default_field: "_all", query: queryString}}},
-    //
-    //     // additionally, query "_special" field to find DOIs and URLs
-    //     {index: config.elasticsearch.index, type: config.elasticsearch.type},
-    //     {query: {query_string: {default_field: "_special", query: queryString}}, analyzer: config.elasticsearch.analyzer}
-    // ];
-
-
     esclient.search({
         index: config.elasticsearch.index,
         body: {
@@ -79,7 +66,7 @@ exports.complexSearch = (req, res) => {
         return;
     }
 
-    debug('Starting a complex search for query %s', req.body);
+    debug('Starting a complex search for query %s', JSON.stringify(req.body));
 
     esclient.search({
         index: config.elasticsearch.index,
@@ -87,11 +74,9 @@ exports.complexSearch = (req, res) => {
         //analyzer: config.elasticsearch.analyzer
     }).then(function (resp) {
         debug('Complex query successful. Got %s results and took %s ms', resp.hits.total, resp.took);
-        //todo send proper json response
         res.status(200).send(resp);
     }).catch(function (err) {
         debug('Error querying index: %s', err);
         res.status(err.status).send({error: err.root_cause[err.root_cause.length-1].reason});
     });
-
 };
