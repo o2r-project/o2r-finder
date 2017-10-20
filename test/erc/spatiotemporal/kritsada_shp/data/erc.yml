@@ -1,0 +1,13 @@
+id: 747e0b79-9ab2-4026-9231-e73e327e1083
+spec_version: 1
+main: document.Rmd
+display: document.html
+execution:
+  command:
+    - `docker load --input image.tar`
+    - `docker run -it -e TZ=CET erc:0f0c436c-0c9c-4f5b-ad66-f354970eb457`
+license: null
+extensions:
+  - dockerfile-extension
+  - archival-extension
+

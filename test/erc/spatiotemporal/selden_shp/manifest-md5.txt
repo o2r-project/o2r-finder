@@ -1,0 +1,11 @@
+e9754627ab84b3a1bbd5610c43863613  data/Dockerfile
+cf275442b0443330cafe1f82683e0644  data/bagtainer.yml
+5c83b7031b5bd42b776d8b7fd49f2a40  data/document.Rmd
+1ea8674783bebcf6eb4aee49a72d0c9a  data/document.html
+1c8a5b8165632b5a75dcc0918322422f  data/document.tex
+ad0c99a997b21d22cef881ba59864f89  data/erc.yml
+323b3a7439e6c08f24401f474413e2c7  data/metadata.json
+586e93c0e51bd2cf040cd5326468fabc  data/testshapefiles_brazil/POLYGON.dbf
+e729936bf5360b37a15365fc295a1901  data/testshapefiles_brazil/POLYGON.prj
+663d8eec811e6d3f263345f7ee450c4e  data/testshapefiles_brazil/POLYGON.shp
+edf8cd8ce1062b8d8ab9f27e0258d36f  data/testshapefiles_brazil/POLYGON.shx

@@ -1,0 +1,11 @@
+e9754627ab84b3a1bbd5610c43863613  data/Dockerfile
+157289063bb13ddc26f37e117262cc38  data/bagtainer.yml
+de59738ad21045d8d4c878082497e03b  data/document.Rmd
+1ea8674783bebcf6eb4aee49a72d0c9a  data/document.html
+1c8a5b8165632b5a75dcc0918322422f  data/document.tex
+a40c8c938aef297390160edd75ad86d3  data/erc.yml
+7f92a553c2ad648733dafa3e34e2bae2  data/metadata.json
+1b4dce3c82c2db12b1731877d316a323  data/shapefiles_thailand/POLYGON.dbf
+e729936bf5360b37a15365fc295a1901  data/shapefiles_thailand/POLYGON.prj
+ff59e86fd731cd25e08c474c3a9ccdbe  data/shapefiles_thailand/POLYGON.shp
+44491ddfab1a6f4268fa763f0fae959d  data/shapefiles_thailand/POLYGON.shx
