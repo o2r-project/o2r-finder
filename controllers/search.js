@@ -38,19 +38,31 @@ exports.simpleSearch = (req, res) => {
 
     debug('Starting a simple search for query %s', queryString);
 
-    let query = [
-        // query "_all" field
-        {index: config.elasticsearch.index, type: config.elasticsearch.type},
-        {query: {query_string: {default_field: "_all", query: queryString}}},
+    // multi query return 2 results in a "results" array
 
-        // additionally, query "_special" field to find DOIs and URLs
-        {index: config.elasticsearch.index, type: config.elasticsearch.type},
-        {query: {query_string: {default_field: "_special", query: queryString}}, analyzer: config.elasticsearch.analyzer}
-    ];
+    // let query = [
+    //     // query "_all" field
+    //     {index: config.elasticsearch.index, type: config.elasticsearch.type},
+    //     {query: {query_string: {default_field: "_all", query: queryString}}},
+    //
+    //     // additionally, query "_special" field to find DOIs and URLs
+    //     {index: config.elasticsearch.index, type: config.elasticsearch.type},
+    //     {query: {query_string: {default_field: "_special", query: queryString}}, analyzer: config.elasticsearch.analyzer}
+    // ];
 
-    esclient.msearch({
+
+    esclient.search({
         index: config.elasticsearch.index,
-        body: query
+        body: {
+            query: {
+                bool: {
+                    should : [
+                        {query_string: {default_field: "_all", query: queryString}},
+                        {query_string: {default_field: "_special", query: queryString}},
+                    ]
+                }
+            }
+        }
     }).then(function (resp) {
         debug('Simple query successful. Got %s results and took %s ms', resp.hits.total, resp.took);
         res.status(200).send(resp);
