@@ -1,7 +1,4 @@
 {
-    "_id": "599aef06955d820010a87e5b",
-    "createdAt": "2017-08-21T14:32:38.545Z",
-    "updatedAt": "2017-08-21T14:32:38.545Z",
     "id": "0ShuS",
     "user": "0000-0001-6230-4374",
     "metadata": {
@@ -496,5 +493,164 @@
     },
     "jobs": [],
     "created": "2017-08-21T14:32:38.544Z",
-    "__v": 0
+    "__v": 0,
+    "files": {
+        "path": "/api/v1/compendium/gN8Ub/data",
+        "name": "gN8Ub",
+        "children": [
+            {
+                "path": "/api/v1/compendium/gN8Ub/data/bag-info.txt",
+                "name": "bag-info.txt",
+                "size": 129,
+                "extension": ".txt",
+                "type": "text/plain"
+            },
+            {
+                "path": "/api/v1/compendium/gN8Ub/data/bagit.txt",
+                "name": "bagit.txt",
+                "size": 55,
+                "extension": ".txt",
+                "type": "text/plain"
+            },
+            {
+                "path": "/api/v1/compendium/gN8Ub/data/data",
+                "name": "data",
+                "children": [
+                    {
+                        "path": "/api/v1/compendium/gN8Ub/data/data/.erc",
+                        "name": ".erc",
+                        "children": [
+                            {
+                                "path": "/api/v1/compendium/gN8Ub/data/data/.erc/meta_2017102714123953_document_.json",
+                                "name": "meta_2017102714123953_document_.json",
+                                "size": 3584,
+                                "extension": ".json",
+                                "type": "application/json"
+                            },
+                            {
+                                "path": "/api/v1/compendium/gN8Ub/data/data/.erc/metadata_o2r.json",
+                                "name": "metadata_o2r.json",
+                                "size": 3696,
+                                "extension": ".json",
+                                "type": "application/json"
+                            },
+                            {
+                                "path": "/api/v1/compendium/gN8Ub/data/data/.erc/metadata_raw.json",
+                                "name": "metadata_raw.json",
+                                "size": 6905,
+                                "extension": ".json",
+                                "type": "application/json"
+                            },
+                            {
+                                "path": "/api/v1/compendium/gN8Ub/data/data/.erc/metadata_zenodo.json",
+                                "name": "metadata_zenodo.json",
+                                "size": 1040,
+                                "extension": ".json",
+                                "type": "application/json"
+                            }
+                        ],
+                        "size": 15225,
+                        "type": "directory"
+                    },
+                    {
+                        "path": "/api/v1/compendium/gN8Ub/data/data/Dockerfile",
+                        "name": "Dockerfile",
+                        "size": 71,
+                        "extension": ""
+                    },
+                    {
+                        "path": "/api/v1/compendium/gN8Ub/data/data/bagtainer.yml",
+                        "name": "bagtainer.yml",
+                        "size": 38,
+                        "extension": ".yml",
+                        "type": "text/yaml"
+                    },
+                    {
+                        "path": "/api/v1/compendium/gN8Ub/data/data/document.Rmd",
+                        "name": "document.Rmd",
+                        "size": 4434,
+                        "extension": ".rmd"
+                    },
+                    {
+                        "path": "/api/v1/compendium/gN8Ub/data/data/document.html",
+                        "name": "document.html",
+                        "size": 805400,
+                        "extension": ".html",
+                        "type": "text/html"
+                    },
+                    {
+                        "path": "/api/v1/compendium/gN8Ub/data/data/document.tex",
+                        "name": "document.tex",
+                        "size": 5288,
+                        "extension": ".tex",
+                        "type": "application/x-tex"
+                    },
+                    {
+                        "path": "/api/v1/compendium/gN8Ub/data/data/erc.yml",
+                        "name": "erc.yml",
+                        "size": 307,
+                        "extension": ".yml",
+                        "type": "text/yaml"
+                    },
+                    {
+                        "path": "/api/v1/compendium/gN8Ub/data/data/metadata.json",
+                        "name": "metadata.json",
+                        "size": 2449,
+                        "extension": ".json",
+                        "type": "application/json"
+                    },
+                    {
+                        "path": "/api/v1/compendium/gN8Ub/data/data/testshapefiles_brazil",
+                        "name": "testshapefiles_brazil",
+                        "children": [
+                            {
+                                "path": "/api/v1/compendium/gN8Ub/data/data/testshapefiles_brazil/POLYGON.dbf",
+                                "name": "POLYGON.dbf",
+                                "size": 34,
+                                "extension": ".dbf"
+                            },
+                            {
+                                "path": "/api/v1/compendium/gN8Ub/data/data/testshapefiles_brazil/POLYGON.prj",
+                                "name": "POLYGON.prj",
+                                "size": 143,
+                                "extension": ".prj"
+                            },
+                            {
+                                "path": "/api/v1/compendium/gN8Ub/data/data/testshapefiles_brazil/POLYGON.shp",
+                                "name": "POLYGON.shp",
+                                "size": 236,
+                                "extension": ".shp"
+                            },
+                            {
+                                "path": "/api/v1/compendium/gN8Ub/data/data/testshapefiles_brazil/POLYGON.shx",
+                                "name": "POLYGON.shx",
+                                "size": 108,
+                                "extension": ".shx"
+                            }
+                        ],
+                        "size": 521,
+                        "type": "directory"
+                    }
+                ],
+                "size": 833733,
+                "type": "directory"
+            },
+            {
+                "path": "/api/v1/compendium/gN8Ub/data/manifest-md5.txt",
+                "name": "manifest-md5.txt",
+                "size": 652,
+                "extension": ".txt",
+                "type": "text/plain"
+            },
+            {
+                "path": "/api/v1/compendium/gN8Ub/data/tagmanifest-md5.txt",
+                "name": "tagmanifest-md5.txt",
+                "size": 139,
+                "extension": ".txt",
+                "type": "text/plain"
+            }
+        ],
+        "size": 834708,
+        "type": "directory"
+    }
 }
