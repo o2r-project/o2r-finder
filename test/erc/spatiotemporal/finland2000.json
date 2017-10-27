@@ -1,7 +1,7 @@
 {
-    "_id": ObjectId("599aeddc955d820010a87e57"),
-    "createdAt": ISODate("2017-08-21T14:27:40.323Z"),
-    "updatedAt": ISODate("2017-08-21T14:27:40.323Z"),
+    "_id": "599aeddc955d820010a87e57",
+    "createdAt": "2017-08-21T14:27:40.323Z",
+    "updatedAt": "2017-08-21T14:27:40.323Z",
     "id": "XiQu8",
     "user": "0000-0001-6230-4374",
     "metadata": {
@@ -481,6 +481,6 @@
         }
     },
     "jobs": [],
-    "created": ISODate("2017-08-21T14:27:40.282Z"),
+    "created": "2017-08-21T14:27:40.282Z",
     "__v": 0
 }

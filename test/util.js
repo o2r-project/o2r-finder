@@ -19,9 +19,14 @@ const request = require('request');
 const tmp = require('tmp');
 const AdmZip = require('adm-zip');
 const fs = require('fs');
-const config = require('../config/config');
+const c = require('../config/config');
 const path = require('path');
 const debug = require('debug');
+const mongojs = require('mongojs');
+const exec = require('child_process').exec;
+
+const sessionId_o2r = 'C0LIrsxGtHOGHld8Nv2jedjL4evGgEHo';
+const orcid_o2r = '0000-0001-6021-1617';
 
 function uploadCompendium(path, cookie) {
   var zip = new AdmZip();
@@ -55,50 +60,52 @@ function uploadCompendium(path, cookie) {
   return (reqParams);
 }
 
+/**
+ * Imports a single compendium from JSON using db.collection.save()
+ * @param {string} path - The path to the JSON file
+ */
 function importJSONCompendium(path) {
+    return new Promise((resolve, reject) => {
 
-    let dbpath = 'localhost/' + config.mongo.database;
-    const db = mongojs(dbpath, ['users', 'sessions', 'compendia']);
+        let dbpath = 'localhost/' + c.mongo.database;
+        const db = mongojs(dbpath, ['users', 'sessions', 'compendia']);
 
-    fs.readFile(path, (err, data) => {
-        if (err) debug(err);
-        db.compendia.save(data, function (err, doc) {
-          if (err) throw err;
-        })
+        fs.readFile(path, (err, data) => {
+            if (err) throw err;
+            db.compendia.save(JSON.parse(data), function (err, doc) {
+                if (err) reject(err);
+                resolve(true);
+            })
+        });
+
     });
+}
 
-    const session_o2r = {
-        '_id': sessionId_o2r,
-        'session': {
-            'cookie': {
-                'originalMaxAge': null,
-                'expires': null,
-                'secure': null,
-                'httpOnly': true,
-                'domain': null,
-                'path': '/'
-            },
-            'passport': {
-                'user': orcid_o2r
+/**
+ * Imports multiple compendia from a JSON array using mongoimport
+ * @param {string} path - The path to the JSON file
+ */
+function importJSONCompendia(path) {
+    return new Promise((fulfill, reject) => {
+
+        let cmd = `mongoimport --db ${c.mongo.database} --collection ${c.mongo.collection.compendia} --type json --file ${path} --jsonArray`;
+
+        console.log(`Importing compendia with command: ${cmd}`);
+        exec(cmd, (error, stdout, stderr) => {
+            if (error || stderr) {
+                console.log(error, stderr, stdout);
+                error.status = 500;
+                reject(error);
+            } else {
+                console.log(`Import finished for file ${path}`);
+                fulfill(true);
             }
-        }
-    };
-    db.sessions.save(session_o2r, function (err, doc) {
-        if (err) throw err;
+        });
     });
-    const o2ruser = {
-        '_id': '57dc171b8760d15dc1864044',
-        'orcid': orcid_o2r,
-        'level': 100,
-        'name': 'o2r-testuser'
-    };
-    db.users.save(o2ruser, function (err, doc) {
-        if (err) throw err;
-    });
-
-    console.log('Global setup completed for database ' + dbpath);
 }
 
 module.exports.uploadCompendium = uploadCompendium;
 module.exports.importJSONCompendium = importJSONCompendium;
+module.exports.importJSONCompendia = importJSONCompendia;
+
 
