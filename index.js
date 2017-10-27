@@ -261,30 +261,39 @@ const transformCompendium = function (watcher, compendium, cb) {
     delete compendium._id;
     delete compendium.__v;
 
-    // load file tree
-    let tree = null;
-    fs.accessSync(config.fs.compendium + id); // throws if does not exist
-    tree = dirTree(config.fs.compendium + id);
+    /*
+     * create file tree from file directory if:
+     *
+     * 1. compendium.files is not yet defined or
+     * 2. config.fs.reloadCompendiumFileTree is set to true
+     */
+    if (typeof compendium.files === 'undefined' || config.fs.fileTree.reload) {
+        // load file tree
+        let tree = null;
+        fs.accessSync(config.fs.compendium + id); // throws if does not exist
+        tree = dirTree(config.fs.compendium + id);
 
-    // create file tree for metadata
-    if (tree) {
-      // rewrite copy of tree to API urls, taken from o2r-muncher
-      let apiTree = rewriteTree(cloneDeep(tree),
-        config.fs.compendium.length + config.id_length, // remove local fs path and id
-        '/api/v1/compendium/' + id + '/data' // prepend proper location
-      );
-      compendium.files = apiTree;
-    }
+        // create file tree for metadata
+        if (tree) {
+            // rewrite copy of tree to API urls, taken from o2r-muncher
+            let apiTree = rewriteTree(cloneDeep(tree),
+                config.fs.compendium.length + config.id_length, // remove local fs path and id
+                '/api/v1/compendium/' + id + '/data' // prepend proper location
+            );
+            compendium.files = apiTree;
+        }
 
-    // load content of txt files as flat list
-    if (tree) {
-      let textTree = mimeTree(cloneDeep(tree));
-      readTextfileTree(textTree);
-      let list = [];
-      flattenTree(textTree,
-        config.fs.compendium.length + config.id_length + 1, // make path relative to compendium root
-        list);
-      compendium.texts = list;
+        // load content of txt files as flat list
+        if (tree) {
+            let textTree = mimeTree(cloneDeep(tree));
+            readTextfileTree(textTree);
+            let list = [];
+            flattenTree(textTree,
+                config.fs.compendium.length + config.id_length + 1, // make path relative to compendium root
+                list);
+            compendium.texts = list;
+        }
+
     }
 
     // attach binary files as base64
@@ -299,7 +308,7 @@ const transformCompendium = function (watcher, compendium, cb) {
   } catch (e) {
     transformLog.enq({ time: new Date().toISOString(), compendium: id, transform: 'error: ' + e.message });
     debug('Error while transforming %s : %s', id, e.message);
-    cb(null);
+    cb(null, new Error('Error while transforming: ' + e.message));
   }
 };
 
