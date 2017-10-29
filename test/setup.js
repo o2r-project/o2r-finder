@@ -67,4 +67,5 @@ before(function () {
     });
 
     console.log('Global setup completed for database ' + dbpath);
+
 });
