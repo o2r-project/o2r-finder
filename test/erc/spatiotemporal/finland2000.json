@@ -1,643 +1,640 @@
 {
-
-    "id": "XiQu8",
-    "user": "0000-0001-6230-4374",
-    "metadata": {
-        "zenodo": {
-            "metadata": {
-                "upload_type": "publication",
-                "title": "Analysis of Properties of Reflectance Reference Targets for Permanent Radiometric Test Sites of High Resolution Airborne Imaging Systems",
-                "publication_type": "other",
-                "publication_date": "2017-08-21",
-                "license": {
-                    "uibindings": "MIT",
-                    "text": "CC0-1.0",
-                    "data": "CC0-1.0",
-                    "code": "MIT"
-                },
-                "keywords": [
-                    "lorem",
-                    "ipsum",
-                    "dolor",
-                    "sit",
-                    "amet"
-                ],
-                "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
-                "creators": [
-                    {
-                        "name": "Eero Ahokas",
-                        "affiliation": "University of Nowhere1"
-                    }
-                ],
-                "communities": [
-                    {
-                        "identifier": "o2r"
-                    }
-                ],
-                "access_right": "open"
-            }
+  "id": "XiQu8",
+  "user": "0000-0001-6230-4374",
+  "metadata": {
+    "zenodo": {
+      "metadata": {
+        "upload_type": "publication",
+        "title": "Analysis of Properties of Reflectance Reference Targets for Permanent Radiometric Test Sites of High Resolution Airborne Imaging Systems",
+        "publication_type": "other",
+        "publication_date": "2017-08-21",
+        "license": {
+          "uibindings": "MIT",
+          "text": "CC0-1.0",
+          "data": "CC0-1.0",
+          "code": "MIT"
         },
-        "o2r": {
-            "viewfiles": [
-                "XiQu8/data/document.html"
-            ],
-            "viewfile": null,
-            "version": null,
-            "upload_type": "publication",
-            "title": "Analysis of Properties of Reflectance Reference Targets for Permanent Radiometric Test Sites of High Resolution Airborne Imaging Systems",
-            "temporal": {
-                "end": "2000-01-01T00:00:00.000Z",
-                "begin": "2000-12-31T00:00:00.000Z"
-            },
-            "spatial": {
-                "spatial": {
-                    "union": {
-                        "geojson": {
-                            "type": "Feature",
-                            "geometry": {
-                                "type": "Polygon",
-                                "coordinates": [
-                                    [
-                                        21.9451904296875,
-                                        59.99898612060444
-                                    ],
-                                    [
-                                        23.038330078125,
-                                        59.99898612060444
-                                    ],
-                                    [
-                                        23.038330078125,
-                                        60.53837217051857
-                                    ],
-                                    [
-                                        21.9451904296875,
-                                        60.53837217051857
-                                    ]
-                                ]
-                            },
-                            "bbox": [
-                                21.9451904296875,
-                                59.99898612060444,
-                                23.038330078125,
-                                59.99898612060444
-                            ]
-                        }
-                    },
-                    "files": [
-                        {
-                            "source_file": "XiQu8/data/testshapefiles_finland/POLYGON.shp",
-                            "geojson": {
-                                "type": "Feature",
-                                "geometry": {
-                                    "type": "Polygon",
-                                    "coordinates": [
-                                        [
-                                            [
-                                                21.9451904296875,
-                                                59.99898612060444
-                                            ],
-                                            [
-                                                23.038330078125,
-                                                60.53837217051857
-                                            ]
-                                        ]
-                                    ]
-                                },
-                                "bbox": [
-                                    21.9451904296875,
-                                    59.99898612060444,
-                                    23.038330078125,
-                                    60.53837217051857
-                                ]
-                            }
-                        }
-                    ]
-                }
-            },
-            "softwarePaperCitation": null,
-            "researchQuestions": [],
-            "researchHypotheses": [],
-            "recordDateCreated": "2017-08-21",
-            "r_rdata": [],
-            "r_output": [
-                {
-                    "text": "42",
-                    "line": 14,
-                    "feature": "setseed"
-                },
-                {
-                    "text": "plot",
-                    "line": 23,
-                    "feature": "result"
-                },
-                {
-                    "text": "print",
-                    "line": 25,
-                    "feature": "result"
-                }
-            ],
-            "r_input": [],
-            "r_comment": [
-                {
-                    "text": "Trying some seperation lines:",
-                    "line": 9,
-                    "feature": "comment"
-                },
-                {
-                    "text": "chunk: random string",
-                    "line": 13,
-                    "feature": "comment"
-                },
-                {
-                    "text": "umlaut ö ä ü ß",
-                    "line": 18,
-                    "feature": "comment"
-                },
-                {
-                    "text": "some plot",
-                    "line": 22,
-                    "feature": "comment"
-                }
-            ],
-            "publication_type": "other",
-            "publicationDate": "2017-08-21",
-            "paperSource": "document.Rmd",
-            "paperLanguage": [],
-		"license": {
-		    "uibindings": "MIT",
-		    "text": "CC0-1.0",
-		    "data": "CC0-1.0",
-		    "code": "MIT"
-		},
-            "keywords": [
-                "lorem",
-                "ipsum",
-                "dolor",
-                "sit",
-                "amet"
-            ],
-            "interaction": {
-                "ui_binding": {
-                    "widget": null,
-                    "variable": null,
-                    "purpose": null,
-                    "code": {
-                        "shinyRenderFunction": null,
-                        "shinyInputFunction": null,
-                        "functionParameter": null,
-                        "function": null,
-                        "filename": null
-                    }
-                },
-                "interactive": false
-            },
-            "inputfiles": [],
-            "identifier": {
-                "reserveddoi": null,
-                "doiurl": "https://doi.org/10.3390/rs2081892",
-                "doi": "10.3390/rs2081892"
-            },
-            "generatedBy": "o2r-meta metaextract.py",
-            "file": {
-                "mimetype": "text/markdown",
-                "filepath": "XiQu8/data/document.Rmd",
-                "filename": "document.Rmd"
-            },
-            "ercIdentifier": "XiQu8",
-            "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
-            "depends": [
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "RColorBrewer",
-                    "category": "geo sciences,CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "dplyr",
-                    "category": "geo sciences,CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "ggplot2",
-                    "category": "geo sciences,CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "minqa",
-                    "category": "CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "PBSmapping",
-                    "category": "geo sciences"
-                }
-            ],
-            "communities": [
-                {
-                    "identifier": "o2r"
-                }
-            ],
-            "codefiles": [],
-            "author": [
-                {
-                    "url": "\\url{http://404.awebsite8372930.org}",
-                    "orcid": "0000-0003-0484-8597",
-                    "name": "Eero Ahokas",
-                    "email": "ted.tester@awebsite8372930.org",
-                    "affiliation2": "University of Nowhere",
-                    "affiliation": "University of Nowhere1",
-                    "address": "This might be a correct address Yet it might also be lorem ipsum\\newline Another line 252b\\newline 00000 Anywhere, Nomansland\n",
-                    "Telephone": "+00/00/1000-2000"
-                }
-            ],
-            "access_right": "open"
-        },
-        "raw": {
-            "viewfiles": [
-                "XiQu8/data/document.html"
-            ],
-            "viewfile": null,
-            "version": null,
-            "upload_type": "publication",
-            "title": "Analysis of Properties of Reflectance Reference Targets for Permanent Radiometric Test Sites of High Resolution Airborne Imaging Systems",
-            "temporal": {
-                "end": null,
-                "begin": null
-            },
-            "spatial": {
-                "spatial": {
-                    "union": {
-                        "geojson": {
-                            "type": "Feature",
-                            "geometry": {
-                                "type": "Polygon",
-                                "coordinates": [
-                                    [
-                                        21.9451904296875,
-                                        59.99898612060444
-                                    ],
-                                    [
-                                        23.038330078125,
-                                        59.99898612060444
-                                    ],
-                                    [
-                                        23.038330078125,
-                                        60.53837217051857
-                                    ],
-                                    [
-                                        21.9451904296875,
-                                        60.53837217051857
-                                    ]
-                                ]
-                            },
-                            "bbox": [
-                                21.9451904296875,
-                                59.99898612060444,
-                                23.038330078125,
-                                59.99898612060444
-                            ]
-                        }
-                    },
-                    "files": [
-                        {
-                            "source_file": "XiQu8/data/testshapefiles_finland/POLYGON.shp",
-                            "geojson": {
-                                "type": "Feature",
-                                "geometry": {
-                                    "type": "Polygon",
-                                    "coordinates": [
-                                        [
-                                            [
-                                                21.9451904296875,
-                                                59.99898612060444
-                                            ],
-                                            [
-                                                23.038330078125,
-                                                60.53837217051857
-                                            ]
-                                        ]
-                                    ]
-                                },
-                                "bbox": [
-                                    21.9451904296875,
-                                    59.99898612060444,
-                                    23.038330078125,
-                                    60.53837217051857
-                                ]
-                            }
-                        }
-                    ]
-                }
-            },
-            "softwarePaperCitation": null,
-            "researchQuestions": [],
-            "researchHypotheses": [],
-            "recordDateCreated": "2017-08-21",
-            "r_rdata": [],
-            "r_output": [
-                {
-                    "text": "42",
-                    "line": 14,
-                    "feature": "setseed"
-                },
-                {
-                    "text": "plot",
-                    "line": 23,
-                    "feature": "result"
-                },
-                {
-                    "text": "print",
-                    "line": 25,
-                    "feature": "result"
-                }
-            ],
-            "r_input": [],
-            "r_comment": [
-                {
-                    "text": "Trying some seperation lines:",
-                    "line": 9,
-                    "feature": "comment"
-                },
-                {
-                    "text": "chunk: random string",
-                    "line": 13,
-                    "feature": "comment"
-                },
-                {
-                    "text": "umlaut ö ä ü ß",
-                    "line": 18,
-                    "feature": "comment"
-                },
-                {
-                    "text": "some plot",
-                    "line": 22,
-                    "feature": "comment"
-                }
-            ],
-            "publication_type": "other",
-            "publicationDate": "2017-08-21",
-            "paperSource": "document.Rmd",
-            "paperLanguage": [],
-            "license": {
-                "uibindings": null,
-                "text": "cc-by",
-                "data": null,
-                "code": null
-            },
-            "keywords": [
-                "lorem",
-                "ipsum",
-                "dolor",
-                "sit",
-                "amet"
-            ],
-            "interaction": {
-                "ui_binding": {
-                    "widget": null,
-                    "variable": null,
-                    "purpose": null,
-                    "code": {
-                        "shinyRenderFunction": null,
-                        "shinyInputFunction": null,
-                        "functionParameter": null,
-                        "function": null,
-                        "filename": null
-                    }
-                },
-                "interactive": false
-            },
-            "inputfiles": [],
-            "identifier": {
-                "reserveddoi": null,
-                "doiurl": "https://doi.org/10.3390/rs2081892",
-                "doi": "10.3390/rs2081892"
-            },
-            "generatedBy": "o2r-meta metaextract.py",
-            "file": {
-                "mimetype": "text/markdown",
-                "filepath": "XiQu8/data/document.Rmd",
-                "filename": "document.Rmd"
-            },
-            "ercIdentifier": "XiQu8",
-            "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
-            "depends": [
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "RColorBrewer",
-                    "category": "geo sciences,CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "dplyr",
-                    "category": "geo sciences,CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "ggplot2",
-                    "category": "geo sciences,CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "minqa",
-                    "category": "CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "PBSmapping",
-                    "category": "geo sciences"
-                }
-            ],
-            "communities": [
-                {
-                    "identifier": "o2r"
-                }
-            ],
-            "codefiles": [],
-            "author": [
-                {
-                    "url": "\\url{http://404.awebsite8372930.org}",
-                    "orcid": "0000-0003-0484-8597",
-                    "name": "Eero Ahokas",
-                    "email": "ted.tester@awebsite8372930.org",
-                    "affiliation2": "University of Nowhere",
-                    "affiliation": "University of Nowhere1",
-                    "address": "This might be a correct address Yet it might also be lorem ipsum\\newline Another line 252b\\newline 00000 Anywhere, Nomansland\n",
-                    "Telephone": "+00/00/1000-2000"
-                }
-            ],
-            "access_right": "open"
-        }
-    },
-    "jobs": [],
-    "created": "2017-08-21T14:27:40.282Z",
-    "__v": 0,
-    "files": {
-        "path": "/api/v1/compendium/s9SHU/data",
-        "name": "s9SHU",
-        "children": [
-            {
-                "path": "/api/v1/compendium/s9SHU/data/bag-info.txt",
-                "name": "bag-info.txt",
-                "size": 129,
-                "extension": ".txt",
-                "type": "text/plain"
-            },
-            {
-                "path": "/api/v1/compendium/s9SHU/data/bagit.txt",
-                "name": "bagit.txt",
-                "size": 55,
-                "extension": ".txt",
-                "type": "text/plain"
-            },
-            {
-                "path": "/api/v1/compendium/s9SHU/data/data",
-                "name": "data",
-                "children": [
-                    {
-                        "path": "/api/v1/compendium/s9SHU/data/data/.erc",
-                        "name": ".erc",
-                        "children": [
-                            {
-                                "path": "/api/v1/compendium/s9SHU/data/data/.erc/meta_2017102714155995_document_.json",
-                                "name": "meta_2017102714155995_document_.json",
-                                "size": 3510,
-                                "extension": ".json",
-                                "type": "application/json"
-                            },
-                            {
-                                "path": "/api/v1/compendium/s9SHU/data/data/.erc/metadata_o2r.json",
-                                "name": "metadata_o2r.json",
-                                "size": 3641,
-                                "extension": ".json",
-                                "type": "application/json"
-                            },
-                            {
-                                "path": "/api/v1/compendium/s9SHU/data/data/.erc/metadata_raw.json",
-                                "name": "metadata_raw.json",
-                                "size": 6792,
-                                "extension": ".json",
-                                "type": "application/json"
-                            },
-                            {
-                                "path": "/api/v1/compendium/s9SHU/data/data/.erc/metadata_zenodo.json",
-                                "name": "metadata_zenodo.json",
-                                "size": 998,
-                                "extension": ".json",
-                                "type": "application/json"
-                            }
-                        ],
-                        "size": 14941,
-                        "type": "directory"
-                    },
-                    {
-                        "path": "/api/v1/compendium/s9SHU/data/data/Dockerfile",
-                        "name": "Dockerfile",
-                        "size": 71,
-                        "extension": ""
-                    },
-                    {
-                        "path": "/api/v1/compendium/s9SHU/data/data/bagtainer.yml",
-                        "name": "bagtainer.yml",
-                        "size": 68,
-                        "extension": ".yml",
-                        "type": "text/yaml"
-                    },
-                    {
-                        "path": "/api/v1/compendium/s9SHU/data/data/document.Rmd",
-                        "name": "document.Rmd",
-                        "size": 4431,
-                        "extension": ".rmd"
-                    },
-                    {
-                        "path": "/api/v1/compendium/s9SHU/data/data/document.html",
-                        "name": "document.html",
-                        "size": 805400,
-                        "extension": ".html",
-                        "type": "text/html"
-                    },
-                    {
-                        "path": "/api/v1/compendium/s9SHU/data/data/document.tex",
-                        "name": "document.tex",
-                        "size": 5288,
-                        "extension": ".tex",
-                        "type": "application/x-tex"
-                    },
-                    {
-                        "path": "/api/v1/compendium/s9SHU/data/data/erc.yml",
-                        "name": "erc.yml",
-                        "size": 308,
-                        "extension": ".yml",
-                        "type": "text/yaml"
-                    },
-                    {
-                        "path": "/api/v1/compendium/s9SHU/data/data/metadata.json",
-                        "name": "metadata.json",
-                        "size": 4622,
-                        "extension": ".json",
-                        "type": "application/json"
-                    },
-                    {
-                        "path": "/api/v1/compendium/s9SHU/data/data/testshapefiles_finland",
-                        "name": "testshapefiles_finland",
-                        "children": [
-                            {
-                                "path": "/api/v1/compendium/s9SHU/data/data/testshapefiles_finland/POLYGON.dbf",
-                                "name": "POLYGON.dbf",
-                                "size": 34,
-                                "extension": ".dbf"
-                            },
-                            {
-                                "path": "/api/v1/compendium/s9SHU/data/data/testshapefiles_finland/POLYGON.prj",
-                                "name": "POLYGON.prj",
-                                "size": 143,
-                                "extension": ".prj"
-                            },
-                            {
-                                "path": "/api/v1/compendium/s9SHU/data/data/testshapefiles_finland/POLYGON.shp",
-                                "name": "POLYGON.shp",
-                                "size": 236,
-                                "extension": ".shp"
-                            },
-                            {
-                                "path": "/api/v1/compendium/s9SHU/data/data/testshapefiles_finland/POLYGON.shx",
-                                "name": "POLYGON.shx",
-                                "size": 108,
-                                "extension": ".shx"
-                            }
-                        ],
-                        "size": 521,
-                        "type": "directory"
-                    }
-                ],
-                "size": 835650,
-                "type": "directory"
-            },
-            {
-                "path": "/api/v1/compendium/s9SHU/data/manifest-md5.txt",
-                "name": "manifest-md5.txt",
-                "size": 656,
-                "extension": ".txt",
-                "type": "text/plain"
-            },
-            {
-                "path": "/api/v1/compendium/s9SHU/data/tagmanifest-md5.txt",
-                "name": "tagmanifest-md5.txt",
-                "size": 139,
-                "extension": ".txt",
-                "type": "text/plain"
-            }
+        "keywords": [
+          "lorem",
+          "ipsum",
+          "dolor",
+          "sit",
+          "amet"
         ],
-        "size": 836629,
-        "type": "directory"
+        "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
+        "creators": [
+          {
+            "name": "Eero Ahokas",
+            "affiliation": "University of Nowhere1"
+          }
+        ],
+        "communities": [
+          {
+            "identifier": "o2r"
+          }
+        ],
+        "access_right": "open"
+      }
+    },
+    "o2r": {
+      "viewfiles": [
+        "XiQu8/data/document.html"
+      ],
+      "viewfile": null,
+      "version": null,
+      "upload_type": "publication",
+      "title": "Analysis of Properties of Reflectance Reference Targets for Permanent Radiometric Test Sites of High Resolution Airborne Imaging Systems",
+      "temporal": {
+        "begin": "2000-01-01T00:00:00.000Z",
+        "end": "2000-12-31T00:00:00.000Z"
+      },
+      "spatial": {
+        "union": {
+          "geojson": {
+            "type": "Feature",
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  21.9451904296875,
+                  59.99898612060444
+                ],
+                [
+                  23.038330078125,
+                  59.99898612060444
+                ],
+                [
+                  23.038330078125,
+                  60.53837217051857
+                ],
+                [
+                  21.9451904296875,
+                  60.53837217051857
+                ]
+              ]
+            },
+            "bbox": [
+              21.9451904296875,
+              59.99898612060444,
+              23.038330078125,
+              59.99898612060444
+            ]
+          }
+        },
+        "files": [
+          {
+            "source_file": "XiQu8/data/testshapefiles_finland/POLYGON.shp",
+            "geojson": {
+              "type": "Feature",
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      21.9451904296875,
+                      59.99898612060444
+                    ],
+                    [
+                      23.038330078125,
+                      60.53837217051857
+                    ]
+                  ]
+                ]
+              },
+              "bbox": [
+                21.9451904296875,
+                59.99898612060444,
+                23.038330078125,
+                60.53837217051857
+              ]
+            }
+          }
+        ]
+      },
+      "softwarePaperCitation": null,
+      "researchQuestions": [],
+      "researchHypotheses": [],
+      "recordDateCreated": "2017-08-21",
+      "r_rdata": [],
+      "r_output": [
+        {
+          "text": "42",
+          "line": 14,
+          "feature": "setseed"
+        },
+        {
+          "text": "plot",
+          "line": 23,
+          "feature": "result"
+        },
+        {
+          "text": "print",
+          "line": 25,
+          "feature": "result"
+        }
+      ],
+      "r_input": [],
+      "r_comment": [
+        {
+          "text": "Trying some seperation lines:",
+          "line": 9,
+          "feature": "comment"
+        },
+        {
+          "text": "chunk: random string",
+          "line": 13,
+          "feature": "comment"
+        },
+        {
+          "text": "umlaut ö ä ü ß",
+          "line": 18,
+          "feature": "comment"
+        },
+        {
+          "text": "some plot",
+          "line": 22,
+          "feature": "comment"
+        }
+      ],
+      "publication_type": "other",
+      "publicationDate": "2017-08-21",
+      "paperSource": "document.Rmd",
+      "paperLanguage": [],
+      "license": {
+        "uibindings": "MIT",
+        "text": "CC0-1.0",
+        "data": "CC0-1.0",
+        "code": "MIT"
+      },
+      "keywords": [
+        "lorem",
+        "ipsum",
+        "dolor",
+        "sit",
+        "amet"
+      ],
+      "interaction": {
+        "ui_binding": {
+          "widget": null,
+          "variable": null,
+          "purpose": null,
+          "code": {
+            "shinyRenderFunction": null,
+            "shinyInputFunction": null,
+            "functionParameter": null,
+            "function": null,
+            "filename": null
+          }
+        },
+        "interactive": false
+      },
+      "inputfiles": [],
+      "identifier": {
+        "reserveddoi": null,
+        "doiurl": "https://doi.org/10.3390/rs2081892",
+        "doi": "10.3390/rs2081892"
+      },
+      "generatedBy": "o2r-meta metaextract.py",
+      "file": {
+        "mimetype": "text/markdown",
+        "filepath": "XiQu8/data/document.Rmd",
+        "filename": "document.Rmd"
+      },
+      "ercIdentifier": "XiQu8",
+      "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
+      "depends": [
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "RColorBrewer",
+          "category": "geo sciences,CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "dplyr",
+          "category": "geo sciences,CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "ggplot2",
+          "category": "geo sciences,CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "minqa",
+          "category": "CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "PBSmapping",
+          "category": "geo sciences"
+        }
+      ],
+      "communities": [
+        {
+          "identifier": "o2r"
+        }
+      ],
+      "codefiles": [],
+      "author": [
+        {
+          "url": "\\url{http://404.awebsite8372930.org}",
+          "orcid": "0000-0003-0484-8597",
+          "name": "Eero Ahokas",
+          "email": "ted.tester@awebsite8372930.org",
+          "affiliation2": "University of Nowhere",
+          "affiliation": "University of Nowhere1",
+          "address": "This might be a correct address Yet it might also be lorem ipsum\\newline Another line 252b\\newline 00000 Anywhere, Nomansland\n",
+          "Telephone": "+00/00/1000-2000"
+        }
+      ],
+      "access_right": "open"
+    },
+    "raw": {
+      "viewfiles": [
+        "XiQu8/data/document.html"
+      ],
+      "viewfile": null,
+      "version": null,
+      "upload_type": "publication",
+      "title": "Analysis of Properties of Reflectance Reference Targets for Permanent Radiometric Test Sites of High Resolution Airborne Imaging Systems",
+      "temporal": {
+        "end": null,
+        "begin": null
+      },
+      "spatial": {
+        "spatial": {
+          "union": {
+            "geojson": {
+              "type": "Feature",
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    21.9451904296875,
+                    59.99898612060444
+                  ],
+                  [
+                    23.038330078125,
+                    59.99898612060444
+                  ],
+                  [
+                    23.038330078125,
+                    60.53837217051857
+                  ],
+                  [
+                    21.9451904296875,
+                    60.53837217051857
+                  ]
+                ]
+              },
+              "bbox": [
+                21.9451904296875,
+                59.99898612060444,
+                23.038330078125,
+                59.99898612060444
+              ]
+            }
+          },
+          "files": [
+            {
+              "source_file": "XiQu8/data/testshapefiles_finland/POLYGON.shp",
+              "geojson": {
+                "type": "Feature",
+                "geometry": {
+                  "type": "Polygon",
+                  "coordinates": [
+                    [
+                      [
+                        21.9451904296875,
+                        59.99898612060444
+                      ],
+                      [
+                        23.038330078125,
+                        60.53837217051857
+                      ]
+                    ]
+                  ]
+                },
+                "bbox": [
+                  21.9451904296875,
+                  59.99898612060444,
+                  23.038330078125,
+                  60.53837217051857
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "softwarePaperCitation": null,
+      "researchQuestions": [],
+      "researchHypotheses": [],
+      "recordDateCreated": "2017-08-21",
+      "r_rdata": [],
+      "r_output": [
+        {
+          "text": "42",
+          "line": 14,
+          "feature": "setseed"
+        },
+        {
+          "text": "plot",
+          "line": 23,
+          "feature": "result"
+        },
+        {
+          "text": "print",
+          "line": 25,
+          "feature": "result"
+        }
+      ],
+      "r_input": [],
+      "r_comment": [
+        {
+          "text": "Trying some seperation lines:",
+          "line": 9,
+          "feature": "comment"
+        },
+        {
+          "text": "chunk: random string",
+          "line": 13,
+          "feature": "comment"
+        },
+        {
+          "text": "umlaut ö ä ü ß",
+          "line": 18,
+          "feature": "comment"
+        },
+        {
+          "text": "some plot",
+          "line": 22,
+          "feature": "comment"
+        }
+      ],
+      "publication_type": "other",
+      "publicationDate": "2017-08-21",
+      "paperSource": "document.Rmd",
+      "paperLanguage": [],
+      "license": {
+        "uibindings": null,
+        "text": "cc-by",
+        "data": null,
+        "code": null
+      },
+      "keywords": [
+        "lorem",
+        "ipsum",
+        "dolor",
+        "sit",
+        "amet"
+      ],
+      "interaction": {
+        "ui_binding": {
+          "widget": null,
+          "variable": null,
+          "purpose": null,
+          "code": {
+            "shinyRenderFunction": null,
+            "shinyInputFunction": null,
+            "functionParameter": null,
+            "function": null,
+            "filename": null
+          }
+        },
+        "interactive": false
+      },
+      "inputfiles": [],
+      "identifier": {
+        "reserveddoi": null,
+        "doiurl": "https://doi.org/10.3390/rs2081892",
+        "doi": "10.3390/rs2081892"
+      },
+      "generatedBy": "o2r-meta metaextract.py",
+      "file": {
+        "mimetype": "text/markdown",
+        "filepath": "XiQu8/data/document.Rmd",
+        "filename": "document.Rmd"
+      },
+      "ercIdentifier": "XiQu8",
+      "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
+      "depends": [
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "RColorBrewer",
+          "category": "geo sciences,CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "dplyr",
+          "category": "geo sciences,CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "ggplot2",
+          "category": "geo sciences,CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "minqa",
+          "category": "CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "PBSmapping",
+          "category": "geo sciences"
+        }
+      ],
+      "communities": [
+        {
+          "identifier": "o2r"
+        }
+      ],
+      "codefiles": [],
+      "author": [
+        {
+          "url": "\\url{http://404.awebsite8372930.org}",
+          "orcid": "0000-0003-0484-8597",
+          "name": "Eero Ahokas",
+          "email": "ted.tester@awebsite8372930.org",
+          "affiliation2": "University of Nowhere",
+          "affiliation": "University of Nowhere1",
+          "address": "This might be a correct address Yet it might also be lorem ipsum\\newline Another line 252b\\newline 00000 Anywhere, Nomansland\n",
+          "Telephone": "+00/00/1000-2000"
+        }
+      ],
+      "access_right": "open"
     }
+  },
+  "jobs": [],
+  "created": "2017-08-21T14:27:40.282Z",
+  "__v": 0,
+  "files": {
+    "path": "/api/v1/compendium/s9SHU/data",
+    "name": "s9SHU",
+    "children": [
+      {
+        "path": "/api/v1/compendium/s9SHU/data/bag-info.txt",
+        "name": "bag-info.txt",
+        "size": 129,
+        "extension": ".txt",
+        "type": "text/plain"
+      },
+      {
+        "path": "/api/v1/compendium/s9SHU/data/bagit.txt",
+        "name": "bagit.txt",
+        "size": 55,
+        "extension": ".txt",
+        "type": "text/plain"
+      },
+      {
+        "path": "/api/v1/compendium/s9SHU/data/data",
+        "name": "data",
+        "children": [
+          {
+            "path": "/api/v1/compendium/s9SHU/data/data/.erc",
+            "name": ".erc",
+            "children": [
+              {
+                "path": "/api/v1/compendium/s9SHU/data/data/.erc/meta_2017102714155995_document_.json",
+                "name": "meta_2017102714155995_document_.json",
+                "size": 3510,
+                "extension": ".json",
+                "type": "application/json"
+              },
+              {
+                "path": "/api/v1/compendium/s9SHU/data/data/.erc/metadata_o2r.json",
+                "name": "metadata_o2r.json",
+                "size": 3641,
+                "extension": ".json",
+                "type": "application/json"
+              },
+              {
+                "path": "/api/v1/compendium/s9SHU/data/data/.erc/metadata_raw.json",
+                "name": "metadata_raw.json",
+                "size": 6792,
+                "extension": ".json",
+                "type": "application/json"
+              },
+              {
+                "path": "/api/v1/compendium/s9SHU/data/data/.erc/metadata_zenodo.json",
+                "name": "metadata_zenodo.json",
+                "size": 998,
+                "extension": ".json",
+                "type": "application/json"
+              }
+            ],
+            "size": 14941,
+            "type": "directory"
+          },
+          {
+            "path": "/api/v1/compendium/s9SHU/data/data/Dockerfile",
+            "name": "Dockerfile",
+            "size": 71,
+            "extension": ""
+          },
+          {
+            "path": "/api/v1/compendium/s9SHU/data/data/bagtainer.yml",
+            "name": "bagtainer.yml",
+            "size": 68,
+            "extension": ".yml",
+            "type": "text/yaml"
+          },
+          {
+            "path": "/api/v1/compendium/s9SHU/data/data/document.Rmd",
+            "name": "document.Rmd",
+            "size": 4431,
+            "extension": ".rmd"
+          },
+          {
+            "path": "/api/v1/compendium/s9SHU/data/data/document.html",
+            "name": "document.html",
+            "size": 805400,
+            "extension": ".html",
+            "type": "text/html"
+          },
+          {
+            "path": "/api/v1/compendium/s9SHU/data/data/document.tex",
+            "name": "document.tex",
+            "size": 5288,
+            "extension": ".tex",
+            "type": "application/x-tex"
+          },
+          {
+            "path": "/api/v1/compendium/s9SHU/data/data/erc.yml",
+            "name": "erc.yml",
+            "size": 308,
+            "extension": ".yml",
+            "type": "text/yaml"
+          },
+          {
+            "path": "/api/v1/compendium/s9SHU/data/data/metadata.json",
+            "name": "metadata.json",
+            "size": 4622,
+            "extension": ".json",
+            "type": "application/json"
+          },
+          {
+            "path": "/api/v1/compendium/s9SHU/data/data/testshapefiles_finland",
+            "name": "testshapefiles_finland",
+            "children": [
+              {
+                "path": "/api/v1/compendium/s9SHU/data/data/testshapefiles_finland/POLYGON.dbf",
+                "name": "POLYGON.dbf",
+                "size": 34,
+                "extension": ".dbf"
+              },
+              {
+                "path": "/api/v1/compendium/s9SHU/data/data/testshapefiles_finland/POLYGON.prj",
+                "name": "POLYGON.prj",
+                "size": 143,
+                "extension": ".prj"
+              },
+              {
+                "path": "/api/v1/compendium/s9SHU/data/data/testshapefiles_finland/POLYGON.shp",
+                "name": "POLYGON.shp",
+                "size": 236,
+                "extension": ".shp"
+              },
+              {
+                "path": "/api/v1/compendium/s9SHU/data/data/testshapefiles_finland/POLYGON.shx",
+                "name": "POLYGON.shx",
+                "size": 108,
+                "extension": ".shx"
+              }
+            ],
+            "size": 521,
+            "type": "directory"
+          }
+        ],
+        "size": 835650,
+        "type": "directory"
+      },
+      {
+        "path": "/api/v1/compendium/s9SHU/data/manifest-md5.txt",
+        "name": "manifest-md5.txt",
+        "size": 656,
+        "extension": ".txt",
+        "type": "text/plain"
+      },
+      {
+        "path": "/api/v1/compendium/s9SHU/data/tagmanifest-md5.txt",
+        "name": "tagmanifest-md5.txt",
+        "size": 139,
+        "extension": ".txt",
+        "type": "text/plain"
+      }
+    ],
+    "size": 836629,
+    "type": "directory"
+  }
 }

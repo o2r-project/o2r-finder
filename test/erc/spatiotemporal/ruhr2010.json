@@ -1,642 +1,640 @@
 {
-    "id": "mQryh",
-    "user": "0000-0001-6230-4374",
-    "metadata": {
-        "zenodo": {
-            "metadata": {
-                "upload_type": "publication",
-                "title": "Global Air Quality and Pollution",
-                "publication_type": "other",
-                "publication_date": "2017-08-21",
-                "license": {
-                    "uibindings": "GPL-3.0",
-                    "text": "CC-BY-NC-4.0",
-                    "data": "CC-BY-NC-4.0",
-                    "code": "GPL-3.0"
-                },
-                "keywords": [
-                    "lorem",
-                    "ipsum",
-                    "dolor",
-                    "sit",
-                    "amet"
-                ],
-                "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
-                "creators": [
-                    {
-                        "name": "Hajime Akimoto",
-                        "affiliation": "University of Munster"
-                    }
-                ],
-                "communities": [
-                    {
-                        "identifier": "o2r"
-                    }
-                ],
-                "access_right": "open"
-            }
+  "id": "mQryh",
+  "user": "0000-0001-6230-4374",
+  "metadata": {
+    "zenodo": {
+      "metadata": {
+        "upload_type": "publication",
+        "title": "Global Air Quality and Pollution",
+        "publication_type": "other",
+        "publication_date": "2017-08-21",
+        "license": {
+          "uibindings": "GPL-3.0",
+          "text": "CC-BY-NC-4.0",
+          "data": "CC-BY-NC-4.0",
+          "code": "GPL-3.0"
         },
-        "o2r": {
-            "viewfiles": [
-                "mQryh/data/document.html"
-            ],
-            "viewfile": null,
-            "version": null,
-            "upload_type": "publication",
-            "title": "Global Air Quality and Pollution",
-            "temporal": {
-                "end": "2010-01-01T00:00:00.000Z",
-                "begin": "2010-12-31T00:00:00.000Z"
-            },
-            "spatial": {
-                "spatial": {
-                    "union": {
-                        "geojson": {
-                            "type": "Feature",
-                            "geometry": {
-                                "type": "Polygon",
-                                "coordinates": [
-                                    [
-                                        6.532745361328125,
-                                        51.205162601119824
-                                    ],
-                                    [
-                                        7.551727294921875,
-                                        51.205162601119824
-                                    ],
-                                    [
-                                        7.551727294921875,
-                                        51.5463350479341
-                                    ],
-                                    [
-                                        6.532745361328125,
-                                        51.5463350479341
-                                    ]
-                                ]
-                            },
-                            "bbox": [
-                                6.532745361328125,
-                                51.205162601119824,
-                                7.551727294921875,
-                                51.205162601119824
-                            ]
-                        }
-                    },
-                    "files": [
-                        {
-                            "source_file": "mQryh/data/testshapefiles_ruhr/POLYGON.shp",
-                            "geojson": {
-                                "type": "Feature",
-                                "geometry": {
-                                    "type": "Polygon",
-                                    "coordinates": [
-                                        [
-                                            [
-                                                6.532745361328125,
-                                                51.205162601119824
-                                            ],
-                                            [
-                                                7.551727294921875,
-                                                51.5463350479341
-                                            ]
-                                        ]
-                                    ]
-                                },
-                                "bbox": [
-                                    6.532745361328125,
-                                    51.205162601119824,
-                                    7.551727294921875,
-                                    51.5463350479341
-                                ]
-                            }
-                        }
-                    ]
-                }
-            },
-            "softwarePaperCitation": null,
-            "researchQuestions": [],
-            "researchHypotheses": [],
-            "recordDateCreated": "2017-08-21",
-            "r_rdata": [],
-            "r_output": [
-                {
-                    "text": "42",
-                    "line": 14,
-                    "feature": "setseed"
-                },
-                {
-                    "text": "plot",
-                    "line": 23,
-                    "feature": "result"
-                },
-                {
-                    "text": "print",
-                    "line": 25,
-                    "feature": "result"
-                }
-            ],
-            "r_input": [],
-            "r_comment": [
-                {
-                    "text": "Trying some seperation lines:",
-                    "line": 9,
-                    "feature": "comment"
-                },
-                {
-                    "text": "chunk: random string",
-                    "line": 13,
-                    "feature": "comment"
-                },
-                {
-                    "text": "umlaut ö ä ü ß",
-                    "line": 18,
-                    "feature": "comment"
-                },
-                {
-                    "text": "some plot",
-                    "line": 22,
-                    "feature": "comment"
-                }
-            ],
-            "publication_type": "other",
-            "publicationDate": "2017-08-21",
-            "paperSource": "document.Rmd",
-            "paperLanguage": [],
-                "license": {
-                    "uibindings": "GPL-3.0",
-                    "text": "CC-BY-NC-4.0",
-                    "data": "CC-BY-NC-4.0",
-                    "code": "GPL-3.0"
-                },
-            "keywords": [
-                "lorem",
-                "ipsum",
-                "dolor",
-                "sit",
-                "amet"
-            ],
-            "interaction": {
-                "ui_binding": {
-                    "widget": null,
-                    "variable": null,
-                    "purpose": null,
-                    "code": {
-                        "shinyRenderFunction": null,
-                        "shinyInputFunction": null,
-                        "functionParameter": null,
-                        "function": null,
-                        "filename": null
-                    }
-                },
-                "interactive": false
-            },
-            "inputfiles": [],
-            "identifier": {
-                "reserveddoi": null,
-                "doiurl": "https://doi.org/10.1126/science.1092666",
-                "doi": "10.1126/science.1092666"
-            },
-            "generatedBy": "o2r-meta metaextract.py",
-            "file": {
-                "mimetype": "text/markdown",
-                "filepath": "mQryh/data/document.Rmd",
-                "filename": "document.Rmd"
-            },
-            "ercIdentifier": "mQryh",
-            "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
-            "depends": [
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "RColorBrewer",
-                    "category": "geo sciences,CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "dplyr",
-                    "category": "geo sciences,CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "ggplot2",
-                    "category": "geo sciences,CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "minqa",
-                    "category": "CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "PBSmapping",
-                    "category": "geo sciences"
-                }
-            ],
-            "communities": [
-                {
-                    "identifier": "o2r"
-                }
-            ],
-            "codefiles": [],
-            "author": [
-                {
-                    "url": "\\url{http://404.awebsite8372930.org}",
-                    "orcid": null,
-                    "name": "Hajime Akimoto",
-                    "email": "ted.tester@awebsite8372930.org",
-                    "affiliation2": "University of Nowhere",
-                    "affiliation": "University of Munster",
-                    "address": "This might be a correct address Yet it might also be lorem ipsum\\newline Another line 252b\\newline 00000 Anywhere, Nomansland\n",
-                    "Telephone": "+00/00/1000-2000"
-                }
-            ],
-            "access_right": "open"
-        },
-        "raw": {
-            "viewfiles": [
-                "mQryh/data/document.html"
-            ],
-            "viewfile": null,
-            "version": null,
-            "upload_type": "publication",
-            "title": "Global Air Quality and Pollution",
-            "temporal": {
-                "end": null,
-                "begin": null
-            },
-            "spatial": {
-                "spatial": {
-                    "union": {
-                        "geojson": {
-                            "type": "Feature",
-                            "geometry": {
-                                "type": "Polygon",
-                                "coordinates": [
-                                    [
-                                        6.532745361328125,
-                                        51.205162601119824
-                                    ],
-                                    [
-                                        7.551727294921875,
-                                        51.205162601119824
-                                    ],
-                                    [
-                                        7.551727294921875,
-                                        51.5463350479341
-                                    ],
-                                    [
-                                        6.532745361328125,
-                                        51.5463350479341
-                                    ]
-                                ]
-                            },
-                            "bbox": [
-                                6.532745361328125,
-                                51.205162601119824,
-                                7.551727294921875,
-                                51.205162601119824
-                            ]
-                        }
-                    },
-                    "files": [
-                        {
-                            "source_file": "mQryh/data/testshapefiles_ruhr/POLYGON.shp",
-                            "geojson": {
-                                "type": "Feature",
-                                "geometry": {
-                                    "type": "Polygon",
-                                    "coordinates": [
-                                        [
-                                            [
-                                                6.532745361328125,
-                                                51.205162601119824
-                                            ],
-                                            [
-                                                7.551727294921875,
-                                                51.5463350479341
-                                            ]
-                                        ]
-                                    ]
-                                },
-                                "bbox": [
-                                    6.532745361328125,
-                                    51.205162601119824,
-                                    7.551727294921875,
-                                    51.5463350479341
-                                ]
-                            }
-                        }
-                    ]
-                }
-            },
-            "softwarePaperCitation": null,
-            "researchQuestions": [],
-            "researchHypotheses": [],
-            "recordDateCreated": "2017-08-21",
-            "r_rdata": [],
-            "r_output": [
-                {
-                    "text": "42",
-                    "line": 14,
-                    "feature": "setseed"
-                },
-                {
-                    "text": "plot",
-                    "line": 23,
-                    "feature": "result"
-                },
-                {
-                    "text": "print",
-                    "line": 25,
-                    "feature": "result"
-                }
-            ],
-            "r_input": [],
-            "r_comment": [
-                {
-                    "text": "Trying some seperation lines:",
-                    "line": 9,
-                    "feature": "comment"
-                },
-                {
-                    "text": "chunk: random string",
-                    "line": 13,
-                    "feature": "comment"
-                },
-                {
-                    "text": "umlaut ö ä ü ß",
-                    "line": 18,
-                    "feature": "comment"
-                },
-                {
-                    "text": "some plot",
-                    "line": 22,
-                    "feature": "comment"
-                }
-            ],
-            "publication_type": "other",
-            "publicationDate": "2017-08-21",
-            "paperSource": "document.Rmd",
-            "paperLanguage": [],
-                "license": {
-                    "uibindings": "GPL-3.0",
-                    "text": "CC-BY-NC-4.0",
-                    "data": "CC-BY-NC-4.0",
-                    "code": "GPL-3.0"
-                },
-            "keywords": [
-                "lorem",
-                "ipsum",
-                "dolor",
-                "sit",
-                "amet"
-            ],
-            "interaction": {
-                "ui_binding": {
-                    "widget": null,
-                    "variable": null,
-                    "purpose": null,
-                    "code": {
-                        "shinyRenderFunction": null,
-                        "shinyInputFunction": null,
-                        "functionParameter": null,
-                        "function": null,
-                        "filename": null
-                    }
-                },
-                "interactive": false
-            },
-            "inputfiles": [],
-            "identifier": {
-                "reserveddoi": null,
-                "doiurl": "https://doi.org/10.1126/science.1092666",
-                "doi": "10.1126/science.1092666"
-            },
-            "generatedBy": "o2r-meta metaextract.py",
-            "file": {
-                "mimetype": "text/markdown",
-                "filepath": "mQryh/data/document.Rmd",
-                "filename": "document.Rmd"
-            },
-            "ercIdentifier": "mQryh",
-            "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
-            "depends": [
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "RColorBrewer",
-                    "category": "geo sciences,CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "dplyr",
-                    "category": "geo sciences,CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "ggplot2",
-                    "category": "geo sciences,CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "minqa",
-                    "category": "CRAN Top100"
-                },
-                {
-                    "version": null,
-                    "packageSystem": "https://cloud.r-project.org/",
-                    "identifier": "PBSmapping",
-                    "category": "geo sciences"
-                }
-            ],
-            "communities": [
-                {
-                    "identifier": "o2r"
-                }
-            ],
-            "codefiles": [],
-            "author": [
-                {
-                    "url": "\\url{http://404.awebsite8372930.org}",
-                    "orcid": null,
-                    "name": "Hajime Akimoto",
-                    "email": "ted.tester@awebsite8372930.org",
-                    "affiliation2": "University of Nowhere",
-                    "affiliation": "University of Munster",
-                    "address": "This might be a correct address Yet it might also be lorem ipsum\\newline Another line 252b\\newline 00000 Anywhere, Nomansland\n",
-                    "Telephone": "+00/00/1000-2000"
-                }
-            ],
-            "access_right": "open"
-        }
-    },
-    "jobs": [],
-    "created": "2017-08-21T14:31:27.376Z",
-    "__v": 0,
-    "files": {
-        "path": "/api/v1/compendium/MRk0J/data",
-        "name": "MRk0J",
-        "children": [
-            {
-                "path": "/api/v1/compendium/MRk0J/data/bag-info.txt",
-                "name": "bag-info.txt",
-                "size": 129,
-                "extension": ".txt",
-                "type": "text/plain"
-            },
-            {
-                "path": "/api/v1/compendium/MRk0J/data/bagit.txt",
-                "name": "bagit.txt",
-                "size": 55,
-                "extension": ".txt",
-                "type": "text/plain"
-            },
-            {
-                "path": "/api/v1/compendium/MRk0J/data/data",
-                "name": "data",
-                "children": [
-                    {
-                        "path": "/api/v1/compendium/MRk0J/data/data/.erc",
-                        "name": ".erc",
-                        "children": [
-                            {
-                                "path": "/api/v1/compendium/MRk0J/data/data/.erc/meta_2017102714101599_document_.json",
-                                "name": "meta_2017102714101599_document_.json",
-                                "size": 3414,
-                                "extension": ".json",
-                                "type": "application/json"
-                            },
-                            {
-                                "path": "/api/v1/compendium/MRk0J/data/data/.erc/metadata_o2r.json",
-                                "name": "metadata_o2r.json",
-                                "size": 3563,
-                                "extension": ".json",
-                                "type": "application/json"
-                            },
-                            {
-                                "path": "/api/v1/compendium/MRk0J/data/data/.erc/metadata_raw.json",
-                                "name": "metadata_raw.json",
-                                "size": 6716,
-                                "extension": ".json",
-                                "type": "application/json"
-                            },
-                            {
-                                "path": "/api/v1/compendium/MRk0J/data/data/.erc/metadata_zenodo.json",
-                                "name": "metadata_zenodo.json",
-                                "size": 896,
-                                "extension": ".json",
-                                "type": "application/json"
-                            }
-                        ],
-                        "size": 14589,
-                        "type": "directory"
-                    },
-                    {
-                        "path": "/api/v1/compendium/MRk0J/data/data/Dockerfile",
-                        "name": "Dockerfile",
-                        "size": 71,
-                        "extension": ""
-                    },
-                    {
-                        "path": "/api/v1/compendium/MRk0J/data/data/bagtainer.yml",
-                        "name": "bagtainer.yml",
-                        "size": 68,
-                        "extension": ".yml",
-                        "type": "text/yaml"
-                    },
-                    {
-                        "path": "/api/v1/compendium/MRk0J/data/data/document.Rmd",
-                        "name": "document.Rmd",
-                        "size": 4335,
-                        "extension": ".rmd"
-                    },
-                    {
-                        "path": "/api/v1/compendium/MRk0J/data/data/document.html",
-                        "name": "document.html",
-                        "size": 805400,
-                        "extension": ".html",
-                        "type": "text/html"
-                    },
-                    {
-                        "path": "/api/v1/compendium/MRk0J/data/data/document.tex",
-                        "name": "document.tex",
-                        "size": 5288,
-                        "extension": ".tex",
-                        "type": "application/x-tex"
-                    },
-                    {
-                        "path": "/api/v1/compendium/MRk0J/data/data/erc.yml",
-                        "name": "erc.yml",
-                        "size": 308,
-                        "extension": ".yml",
-                        "type": "text/yaml"
-                    },
-                    {
-                        "path": "/api/v1/compendium/MRk0J/data/data/metadata.json",
-                        "name": "metadata.json",
-                        "size": 4622,
-                        "extension": ".json",
-                        "type": "application/json"
-                    },
-                    {
-                        "path": "/api/v1/compendium/MRk0J/data/data/testshapefiles_ruhr",
-                        "name": "testshapefiles_ruhr",
-                        "children": [
-                            {
-                                "path": "/api/v1/compendium/MRk0J/data/data/testshapefiles_ruhr/POLYGON.dbf",
-                                "name": "POLYGON.dbf",
-                                "size": 34,
-                                "extension": ".dbf"
-                            },
-                            {
-                                "path": "/api/v1/compendium/MRk0J/data/data/testshapefiles_ruhr/POLYGON.prj",
-                                "name": "POLYGON.prj",
-                                "size": 143,
-                                "extension": ".prj"
-                            },
-                            {
-                                "path": "/api/v1/compendium/MRk0J/data/data/testshapefiles_ruhr/POLYGON.shp",
-                                "name": "POLYGON.shp",
-                                "size": 236,
-                                "extension": ".shp"
-                            },
-                            {
-                                "path": "/api/v1/compendium/MRk0J/data/data/testshapefiles_ruhr/POLYGON.shx",
-                                "name": "POLYGON.shx",
-                                "size": 108,
-                                "extension": ".shx"
-                            }
-                        ],
-                        "size": 521,
-                        "type": "directory"
-                    }
-                ],
-                "size": 835202,
-                "type": "directory"
-            },
-            {
-                "path": "/api/v1/compendium/MRk0J/data/manifest-md5.txt",
-                "name": "manifest-md5.txt",
-                "size": 644,
-                "extension": ".txt",
-                "type": "text/plain"
-            },
-            {
-                "path": "/api/v1/compendium/MRk0J/data/tagmanifest-md5.txt",
-                "name": "tagmanifest-md5.txt",
-                "size": 139,
-                "extension": ".txt",
-                "type": "text/plain"
-            }
+        "keywords": [
+          "lorem",
+          "ipsum",
+          "dolor",
+          "sit",
+          "amet"
         ],
-        "size": 836169,
-        "type": "directory"
+        "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
+        "creators": [
+          {
+            "name": "Hajime Akimoto",
+            "affiliation": "University of Munster"
+          }
+        ],
+        "communities": [
+          {
+            "identifier": "o2r"
+          }
+        ],
+        "access_right": "open"
+      }
+    },
+    "o2r": {
+      "viewfiles": [
+        "mQryh/data/document.html"
+      ],
+      "viewfile": null,
+      "version": null,
+      "upload_type": "publication",
+      "title": "Global Air Quality and Pollution",
+      "temporal": {
+        "begin": "2010-01-01T00:00:00.000Z",
+        "end": "2010-12-31T00:00:00.000Z"
+      },
+      "spatial": {
+        "union": {
+          "geojson": {
+            "type": "Feature",
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  6.532745361328125,
+                  51.205162601119824
+                ],
+                [
+                  7.551727294921875,
+                  51.205162601119824
+                ],
+                [
+                  7.551727294921875,
+                  51.5463350479341
+                ],
+                [
+                  6.532745361328125,
+                  51.5463350479341
+                ]
+              ]
+            },
+            "bbox": [
+              6.532745361328125,
+              51.205162601119824,
+              7.551727294921875,
+              51.205162601119824
+            ]
+          }
+        },
+        "files": [
+          {
+            "source_file": "mQryh/data/testshapefiles_ruhr/POLYGON.shp",
+            "geojson": {
+              "type": "Feature",
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      6.532745361328125,
+                      51.205162601119824
+                    ],
+                    [
+                      7.551727294921875,
+                      51.5463350479341
+                    ]
+                  ]
+                ]
+              },
+              "bbox": [
+                6.532745361328125,
+                51.205162601119824,
+                7.551727294921875,
+                51.5463350479341
+              ]
+            }
+          }
+        ]
+      },
+      "softwarePaperCitation": null,
+      "researchQuestions": [],
+      "researchHypotheses": [],
+      "recordDateCreated": "2017-08-21",
+      "r_rdata": [],
+      "r_output": [
+        {
+          "text": "42",
+          "line": 14,
+          "feature": "setseed"
+        },
+        {
+          "text": "plot",
+          "line": 23,
+          "feature": "result"
+        },
+        {
+          "text": "print",
+          "line": 25,
+          "feature": "result"
+        }
+      ],
+      "r_input": [],
+      "r_comment": [
+        {
+          "text": "Trying some seperation lines:",
+          "line": 9,
+          "feature": "comment"
+        },
+        {
+          "text": "chunk: random string",
+          "line": 13,
+          "feature": "comment"
+        },
+        {
+          "text": "umlaut ö ä ü ß",
+          "line": 18,
+          "feature": "comment"
+        },
+        {
+          "text": "some plot",
+          "line": 22,
+          "feature": "comment"
+        }
+      ],
+      "publication_type": "other",
+      "publicationDate": "2017-08-21",
+      "paperSource": "document.Rmd",
+      "paperLanguage": [],
+      "license": {
+        "uibindings": "GPL-3.0",
+        "text": "CC-BY-NC-4.0",
+        "data": "CC-BY-NC-4.0",
+        "code": "GPL-3.0"
+      },
+      "keywords": [
+        "lorem",
+        "ipsum",
+        "dolor",
+        "sit",
+        "amet"
+      ],
+      "interaction": {
+        "ui_binding": {
+          "widget": null,
+          "variable": null,
+          "purpose": null,
+          "code": {
+            "shinyRenderFunction": null,
+            "shinyInputFunction": null,
+            "functionParameter": null,
+            "function": null,
+            "filename": null
+          }
+        },
+        "interactive": false
+      },
+      "inputfiles": [],
+      "identifier": {
+        "reserveddoi": null,
+        "doiurl": "https://doi.org/10.1126/science.1092666",
+        "doi": "10.1126/science.1092666"
+      },
+      "generatedBy": "o2r-meta metaextract.py",
+      "file": {
+        "mimetype": "text/markdown",
+        "filepath": "mQryh/data/document.Rmd",
+        "filename": "document.Rmd"
+      },
+      "ercIdentifier": "mQryh",
+      "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
+      "depends": [
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "RColorBrewer",
+          "category": "geo sciences,CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "dplyr",
+          "category": "geo sciences,CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "ggplot2",
+          "category": "geo sciences,CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "minqa",
+          "category": "CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "PBSmapping",
+          "category": "geo sciences"
+        }
+      ],
+      "communities": [
+        {
+          "identifier": "o2r"
+        }
+      ],
+      "codefiles": [],
+      "author": [
+        {
+          "url": "\\url{http://404.awebsite8372930.org}",
+          "orcid": null,
+          "name": "Hajime Akimoto",
+          "email": "ted.tester@awebsite8372930.org",
+          "affiliation2": "University of Nowhere",
+          "affiliation": "University of Munster",
+          "address": "This might be a correct address Yet it might also be lorem ipsum\\newline Another line 252b\\newline 00000 Anywhere, Nomansland\n",
+          "Telephone": "+00/00/1000-2000"
+        }
+      ],
+      "access_right": "open"
+    },
+    "raw": {
+      "viewfiles": [
+        "mQryh/data/document.html"
+      ],
+      "viewfile": null,
+      "version": null,
+      "upload_type": "publication",
+      "title": "Global Air Quality and Pollution",
+      "temporal": {
+        "end": null,
+        "begin": null
+      },
+      "spatial": {
+        "spatial": {
+          "union": {
+            "geojson": {
+              "type": "Feature",
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    6.532745361328125,
+                    51.205162601119824
+                  ],
+                  [
+                    7.551727294921875,
+                    51.205162601119824
+                  ],
+                  [
+                    7.551727294921875,
+                    51.5463350479341
+                  ],
+                  [
+                    6.532745361328125,
+                    51.5463350479341
+                  ]
+                ]
+              },
+              "bbox": [
+                6.532745361328125,
+                51.205162601119824,
+                7.551727294921875,
+                51.205162601119824
+              ]
+            }
+          },
+          "files": [
+            {
+              "source_file": "mQryh/data/testshapefiles_ruhr/POLYGON.shp",
+              "geojson": {
+                "type": "Feature",
+                "geometry": {
+                  "type": "Polygon",
+                  "coordinates": [
+                    [
+                      [
+                        6.532745361328125,
+                        51.205162601119824
+                      ],
+                      [
+                        7.551727294921875,
+                        51.5463350479341
+                      ]
+                    ]
+                  ]
+                },
+                "bbox": [
+                  6.532745361328125,
+                  51.205162601119824,
+                  7.551727294921875,
+                  51.5463350479341
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "softwarePaperCitation": null,
+      "researchQuestions": [],
+      "researchHypotheses": [],
+      "recordDateCreated": "2017-08-21",
+      "r_rdata": [],
+      "r_output": [
+        {
+          "text": "42",
+          "line": 14,
+          "feature": "setseed"
+        },
+        {
+          "text": "plot",
+          "line": 23,
+          "feature": "result"
+        },
+        {
+          "text": "print",
+          "line": 25,
+          "feature": "result"
+        }
+      ],
+      "r_input": [],
+      "r_comment": [
+        {
+          "text": "Trying some seperation lines:",
+          "line": 9,
+          "feature": "comment"
+        },
+        {
+          "text": "chunk: random string",
+          "line": 13,
+          "feature": "comment"
+        },
+        {
+          "text": "umlaut ö ä ü ß",
+          "line": 18,
+          "feature": "comment"
+        },
+        {
+          "text": "some plot",
+          "line": 22,
+          "feature": "comment"
+        }
+      ],
+      "publication_type": "other",
+      "publicationDate": "2017-08-21",
+      "paperSource": "document.Rmd",
+      "paperLanguage": [],
+      "license": {
+        "uibindings": "GPL-3.0",
+        "text": "CC-BY-NC-4.0",
+        "data": "CC-BY-NC-4.0",
+        "code": "GPL-3.0"
+      },
+      "keywords": [
+        "lorem",
+        "ipsum",
+        "dolor",
+        "sit",
+        "amet"
+      ],
+      "interaction": {
+        "ui_binding": {
+          "widget": null,
+          "variable": null,
+          "purpose": null,
+          "code": {
+            "shinyRenderFunction": null,
+            "shinyInputFunction": null,
+            "functionParameter": null,
+            "function": null,
+            "filename": null
+          }
+        },
+        "interactive": false
+      },
+      "inputfiles": [],
+      "identifier": {
+        "reserveddoi": null,
+        "doiurl": "https://doi.org/10.1126/science.1092666",
+        "doi": "10.1126/science.1092666"
+      },
+      "generatedBy": "o2r-meta metaextract.py",
+      "file": {
+        "mimetype": "text/markdown",
+        "filepath": "mQryh/data/document.Rmd",
+        "filename": "document.Rmd"
+      },
+      "ercIdentifier": "mQryh",
+      "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
+      "depends": [
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "RColorBrewer",
+          "category": "geo sciences,CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "dplyr",
+          "category": "geo sciences,CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "ggplot2",
+          "category": "geo sciences,CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "minqa",
+          "category": "CRAN Top100"
+        },
+        {
+          "version": null,
+          "packageSystem": "https://cloud.r-project.org/",
+          "identifier": "PBSmapping",
+          "category": "geo sciences"
+        }
+      ],
+      "communities": [
+        {
+          "identifier": "o2r"
+        }
+      ],
+      "codefiles": [],
+      "author": [
+        {
+          "url": "\\url{http://404.awebsite8372930.org}",
+          "orcid": null,
+          "name": "Hajime Akimoto",
+          "email": "ted.tester@awebsite8372930.org",
+          "affiliation2": "University of Nowhere",
+          "affiliation": "University of Munster",
+          "address": "This might be a correct address Yet it might also be lorem ipsum\\newline Another line 252b\\newline 00000 Anywhere, Nomansland\n",
+          "Telephone": "+00/00/1000-2000"
+        }
+      ],
+      "access_right": "open"
     }
+  },
+  "jobs": [],
+  "created": "2017-08-21T14:31:27.376Z",
+  "__v": 0,
+  "files": {
+    "path": "/api/v1/compendium/MRk0J/data",
+    "name": "MRk0J",
+    "children": [
+      {
+        "path": "/api/v1/compendium/MRk0J/data/bag-info.txt",
+        "name": "bag-info.txt",
+        "size": 129,
+        "extension": ".txt",
+        "type": "text/plain"
+      },
+      {
+        "path": "/api/v1/compendium/MRk0J/data/bagit.txt",
+        "name": "bagit.txt",
+        "size": 55,
+        "extension": ".txt",
+        "type": "text/plain"
+      },
+      {
+        "path": "/api/v1/compendium/MRk0J/data/data",
+        "name": "data",
+        "children": [
+          {
+            "path": "/api/v1/compendium/MRk0J/data/data/.erc",
+            "name": ".erc",
+            "children": [
+              {
+                "path": "/api/v1/compendium/MRk0J/data/data/.erc/meta_2017102714101599_document_.json",
+                "name": "meta_2017102714101599_document_.json",
+                "size": 3414,
+                "extension": ".json",
+                "type": "application/json"
+              },
+              {
+                "path": "/api/v1/compendium/MRk0J/data/data/.erc/metadata_o2r.json",
+                "name": "metadata_o2r.json",
+                "size": 3563,
+                "extension": ".json",
+                "type": "application/json"
+              },
+              {
+                "path": "/api/v1/compendium/MRk0J/data/data/.erc/metadata_raw.json",
+                "name": "metadata_raw.json",
+                "size": 6716,
+                "extension": ".json",
+                "type": "application/json"
+              },
+              {
+                "path": "/api/v1/compendium/MRk0J/data/data/.erc/metadata_zenodo.json",
+                "name": "metadata_zenodo.json",
+                "size": 896,
+                "extension": ".json",
+                "type": "application/json"
+              }
+            ],
+            "size": 14589,
+            "type": "directory"
+          },
+          {
+            "path": "/api/v1/compendium/MRk0J/data/data/Dockerfile",
+            "name": "Dockerfile",
+            "size": 71,
+            "extension": ""
+          },
+          {
+            "path": "/api/v1/compendium/MRk0J/data/data/bagtainer.yml",
+            "name": "bagtainer.yml",
+            "size": 68,
+            "extension": ".yml",
+            "type": "text/yaml"
+          },
+          {
+            "path": "/api/v1/compendium/MRk0J/data/data/document.Rmd",
+            "name": "document.Rmd",
+            "size": 4335,
+            "extension": ".rmd"
+          },
+          {
+            "path": "/api/v1/compendium/MRk0J/data/data/document.html",
+            "name": "document.html",
+            "size": 805400,
+            "extension": ".html",
+            "type": "text/html"
+          },
+          {
+            "path": "/api/v1/compendium/MRk0J/data/data/document.tex",
+            "name": "document.tex",
+            "size": 5288,
+            "extension": ".tex",
+            "type": "application/x-tex"
+          },
+          {
+            "path": "/api/v1/compendium/MRk0J/data/data/erc.yml",
+            "name": "erc.yml",
+            "size": 308,
+            "extension": ".yml",
+            "type": "text/yaml"
+          },
+          {
+            "path": "/api/v1/compendium/MRk0J/data/data/metadata.json",
+            "name": "metadata.json",
+            "size": 4622,
+            "extension": ".json",
+            "type": "application/json"
+          },
+          {
+            "path": "/api/v1/compendium/MRk0J/data/data/testshapefiles_ruhr",
+            "name": "testshapefiles_ruhr",
+            "children": [
+              {
+                "path": "/api/v1/compendium/MRk0J/data/data/testshapefiles_ruhr/POLYGON.dbf",
+                "name": "POLYGON.dbf",
+                "size": 34,
+                "extension": ".dbf"
+              },
+              {
+                "path": "/api/v1/compendium/MRk0J/data/data/testshapefiles_ruhr/POLYGON.prj",
+                "name": "POLYGON.prj",
+                "size": 143,
+                "extension": ".prj"
+              },
+              {
+                "path": "/api/v1/compendium/MRk0J/data/data/testshapefiles_ruhr/POLYGON.shp",
+                "name": "POLYGON.shp",
+                "size": 236,
+                "extension": ".shp"
+              },
+              {
+                "path": "/api/v1/compendium/MRk0J/data/data/testshapefiles_ruhr/POLYGON.shx",
+                "name": "POLYGON.shx",
+                "size": 108,
+                "extension": ".shx"
+              }
+            ],
+            "size": 521,
+            "type": "directory"
+          }
+        ],
+        "size": 835202,
+        "type": "directory"
+      },
+      {
+        "path": "/api/v1/compendium/MRk0J/data/manifest-md5.txt",
+        "name": "manifest-md5.txt",
+        "size": 644,
+        "extension": ".txt",
+        "type": "text/plain"
+      },
+      {
+        "path": "/api/v1/compendium/MRk0J/data/tagmanifest-md5.txt",
+        "name": "tagmanifest-md5.txt",
+        "size": 139,
+        "extension": ".txt",
+        "type": "text/plain"
+      }
+    ],
+    "size": 836169,
+    "type": "directory"
+  }
 }
