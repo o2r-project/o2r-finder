@@ -46,8 +46,9 @@ c.elasticsearch.type.compendia = env.FINDER_ELASTICSEARCH_TYPE_COMPENDIA || 'com
 c.elasticsearch.type.jobs = env.FINDER_ELASTICSEARCH_TYPE_JOBS || 'jobs';
 
 c.elasticsearch.location = env.ELASTIC_SEARCH_URL || 'http://localhost:9200';
-
 c.elasticsearch.analyzer = 'doi_analyzer';
+
+c.elasticsearch.supportURISearch = true;
 
 // startup
 c.start = {};
@@ -79,8 +80,8 @@ c.fs.compendium = c.fs.base + 'compendium/';
 
 // file tree creation from local files
 c.fs.fileTree = {};
-c.fs.fileTree.reload = true;
-c.fs.fileTree.failOnError = true;
+c.fs.fileTree.reload = false;
+c.fs.fileTree.failOnError = true; //todo implement to not fail on sync error
 
 c.id_length = 5; // must match other services
 

@@ -25,7 +25,6 @@ const esclient = new elasticsearch.Client({
     log: 'info'
 });
 
-
 exports.simpleSearch = (req, res) => {
     if (typeof req.query.q === 'undefined') {
         debug('no query string provided, aborting');
@@ -33,8 +32,17 @@ exports.simpleSearch = (req, res) => {
         return;
     }
 
+    let queryString = req.query.q;
+
+    if (config.elasticsearch.supportURISearch) {
+        if (queryString.includes('://')) {
+            // remove colon from query string to allow exact matching for URIs in elasticsearch
+            queryString = '//' + queryString.split('://')[1];
+        }
+    }
+
     // escape forward slashes ("/") with ("\/")
-    let queryString = req.query.q.replace(/\//g, '\\$&');
+    queryString = queryString.replace(/\//g, '\\$&');
 
     debug('Starting a simple search for query %s', queryString);
 
@@ -55,7 +63,11 @@ exports.simpleSearch = (req, res) => {
         res.status(200).send(resp);
     }).catch(function (err) {
         debug('Error querying index: %s', err);
-        res.status(err.status).send({error: err.root_cause[err.root_cause.length-1].reason});
+        if (err.root_cause  && err.root_cause[0].reason) {
+            res.status(err.status).send({error: err.root_cause[0].reason});
+        } else {
+            res.status(err.status).send({error: 'simple query failed'});
+        }
     });
 };
 
@@ -77,6 +89,10 @@ exports.complexSearch = (req, res) => {
         res.status(200).send(resp);
     }).catch(function (err) {
         debug('Error querying index: %s', err);
-        res.status(err.status).send({error: err.root_cause[err.root_cause.length-1].reason});
+        if (err.root_cause  && err.root_cause[0].reason) {
+            res.status(err.status).send({error: err.root_cause[0].reason});
+        } else {
+            res.status(err.status).send({error: 'complex query failed'});
+        }
     });
 };
