@@ -53,7 +53,7 @@ exports.simpleSearch = (req, res) => {
                 bool: {
                     should : [
                         {query_string: {default_field: "_all", query: queryString}},
-                        {query_string: {default_field: "_special", query: queryString}},
+                        {query_string: {default_field: config.elasticsearch.specialCharField, query: queryString}},
                     ]
                 }
             }

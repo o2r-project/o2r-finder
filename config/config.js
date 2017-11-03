@@ -62,6 +62,7 @@ c.elasticsearch.type.jobs = env.FINDER_ELASTICSEARCH_TYPE_JOBS || 'jobs';
 
 c.elasticsearch.location = env.ELASTIC_SEARCH_URL || 'http://localhost:9200';
 c.elasticsearch.analyzer = 'doi_analyzer';
+c.elasticsearch.specialCharField = '_special';
 
 c.elasticsearch.supportURISearch = true;
 

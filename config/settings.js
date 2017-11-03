@@ -15,18 +15,22 @@
 *
 */
 
+const config = require('./config');
+
+let analyzer = {};
+
+analyzer[config.elasticsearch.analyzer] = {
+    "type": "custom",
+    "filter": [
+        "lowercase"
+    ],
+    "tokenizer": "whitespace"
+};
+
 const settings = {
     "settings": {
         "analysis": {
-            "analyzer": {
-                "doi_analyzer": {
-                    "type": "custom",
-                    "filter": [
-                        "lowercase"
-                    ],
-                    "tokenizer": "whitespace"
-                }
-            }
+            "analyzer": analyzer
         }
     }
 };

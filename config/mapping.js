@@ -15,12 +15,14 @@
 *
 */
 
+const config = require('./config');
+
 const mapping = {
     "compendia": {
         "properties": {
             "_special": {
                 "type": "string",
-                "analyzer": "doi_analyzer"
+                "analyzer": config.elasticsearch.analyzer
             },
             "metadata": {
                 "properties": {
@@ -46,11 +48,11 @@ const mapping = {
                                 "properties": {
                                     "doi": {
                                         "type": "string",
-                                        "copy_to": "_special"
+                                        "copy_to": config.elasticsearch.specialCharField
                                     },
                                     "doiurl": {
                                         "type": "string",
-                                        "copy_to": "_special"
+                                        "copy_to": config.elasticsearch.specialCharField
                                     }
                                 }
                             }
