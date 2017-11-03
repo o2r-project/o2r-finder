@@ -2,15 +2,28 @@
 
 [![](https://images.microbadger.com/badges/version/o2rproject/o2r-finder.svg)](https://microbadger.com/images/o2rproject/o2r-finder "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/o2rproject/o2r-finder.svg)](https://microbadger.com/images/o2rproject/o2r-finder "Get your own image badge on microbadger.com")
 
-Implementation of search features for the o2r API.
+Implementation of search features and the endpoint `/api/v1/search` for the o2r API.
 
 ## Architecture
 
-Since we want a simple auto-suggest search functionality, which is not readily available with MongoDB (though it has [full text search](https://github.com/o2r-project/o2r-finder/issues/1)), the finder utilizes Elasticsearch.
+The finder utilizes Elasticsearch to provide means for
+
+- A simple auto-suggest search functionality,
+- spatial search,
+- temporal search,
+- and all remaining Elasticsearch search queries.
+
+The auto-suggest search is  is not readily available with MongoDB (though it has [full text search](https://github.com/o2r-project/o2r-finder/issues/1)).
 
 Since we don't want to worry about keeping things in sync, the finder simply re-indices the whole database at startup and then subscribes to changes in the MongoDB using [node-elasticsearch-sync](https://github.com/toystars/node-elasticsearch-sync) (for both steps).
 
-The Elasticsearch search endpoint is then published read-only via an nginx proxy.
+The `/api/v1/search` endpoint allows two types of queries:
+
+1) Simple queries via *GET*: as an [Elasticsearch query string](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-uri-request.html)
+
+2) Complex queries via *POST*: using the [Elasticsearch Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)
+
+For more details and examples see the [Search API](http://o2r.info/o2r-web-api/search/) documentation.
 
 ## Indexed information
 
