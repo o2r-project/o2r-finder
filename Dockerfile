@@ -12,30 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-FROM alpine:3.6
+FROM node:8-alpine
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" > /etc/apk/repositories \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
 
 RUN apk add --no-cache \
-    git \
-    wget \
-    nodejs \
-    dumb-init \
-    nodejs-npm \
-    ca-certificates \
-  && update-ca-certificates \
-  && git clone --depth 1 -b master https://github.com/o2r-project/o2r-finder /finder
+  git \
+  dumb-init
 
 WORKDIR /finder
+COPY lib lib
+COPY config config
+COPY esconfig esconfig
+COPY controllers controllers
+COPY index.js index.js
+COPY package.json package.json
+
 RUN npm install --production
 
-# git needed for installing updated node-elasticsearch-sync from GitHub, so clean up after install
+# git only needed for installing updated node-elasticsearch-sync from GitHub, so clean up after install
 RUN apk del \
     git \
-    wget \
-    ca-certificates \
   && rm -rf /var/cache
 
 ARG VERSION=dev

@@ -26,12 +26,27 @@ c.version = require('../package.json').version;
 c.api_version = 1;
 
 // network & databases
-c.net.port         = env.FINDER_PORT || 8084;
-c.mongo.location = env.LOADER_MONGODB || 'mongodb://localhost/';
-c.mongo.database = env.LOADER_MONGODB_DATABASE || 'muncher';
+c.net.port = env.FINDER_PORT || 8084;
+c.mongo.location = env.FINDER_MONGODB || 'mongodb://localhost/';
+c.mongo.database = env.FINDER_MONGODB_DATABASE || 'muncher';
 c.mongo.initial_connection_attempts = 30;
 c.mongo.initial_connection_max_delay = 5000;
 c.mongo.initial_connection_initial_delay = 1000;
+
+// fix mongo location if trailing slash was omitted
+if (c.mongo.location[c.mongo.location.length - 1] !== '/') {
+    c.mongo.location += '/';
+}
+
+if(!env.MONGO_OPLOG_URL) {
+    env.MONGO_OPLOG_URL = c.mongo.location + c.mongo.database;
+}
+if(!env.MONGO_DATA_URL) {
+    env.MONGO_DATA_URL = c.mongo.location + c.mongo.database;
+}
+if(!env.BATCH_COUNT) {
+    env.BATCH_COUNT = 20;
+}
 
 c.mongo.collection = {};
 c.mongo.collection.compendia = env.FINDER_MONGODB_COLL_COMPENDIA || 'compendia';
