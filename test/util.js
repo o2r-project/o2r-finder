@@ -28,6 +28,8 @@ const exec = require('child_process').exec;
 const esMapping = require('../config/mapping');
 const esSettings = require('../config/settings');
 
+const ESMongoSync = require('node-elasticsearch-sync');
+
 // standalone Elasticsearch client
 const elasticsearch = require('elasticsearch');
 const esclient = new elasticsearch.Client({
@@ -39,35 +41,35 @@ const sessionId_o2r = 'C0LIrsxGtHOGHld8Nv2jedjL4evGgEHo';
 const orcid_o2r = '0000-0001-6021-1617';
 
 function uploadCompendium(path, cookie) {
-  var zip = new AdmZip();
-  zip.addLocalFolder(path);
-  var tmpfile = tmp.tmpNameSync() + '.zip';
-  //var zipBuffer = zip.toBuffer(); could not make buffer work with multipart/form
-  zip.writeZip(tmpfile);
+    var zip = new AdmZip();
+    zip.addLocalFolder(path);
+    var tmpfile = tmp.tmpNameSync() + '.zip';
+    //var zipBuffer = zip.toBuffer(); could not make buffer work with multipart/form
+    zip.writeZip(tmpfile);
 
-  let formData = {
-    'content_type': 'compendium',
-    'compendium': {
-      value: fs.createReadStream(tmpfile),
-      options: {
-        filename: 'another.zip',
-        contentType: 'application/zip'
-      }
-    }
-  };
-  let j = request.jar();
-  let ck = request.cookie('connect.sid=' + cookie);
-  j.setCookie(ck, global.test_host);
+    let formData = {
+        'content_type': 'compendium',
+        'compendium': {
+            value: fs.createReadStream(tmpfile),
+            options: {
+                filename: 'another.zip',
+                contentType: 'application/zip'
+            }
+        }
+    };
+    let j = request.jar();
+    let ck = request.cookie('connect.sid=' + cookie);
+    j.setCookie(ck, global.test_host);
 
-  let reqParams = {
-    uri: global.test_host_upload + '/api/v1/compendium',
-    method: 'POST',
-    jar: j,
-    formData: formData,
-    timeout: 10000
-  };
+    let reqParams = {
+        uri: global.test_host_upload + '/api/v1/compendium',
+        method: 'POST',
+        jar: j,
+        formData: formData,
+        timeout: 10000
+    };
 
-  return (reqParams);
+    return (reqParams);
 }
 
 function resetIndex() {
@@ -75,6 +77,8 @@ function resetIndex() {
         /*
          * Delete and recreate index for testing
          */
+        ESMongoSync.disconnect();
+
         esclient.indices.exists({index: config.elasticsearch.index})
             .then(function (resp) {
                 // Delete possibly existing index
@@ -111,6 +115,8 @@ function resetIndex() {
                 });
             }).then(function (resp) {
                 debug('Index and mapping configured.');
+                // Reconnect ESMongoSync
+                ESMongoSync.reconnect();
                 if (typeof resp === 'object') {
                     debug('Mapping successfully created. Elasticsearch response: %s', JSON.stringify(resp));
                     resolve(true);
@@ -119,6 +125,7 @@ function resetIndex() {
                 }
             }).catch(function (err) {
                 debug('Error creating index or mapping: %s', err);
+                ESMongoSync.reconnect();
                 reject(err);
             });
     });
