@@ -25,6 +25,31 @@ The `/api/v1/search` endpoint allows two types of queries:
 
 For more details and examples see the [Search API](http://o2r.info/o2r-web-api/search/) documentation.
 
+## Special characters
+
+The finder supports searching for special characters for these fields:
+ 
+- `metadata.o2r.identifier.doi`
+- `metadata.o2r.identifier.doiurl` 
+
+To support additional fields with special characters, the mapping in `config/mapping.js` has to be updated in order to copy the fields into the group field `_special`
+
+- When doing a simple query via a query string, both the `_special` and the `_all` fields are searched:
+
+`/api/v1/search?q=10.1006%2Fjeem.1994.1031`
+
+- When doing a complex query, the user has control over that. To search both fields build the query as following:
+
+```
+"query": {
+    "bool": {
+        "should" : [
+            {"query_string": {"default_field": "_all", "query": [...]}},
+            {"query_string": {"default_field": "_special", "query": [...]}},
+        ]
+    }
+}
+```
 ## Indexed information
 
 - whole database _muncher_ (an _index_ in Elasticsearch)
