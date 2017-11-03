@@ -20,15 +20,11 @@ const tmp = require('tmp');
 const AdmZip = require('adm-zip');
 const fs = require('fs');
 const config = require('../config/config');
-const path = require('path');
-const debug = require('debug');
 const mongojs = require('mongojs');
 const exec = require('child_process').exec;
 
 const esMapping = require('../config/mapping');
 const esSettings = require('../config/settings');
-
-const ESMongoSync = require('node-elasticsearch-sync');
 
 // standalone Elasticsearch client
 const elasticsearch = require('elasticsearch');
@@ -37,97 +33,57 @@ const esclient = new elasticsearch.Client({
     log: 'info'
 });
 
-const sessionId_o2r = 'C0LIrsxGtHOGHld8Nv2jedjL4evGgEHo';
-const orcid_o2r = '0000-0001-6021-1617';
-
 function uploadCompendium(path, cookie) {
-    var zip = new AdmZip();
-    zip.addLocalFolder(path);
-    var tmpfile = tmp.tmpNameSync() + '.zip';
-    //var zipBuffer = zip.toBuffer(); could not make buffer work with multipart/form
-    zip.writeZip(tmpfile);
+  var zip = new AdmZip();
+  zip.addLocalFolder(path);
+  var tmpfile = tmp.tmpNameSync() + '.zip';
+  //var zipBuffer = zip.toBuffer(); could not make buffer work with multipart/form
+  zip.writeZip(tmpfile);
 
-    let formData = {
-        'content_type': 'compendium',
-        'compendium': {
-            value: fs.createReadStream(tmpfile),
-            options: {
-                filename: 'another.zip',
-                contentType: 'application/zip'
-            }
-        }
-    };
-    let j = request.jar();
-    let ck = request.cookie('connect.sid=' + cookie);
-    j.setCookie(ck, global.test_host);
+  let formData = {
+    'content_type': 'compendium',
+    'compendium': {
+      value: fs.createReadStream(tmpfile),
+      options: {
+        filename: 'another.zip',
+        contentType: 'application/zip'
+      }
+    }
+  };
+  let j = request.jar();
+  let ck = request.cookie('connect.sid=' + cookie);
+  j.setCookie(ck, global.test_host);
 
-    let reqParams = {
-        uri: global.test_host_upload + '/api/v1/compendium',
-        method: 'POST',
-        jar: j,
-        formData: formData,
-        timeout: 10000
-    };
+  let reqParams = {
+    uri: global.test_host_upload + '/api/v1/compendium',
+    method: 'POST',
+    jar: j,
+    formData: formData,
+    timeout: 10000
+  };
 
-    return (reqParams);
+  return (reqParams);
 }
 
 function resetIndex() {
     return new Promise((resolve, reject) => {
         /*
-         * Delete and recreate index for testing
+         * Delete all documents in index config.elasticsearch.index
          */
-        ESMongoSync.disconnect();
-
-        esclient.indices.exists({index: config.elasticsearch.index})
-            .then(function (resp) {
-                // Delete possibly existing index
-                if (resp) {
-                    debug('Index %s already exists. Deleting index.', config.elasticsearch.index);
-                    return esclient.indices.delete({index: config.elasticsearch.index});
-                } else {
-                    debug('Index %s not found.', config.elasticsearch.index);
-                    return false;
+        esclient.deleteByQuery({
+            index: config.elasticsearch.index,
+            body: {
+                query: {
+                    match_all: {}
                 }
-            }).then(function (resp) {
-                // Create a new index if: 1) index was deleted in the last step 2) index didn't exist in the beginning
-                if (typeof resp === 'object' && resp.acknowledged) {
-                    debug('Existing index %s successfully deleted. Response: %s', config.elasticsearch.index, JSON.stringify(resp));
-                    debug('Recreating index with settings: %s', JSON.stringify(esSettings.settings));
-                    return esclient.indices.create({
-                        index: config.elasticsearch.index,
-                        body: esSettings.settings
-                    });
-                } else if (!resp) {
-                    debug('Creating index %s with settings %s because it does not exist yet.', config.elasticsearch.index, JSON.stringify(esSettings.settings));
-                    return esclient.indices.create({
-                        index: config.elasticsearch.index,
-                        body: esSettings.settings
-                    });
-                }
-            }).then(function (resp) {
-                debug('Index (re)created: %s', JSON.stringify(resp));
-                debug('Using mapping found in "config/mapping.js" for index %s: %s', config.elasticsearch.index, JSON.stringify(esMapping.mapping));
-                return esclient.indices.putMapping({
-                    index: config.elasticsearch.index,
-                    type: config.elasticsearch.type.compendia,
-                    body: esMapping.mapping
-                });
-            }).then(function (resp) {
-                debug('Index and mapping configured.');
-                // Reconnect ESMongoSync
-                ESMongoSync.reconnect();
-                if (typeof resp === 'object') {
-                    debug('Mapping successfully created. Elasticsearch response: %s', JSON.stringify(resp));
-                    resolve(true);
-                } else {
-                    resolve(false);
-                }
-            }).catch(function (err) {
-                debug('Error creating index or mapping: %s', err);
-                ESMongoSync.reconnect();
-                reject(err);
-            });
+            }
+        }).then(function (resp) {
+            console.log(`All documents from index ${config.elasticsearch.index} deleted.`);
+            resolve(true);
+        }).catch(function (err) {
+            console.log(err);
+            reject(err);
+        });
     });
 }
 

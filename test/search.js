@@ -18,27 +18,28 @@
 /* eslint-env mocha */
 const assert = require('chai').assert;
 const request = require('request');
-const config = require('../config/config');
 
 const mongojs = require('mongojs');
 const sleep = require('sleep');
 
 require("./setup");
-const cookie_o2r = 's:C0LIrsxGtHOGHld8Nv2jedjL4evGgEHo.GMsWD5Vveq0vBt7/4rGeoH5Xx7Dd2pgZR9DvhKCyDTY';
 const requestLoadingTimeout = 30000;
 const requestReadingTimeout = 30000;
 const importJSONCompendium = require('./util').importJSONCompendium;
 const resetIndex = require('./util').resetIndex;
-const waitSecs = 5;
+const waitSecs = 2;
+
+const queries = require('./queries/queries');
 
 describe('Elasticsearch search API', function () {
 
     before(function (done) {
-        this.timeout(10000);
+        this.timeout(20000);
         let db = mongojs('localhost/muncher', ['users', 'sessions', 'compendia', 'jobs']);
         db.compendia.drop(function (err, doc) {
+            if (err) console.log(err);
 
-            return resetIndex()
+            resetIndex()
                 .then(Promise.all([
                     importJSONCompendium('./test/erc/spatiotemporal/finland2000.json'),
                     importJSONCompendium('./test/erc/spatiotemporal/kongo2005.json'),
@@ -155,33 +156,7 @@ describe('Elasticsearch search API', function () {
         }).timeout(requestReadingTimeout);
 
         it('should return one result when doing a temporal query (2015-2016)', (done) => {
-            let body = {
-                "query": {
-                    "bool": {
-                        "must": {
-                            "match_all": {}
-                        },
-                        "filter": [
-                            {
-                                "range": {
-                                    "metadata.o2r.temporal.begin": {
-                                        "from": "2015-01-01T00:00:00.000Z"
-                                    }
-                                }
-                            },
-                            {
-                                "range": {
-                                    "metadata.o2r.temporal.end": {
-                                        "to": "2016-01-02T00:00:00.000Z"
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                },
-                "from": 0,
-                "size": 10
-            };
+            let body = queries.temporal;
 
             request({
                 uri: global.test_host + '/api/v1/search',
@@ -199,51 +174,8 @@ describe('Elasticsearch search API', function () {
             });
         }).timeout(requestReadingTimeout);
 
-        it.only('should return one result when doing a spatial query (europe)', (done) => {
-            let body = {
-                "query": {
-                    "bool": {
-                        "must": {
-                            "match_all": {}
-                        },
-                        "filter": {
-                            "geo_shape": {
-                                "metadata.o2r.spatial.union.geojson.geometry": {
-                                    "shape": {
-                                        "type": "polygon",
-                                        "coordinates":
-                                            [
-                                                [
-                                                    [
-                                                        6.532745361328125,
-                                                        51.205162601119824
-                                                    ],
-                                                    [
-                                                        7.551727294921875,
-                                                        51.205162601119824
-                                                    ],
-                                                    [
-                                                        7.551727294921875,
-                                                        51.5463350479341
-                                                    ],
-                                                    [
-                                                        6.532745361328125,
-                                                        51.5463350479341
-                                                    ],
-                                                    [
-                                                        6.532745361328125,
-                                                        51.205162601119824
-                                                    ]
-                                                ]
-                                            ]
-                                    },
-                                    "relation": "within"
-                                }
-                            }
-                        }
-                    }
-                }
-            };
+        it('should return two results ("finland" and "ruhr") when doing a spatial query (europe)', (done) => {
+            let body = queries.europe;
 
             request({
                 uri: global.test_host + '/api/v1/search',
@@ -255,52 +187,82 @@ describe('Elasticsearch search API', function () {
                 assert.equal(res.statusCode, 200);
                 let hits = JSON.parse(body).hits;
                 assert.isDefined(hits, 'results returned');
-                assert.equal(hits.total, 1);
+                assert.equal(hits.total, 2);
                 //todo add assert
                 done();
             });
         }).timeout(requestReadingTimeout);
 
         it('should return one result when doing a spatio-temoral query (europe, 2010-2011)', (done) => {
-            request(global.test_host + '/api/v1/search?q=https://dx.doi.org/10.1115/1.2128636', (err, res, body) => {
+            let body = queries.europe2010;
+
+            request({
+                uri: global.test_host + '/api/v1/search',
+                method: 'POST',
+                form: body,
+                timeout: requestLoadingTimeout
+            }, (err, res, body) => {
                 assert.ifError(err);
                 assert.equal(res.statusCode, 200);
                 let hits = JSON.parse(body).hits;
                 assert.isDefined(hits, 'results returned');
                 assert.equal(hits.total, 1);
+                //todo add assert
                 done();
             });
         }).timeout(requestReadingTimeout);
 
-        it('should return multiple results when doing a spatio-temoral query (world, 2015-2016)', (done) => {
-            request(global.test_host + '/api/v1/search?q=https://dx.doi.org/10.1115/1.2128636', (err, res, body) => {
+        it('should return multiple results when doing a spatio-temoral query (world, 2000-2099)', (done) => {
+            let body = queries.world2015;
+
+            request({
+                uri: global.test_host + '/api/v1/search',
+                method: 'POST',
+                form: body,
+                timeout: requestLoadingTimeout
+            }, (err, res, body) => {
                 assert.ifError(err);
                 assert.equal(res.statusCode, 200);
                 let hits = JSON.parse(body).hits;
                 assert.isDefined(hits, 'results returned');
-                assert.equal(hits.total, 1);
+                assert.equal(hits.total, 4);
+                //todo add assert
                 done();
             });
         }).timeout(requestReadingTimeout);
 
-        it('should return no results when doing a spatio-temoral query (germany, 2010-2011)', (done) => {
-            request(global.test_host + '/api/v1/search?q=https://dx.doi.org/10.1115/1.2128636', (err, res, body) => {
+        it('should return no results when doing a spatio-temoral query (wyoming, USA, 2010-2011)', (done) => {
+            let body = queries.wyoming2010;
+
+            request({
+                uri: global.test_host + '/api/v1/search',
+                method: 'POST',
+                form: body,
+                timeout: requestLoadingTimeout
+            }, (err, res, body) => {
                 assert.ifError(err);
                 assert.equal(res.statusCode, 200);
                 let hits = JSON.parse(body).hits;
                 assert.isDefined(hits, 'results returned');
-                assert.equal(hits.total, 1);
+                assert.equal(hits.total, 0);
+                //todo add assert
                 done();
             });
         }).timeout(requestReadingTimeout);
 
         it('should return an error when doing a spatial query with an invalid GeoJSON', (done) => {
-            request(global.test_host + '/api/v1/search?q=https://dx.doi.org/10.1115/1.2128636', (err, res, body) => {
+            let body = queries.invalid;
+
+            request({
+                uri: global.test_host + '/api/v1/search',
+                method: 'POST',
+                form: body,
+                timeout: requestLoadingTimeout
+            }, (err, res, body) => {
                 assert.ifError(err);
-                assert.equal(res.statusCode, 200);
-                let hits = JSON.parse(body).hits;
-                assert.isDefined(hits, 'results returned');
-                assert.equal(hits.total, 1);
+                assert.equal(res.statusCode, 400);
+                assert.isUndefined(JSON.parse(body).result, 'returned no results');
+                assert.propertyVal(JSON.parse(body), 'error', 'complex query failed');
                 done();
             });
         }).timeout(requestReadingTimeout);
@@ -308,10 +270,10 @@ describe('Elasticsearch search API', function () {
 
     });
 
-    describe('GET /api/v1/search with an invalid query string', () => {
+    describe('GET /api/v1/search with an query string containing special characters', () => {
 
-        it('should respond with HTTP 200 OK and valid JSON', (done) => {
-            request(global.test_host + '/api/v1/search?q=*', (err, res, body) => {
+        it('should not result in an error but return no results instead', (done) => {
+            request(global.test_host + '/api/v1/search?q=////**?||\\\\', (err, res, body) => {
                 assert.ifError(err);
                 assert.equal(res.statusCode, 200);
                 done();
@@ -322,47 +284,39 @@ describe('Elasticsearch search API', function () {
 
     describe('POST /api/v1/search with an invalid body', () => {
 
-        it('should respond with HTTP 400 when JSON is invalid', (done) => {
-            request(global.test_host + '/api/v1/search?q=*', (err, res, body) => {
+        it('should respond with HTTP 400 when query is invalid', (done) => {
+            let body = {
+                "query": {
+                    "bool": {}
+                },
+                "analyzer": "notdefined"
+            };
+
+            request({
+                uri: global.test_host + '/api/v1/search',
+                method: 'POST',
+                form: body,
+                timeout: requestLoadingTimeout
+            }, (err, res, body) => {
                 assert.ifError(err);
-                assert.equal(res.statusCode, 200);
+                assert.equal(res.statusCode, 400);
+                assert.isUndefined(JSON.parse(body).result, 'returned no results');
+                assert.propertyVal(JSON.parse(body), 'error', 'complex query failed');
                 done();
             });
         }).timeout(requestReadingTimeout);
 
         it('should not allow to modify the index', (done) => {
-            request(global.test_host + '/api/v1/search?q=*', (err, res, body) => {
+            request({
+                uri: global.test_host + '/api/v1/search/o2r',
+                method: 'DELETE',
+                timeout: requestLoadingTimeout
+            }, (err, res, body) => {
                 assert.ifError(err);
-                assert.equal(res.statusCode, 200);
-                assert.isDefined(JSON.parse(body).hits, 'results returned');
+                assert.equal(res.statusCode, 404);
                 done();
             });
         }).timeout(requestReadingTimeout);
-
-        it('should return one result when querying for a DOI', (done) => {
-            request(global.test_host + '/api/v1/search?q=10.1006%2Fjeem.1994.1031', (err, res, body) => {
-                assert.ifError(err);
-                assert.equal(res.statusCode, 200);
-                let hits = JSON.parse(body).hits;
-                assert.isDefined(hits, 'results returned');
-                assert.equal(hits.length, 1);
-                done();
-            });
-        }).timeout(requestReadingTimeout);
-
-        it('should return one result when querying for a DOI URL', (done) => {
-            request(global.test_host + '/api/v1/search?q=https://dx.doi.org/10.1115/1.2128636', (err, res, body) => {
-                assert.ifError(err);
-                assert.equal(res.statusCode, 200);
-                let hits = JSON.parse(body).hits;
-                assert.isDefined(hits, 'results returned');
-                assert.equal(hits.length, 1);
-                done();
-            });
-        }).timeout(requestReadingTimeout);
-
-
     });
 
-    //...
 });
