@@ -25,7 +25,7 @@ The `/api/v1/search` endpoint allows two types of queries:
 
 For more details and examples see the [Search API](http://o2r.info/o2r-web-api/search/) documentation.
 
-## Special characters
+### Special characters
 
 The finder supports searching for special characters for these fields:
  
@@ -38,7 +38,7 @@ To support additional fields with special characters, the mapping in `config/map
 
 `/api/v1/search?q=10.1006%2Fjeem.1994.1031`
 
-- When doing a complex query, the user has control over that. To search both fields build the query as following:
+- When doing a complex query, the user has control over which fields are searched. To search both fields build the query as follows:
 
 ```
 "query": {
@@ -50,6 +50,12 @@ To support additional fields with special characters, the mapping in `config/map
     }
 }
 ```
+
+Other possible options to search both fields are:
+
+- [Elasticsearch Multi Search API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html)
+- [Elasticsearch Multi Match Query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html)
+
 ## Indexed information
 
 - whole database _muncher_ (an _index_ in Elasticsearch)
