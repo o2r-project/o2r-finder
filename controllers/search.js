@@ -32,7 +32,7 @@ exports.simpleSearch = (req, res) => {
         return;
     }
 
-    let queryString = req.query.q;
+    let queryString = decodeURIComponent(req.query.q);
 
     if (config.elasticsearch.supportURISearch) {
         if (queryString.includes('://')) {
