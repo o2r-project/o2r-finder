@@ -27,48 +27,48 @@ const temporal = {
 };
 
 const europe = {
-  "query": {
-    "bool": {
-      "must": {
-        "match_all": {}
-      },
-      "filter": {
-        "geo_shape": {
-          "metadata.o2r.spatial.union.geojson.geometry": {
-            "shape": {
-              "type": "polygon",
-              "coordinates":
-              [
-                [
-                  [
-                    -7.294921874999999,
-                    38.54816542304656
-                  ],
-                  [
-                    34.013671875,
-                    38.54816542304656
-                  ],
-                  [
-                    34.013671875,
-                    68.6245436634471
-                  ],
-                  [
-                    -7.294921874999999,
-                    68.6245436634471
-                  ],
-                  [
-                    -7.294921874999999,
-                    38.54816542304656
-                  ]
-                ]
-              ]
+    "query": {
+        "bool": {
+            "must": {
+                "match_all": {}
             },
-            "relation": "within"
-          }
+            "filter": {
+                "geo_shape": {
+                    "metadata.o2r.spatial.union.geojson.geometry": {
+                        "shape": {
+                            "type": "polygon",
+                            "coordinates":
+                                [
+                                    [
+                                        [
+                                            -7.294921874999999,
+                                            38.54816542304656
+                                        ],
+                                        [
+                                            34.013671875,
+                                            38.54816542304656
+                                        ],
+                                        [
+                                            34.013671875,
+                                            68.6245436634471
+                                        ],
+                                        [
+                                            -7.294921874999999,
+                                            68.6245436634471
+                                        ],
+                                        [
+                                            -7.294921874999999,
+                                            38.54816542304656
+                                        ]
+                                    ]
+                                ]
+                        },
+                        "relation": "within"
+                    }
+                }
+            }
         }
-      }
     }
-  }
 };
 
 const europe2010 = {

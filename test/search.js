@@ -169,7 +169,7 @@ describe('Elasticsearch search API', function () {
                 let hits = JSON.parse(body).hits;
                 assert.isDefined(hits, 'results returned');
                 assert.equal(hits.total, 1);
-                //todo add assert
+                assert.equal(hits.hits[0]._source.compendium_id, '0ShuS');
                 done();
             });
         }).timeout(requestReadingTimeout);
@@ -188,7 +188,6 @@ describe('Elasticsearch search API', function () {
                 let hits = JSON.parse(body).hits;
                 assert.isDefined(hits, 'results returned');
                 assert.equal(hits.total, 2);
-                //todo add assert
                 done();
             });
         }).timeout(requestReadingTimeout);
@@ -207,7 +206,7 @@ describe('Elasticsearch search API', function () {
                 let hits = JSON.parse(body).hits;
                 assert.isDefined(hits, 'results returned');
                 assert.equal(hits.total, 1);
-                //todo add assert
+                assert.equal(hits.hits[0]._source.compendium_id, 'mQryh');
                 done();
             });
         }).timeout(requestReadingTimeout);
@@ -226,7 +225,6 @@ describe('Elasticsearch search API', function () {
                 let hits = JSON.parse(body).hits;
                 assert.isDefined(hits, 'results returned');
                 assert.equal(hits.total, 4);
-                //todo add assert
                 done();
             });
         }).timeout(requestReadingTimeout);
@@ -245,7 +243,6 @@ describe('Elasticsearch search API', function () {
                 let hits = JSON.parse(body).hits;
                 assert.isDefined(hits, 'results returned');
                 assert.equal(hits.total, 0);
-                //todo add assert
                 done();
             });
         }).timeout(requestReadingTimeout);
@@ -276,6 +273,9 @@ describe('Elasticsearch search API', function () {
             request(global.test_host + '/api/v1/search?q=////**?||\\\\', (err, res, body) => {
                 assert.ifError(err);
                 assert.equal(res.statusCode, 200);
+                let hits = JSON.parse(body).hits;
+                assert.isDefined(hits, 'results returned');
+                assert.equal(hits.total, 0);
                 done();
             });
         }).timeout(requestReadingTimeout);
