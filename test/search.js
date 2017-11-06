@@ -48,11 +48,13 @@ describe('Elasticsearch search API', function () {
                 ]))
                 .then(values => {
                     console.log(`Sucessfully created spatiotemporal test data: ${values}`);
+                    db.close();
                     done();
                 }, error => {
                     console.log(error);
                 }).catch(error => {
                     console.log(`Error handling promises\' results: ${error.message}`);
+                    db.close();
                 });
         });
     });

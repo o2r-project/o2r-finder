@@ -76,7 +76,8 @@ function resetIndex() {
                 query: {
                     match_all: {}
                 }
-            }
+            },
+            type: 'compendia'
         }).then(function (resp) {
             console.log(`All documents from index ${config.elasticsearch.index} deleted.`);
             resolve(true);
@@ -101,6 +102,7 @@ function importJSONCompendium(path) {
             if (err) throw err;
             db.compendia.save(JSON.parse(data), function (err, doc) {
                 if (err) reject(err);
+                db.close();
                 resolve(true);
             })
         });

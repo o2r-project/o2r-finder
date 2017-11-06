@@ -1,0 +1,25 @@
+---
+sudo: required
+language: node_js
+node_js:
+  - "8"
+services:
+  - docker
+before_install:
+  - docker pull o2rproject/o2r-loader:latest
+  - docker pull mongo:3.4
+  - docker pull docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+install:
+  - npm install
+before_script:
+  - docker run --name elasticsearch -d -p 9200:9200 docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+  - docker run --name mongodb -d -p 27017:27017 mongo:3.4
+  - docker build --tag finder .
+  - docker run --name testfinder -d -p 8084:8084 --link mongodb:mongodb -v $HOME:/tmp/o2r -v /var/run/docker.sock:/var/run/docker.sock -e MUNCHER_MONGODB=mongodb://mongodb:27017 -e DEBUG=finder,finder:* finder
+  - sleep 10
+script:
+  - npm run test_ci
+after_failure:
+  - sleep 5
+  - docker logs testfinder
+  - docker logs elasticsearch

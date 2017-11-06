@@ -74,7 +74,7 @@ exports.simpleSearch = (req, res) => {
 exports.complexSearch = (req, res) => {
     if (typeof req.body === 'undefined') {
         debug('no query defined, aborting');
-        res.status(404).send('{"error":"no query provided"}');
+        res.status(404).send({error: 'no query provided'});
         return;
     }
 
@@ -83,7 +83,6 @@ exports.complexSearch = (req, res) => {
     esclient.search({
         index: config.elasticsearch.index,
         body: req.body,
-        //analyzer: config.elasticsearch.analyzer
     }).then(function (resp) {
         debug('Complex query successful. Got %s results and took %s ms', resp.hits.total, resp.took);
         res.status(200).send(resp);
