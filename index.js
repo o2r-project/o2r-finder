@@ -28,7 +28,8 @@ const ESMongoSync = require('node-elasticsearch-sync');
 const elasticsearch = require('elasticsearch');
 const esclient = new elasticsearch.Client({
   host: config.elasticsearch.location,
-  log: 'info'
+  log: 'info',
+  apiVersion: config.elasticsearch.apiVersion
 });
 
 const fs = require('fs');
@@ -361,7 +362,8 @@ function startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds)
   // try to connect to ES before starting sync
   let EsClient = new elasticsearch.Client({
     host: process.env['ELASTIC_SEARCH_URL'],
-    keepAlive: true
+    keepAlive: true,
+    apiVersion: config.elasticsearch.apiVersion
   });
   debug('Ping Elasticsearch @ %s', process.env['ELASTIC_SEARCH_URL']);
   EsClient.ping({

@@ -53,6 +53,7 @@ c.mongo.collection.compendia = env.FINDER_MONGODB_COLL_COMPENDIA || 'compendia';
 c.mongo.collection.jobs = env.FINDER_MONGODB_COLL_JOBS || 'jobs';
 c.mongo.collection.session = env.FINDER_MONGODB_COLL_SESSION || 'sessions';
 
+c.elasticsearch.apiVersion = '5.5';
 c.elasticsearch.index = env.FINDER_ELASTICSEARCH_INDEX || 'o2r';
 c.elasticsearch.deleteIndexOnStartup = true;
 c.elasticsearch.putMappingOnStartup = true;
