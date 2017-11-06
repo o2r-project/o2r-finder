@@ -22,14 +22,9 @@ RUN apk add --no-cache \
   git \
   dumb-init
 
+# Install app
 WORKDIR /finder
-COPY lib lib
-COPY config config
-COPY esconfig esconfig
-COPY controllers controllers
-COPY index.js index.js
 COPY package.json package.json
-
 RUN npm install --production
 
 # git only needed for installing updated node-elasticsearch-sync from GitHub, so clean up after install
@@ -37,6 +32,13 @@ RUN apk del \
     git \
   && rm -rf /var/cache
 
+COPY lib lib
+COPY config config
+COPY esconfig esconfig
+COPY controllers controllers
+COPY index.js index.js
+
+# Metadata params provided with docker build command
 ARG VERSION=dev
 ARG VCS_URL
 ARG VCS_REF
