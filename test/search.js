@@ -74,7 +74,9 @@ describe('Elasticsearch search API', function () {
             request(global.test_host + '/api/v1/search?q=*', (err, res, body) => {
                 assert.ifError(err);
                 assert.equal(res.statusCode, 200);
+                let hits = JSON.parse(body).hits;
                 assert.isDefined(JSON.parse(body).hits, 'results returned');
+                assert.equal(hits.total, 4);
                 done();
             });
         }).timeout(requestReadingTimeout);
@@ -101,6 +103,19 @@ describe('Elasticsearch search API', function () {
             });
         }).timeout(requestReadingTimeout);
 
+        it('should return results when querying for a simple string ', (done) => {
+            let string = 'Kuznets';
+            request(global.test_host + '/api/v1/search?q=' + string, (err, res, body) => {
+                assert.ifError(err);
+                assert.equal(res.statusCode, 200);
+                let hits = JSON.parse(body).hits;
+                assert.isDefined(hits, 'results returned');
+                assert.equal(hits.total, 1);
+                assert.equal(hits.hits[0]._source.compendium_id, '0ShuS');
+                done();
+            });
+        }).timeout(requestReadingTimeout);
+
         it('should return no results when querying for a string not contained in the compendium', (done) => {
             let randomString = 'Y2AmjvFyBC2rlTonqZnx';
             request(global.test_host + '/api/v1/search?q=' + randomString, (err, res, body) => {
@@ -112,7 +127,6 @@ describe('Elasticsearch search API', function () {
                 done();
             });
         }).timeout(requestReadingTimeout);
-
 
     });
 
