@@ -71,6 +71,141 @@ const europe = {
     }
 };
 
+const finlandIntersects = {
+    "query": {
+        "bool": {
+            "must": {
+                "match_all": {}
+            },
+            "filter": {
+                "geo_shape": {
+                    "metadata.o2r.spatial.union.geojson.geometry": {
+                        "shape": {
+                            "type": "polygon",
+                            "coordinates":
+                                [
+                                    [
+                                        [
+                                            22.35992431640625,
+                                            60.35548886638333
+                                        ],
+                                        [
+                                            23.43109130859375,
+                                            60.35548886638333
+                                        ],
+                                        [
+                                            23.43109130859375,
+                                            60.73500061556085
+                                        ],
+                                        [
+                                            22.35992431640625,
+                                            60.73500061556085
+                                        ],
+                                        [
+                                            22.35992431640625,
+                                            60.35548886638333
+                                        ]
+                                    ]
+                                ]
+                        },
+                        "relation": "intersects"
+                    }
+                }
+            }
+        }
+    }
+};
+
+const australiaDisjoint = {
+    "query": {
+        "bool": {
+            "must": {
+                "match_all": {}
+            },
+            "filter": {
+                "geo_shape": {
+                    "metadata.o2r.spatial.union.geojson.geometry": {
+                        "shape": {
+                            "type": "polygon",
+                            "coordinates":
+                                [
+                                    [
+                                        [
+                                            125.68359374999999,
+                                            -28.14950321154457
+                                        ],
+                                        [
+                                            138.25195312499997,
+                                            -28.14950321154457
+                                        ],
+                                        [
+                                            138.25195312499997,
+                                            -20.96143961409684
+                                        ],
+                                        [
+                                            125.68359374999999,
+                                            -20.96143961409684
+                                        ],
+                                        [
+                                            125.68359374999999,
+                                            -28.14950321154457
+                                        ]
+                                    ]
+                                ]
+                        },
+                        "relation": "disjoint"
+                    }
+                }
+            }
+        }
+    }
+};
+
+const kongoKontains = {
+    "query": {
+        "bool": {
+            "must": {
+                "match_all": {}
+            },
+            "filter": {
+                "geo_shape": {
+                    "metadata.o2r.spatial.union.geojson.geometry": {
+                        "shape": {
+                            "type": "polygon",
+                            "coordinates":
+                                [
+                                    [
+                                        [
+                                            20.61859130859375,
+                                            -0.5630402542341282
+                                        ],
+                                        [
+                                            20.93170166015625,
+                                            -0.5630402542341282
+                                        ],
+                                        [
+                                            20.93170166015625,
+                                            -0.18402067971704728
+                                        ],
+                                        [
+                                            20.61859130859375,
+                                            -0.18402067971704728
+                                        ],
+                                        [
+                                            20.61859130859375,
+                                            -0.5630402542341282
+                                        ]
+                                    ]
+                                ]
+                        },
+                        "relation": "contains"
+                    }
+                }
+            }
+        }
+    }
+};
+
 const europe2010 = {
     "query": {
         "bool": {
@@ -314,6 +449,9 @@ const invalid = {
 module.exports = {
     temporal: temporal,
     europe: europe,
+    finlandIntersects: finlandIntersects,
+    australiaDisjoint: australiaDisjoint,
+    kongoKontains: kongoKontains,
     europe2010: europe2010,
     world2015: world20xx,
     wyoming2010: wyoming2010,

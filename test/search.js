@@ -194,7 +194,63 @@ describe('Elasticsearch search API', function () {
             });
         }).timeout(requestReadingTimeout);
 
-        it('should return one result when doing a spatio-temoral query (europe, 2010-2011)', (done) => {
+        it('should return one result ("finland") when doing a spatial intersects query (finland)', (done) => {
+            let body = queries.finlandIntersects;
+
+            request({
+                uri: global.test_host + '/api/v1/search',
+                method: 'POST',
+                form: body,
+                timeout: requestLoadingTimeout
+            }, (err, res, body) => {
+                assert.ifError(err);
+                assert.equal(res.statusCode, 200);
+                let hits = JSON.parse(body).hits;
+                assert.isDefined(hits, 'results returned');
+                assert.equal(hits.total, 1);
+                assert.equal(hits.hits[0]._source.compendium_id, 'XiQu8');
+                done();
+            });
+        }).timeout(requestReadingTimeout);
+
+        it('should return all results when doing a spatial disjoint query (australia)', (done) => {
+            let body = queries.australiaDisjoint;
+
+            request({
+                uri: global.test_host + '/api/v1/search',
+                method: 'POST',
+                form: body,
+                timeout: requestLoadingTimeout
+            }, (err, res, body) => {
+                assert.ifError(err);
+                assert.equal(res.statusCode, 200);
+                let hits = JSON.parse(body).hits;
+                assert.isDefined(hits, 'results returned');
+                assert.equal(hits.total, 4);
+                done();
+            });
+        }).timeout(requestReadingTimeout);
+
+        it('should return one result ("kongo") when doing a spatial contains query (kongo)', (done) => {
+            let body = queries.kongoKontains;
+
+            request({
+                uri: global.test_host + '/api/v1/search',
+                method: 'POST',
+                form: body,
+                timeout: requestLoadingTimeout
+            }, (err, res, body) => {
+                assert.ifError(err);
+                assert.equal(res.statusCode, 200);
+                let hits = JSON.parse(body).hits;
+                assert.isDefined(hits, 'results returned');
+                assert.equal(hits.total, 1);
+                assert.equal(hits.hits[0]._source.compendium_id, 'Ks1Bc');
+                done();
+            });
+        }).timeout(requestReadingTimeout);
+
+        it('should return one result ("ruhr") when doing a spatio-temoral query (europe, 2010-2011)', (done) => {
             let body = queries.europe2010;
 
             request({
