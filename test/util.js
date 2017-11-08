@@ -96,7 +96,7 @@ function importJSONCompendium(path) {
     return new Promise((resolve, reject) => {
 
         let dbpath = 'localhost/' + config.mongo.database;
-        const db = mongojs(dbpath, ['users', 'sessions', 'compendia']);
+        const db = mongojs(dbpath, ['compendia']);
 
         fs.readFile(path, (err, data) => {
             if (err) throw err;
