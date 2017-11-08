@@ -2,7 +2,8 @@
 
 
 ![Travis CI](https://api.travis-ci.org/o2r-project/o2r-finder.svg)
-[![](https://images.microbadger.com/badges/version/o2rproject/o2r-finder.svg)](https://microbadger.com/images/o2rproject/o2r-finder "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/o2rproject/o2r-finder.svg)](https://microbadger.com/images/o2rproject/o2r-finder "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/o2rproject/o2r-finder.svg)](https://microbadger.com/images/o2rproject/o2r-finder "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/o2rproject/o2r-finder.svg)](https://microbadger.com/images/o2rproject/o2r-finder "Get your own version badge on microbadger.com")
 
 Implementation of search features and the endpoint `/api/v1/search` for the o2r API.
 
