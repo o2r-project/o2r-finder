@@ -1,11 +1,12 @@
 {
   "name": "finder",
-  "version": "0.3.2",
+  "version": "0.5.0",
   "description": "all about discovery within o2r",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "debug": "DEBUG=finder,executor node index.js"
+    "debug": "DEBUG=finder,finder:* node index.js",
+    "test": "DEBUG=*,-modem,-mocha:* mocha"
   },
   "author": "o2r-project",
   "license": "Apache-2.0",
@@ -14,19 +15,34 @@
     "url": "https://github.com/o2r-finder/o2r-finder.git"
   },
   "dependencies": {
+    "backoff": "^2.5.0",
+    "body-parser": "^1.18.2",
     "circular-buffer": "^1.0.2",
     "clone-deep": "^1.0.0",
     "compression": "^1.7.1",
-    "connect-mongodb-session": "^1.3.0",
+    "connect-mongodb-session": "^1.4.0",
     "debug": "^3.1.0",
     "directory-tree": "^2.0.0",
-    "express": "^4.15.5",
+    "express": "^4.16.2",
     "express-session": "^1.15.6",
     "fs": "0.0.2",
     "kerberos": "0.0.23",
     "mimos": "^4.0.0",
-    "mongoose": "^4.11.13",
-    "node-elasticsearch-sync": "github:nuest/node-elasticsearch-sync",
-    "passport": "^0.4.0"
+    "mongoose": "^4.12.3",
+    "node-elasticsearch-sync": "github:o2r-project/node-elasticsearch-sync",
+    "passport": "^0.4.0",
+    "response-time": "2.3.2"
+  },
+  "devDependencies": {
+    "adm-zip": "^0.4.7",
+    "chai": "^4.1.2",
+    "chai-datetime": "^1.5.0",
+    "fs-extra": "^4.0.2",
+    "mocha": "^3.5.0",
+    "mongoimport": "^1.0.6",
+    "mongojs": "^2.4.1",
+    "request": "^2.83.0",
+    "sleep": "^5.1.1",
+    "tmp": "0.0.33"
   }
 }

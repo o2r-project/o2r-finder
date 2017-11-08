@@ -15,9 +15,15 @@
 *
 */
 
+const config = require('./config');
+
 const mapping = {
     "compendia": {
         "properties": {
+            "_special": {
+                "type": "string",
+                "analyzer": config.elasticsearch.analyzer
+            },
             "metadata": {
                 "properties": {
                     "o2r": {
@@ -37,6 +43,18 @@ const mapping = {
                                         }
                                     }
                                 }
+                            },
+                            "identifier": {
+                                "properties": {
+                                    "doi": {
+                                        "type": "string",
+                                        "copy_to": config.elasticsearch.specialCharField
+                                    },
+                                    "doiurl": {
+                                        "type": "string",
+                                        "copy_to": config.elasticsearch.specialCharField
+                                    }
+                                }
                             }
                         }
                     }
@@ -46,4 +64,6 @@ const mapping = {
     }
 };
 
-module.exports = mapping;
+module.exports = {
+    mapping: mapping
+};
