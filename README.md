@@ -120,8 +120,9 @@ This is not a complete configuration, useful for testing only.
 docker build -t finder .
 
 # start databases in containers (optional)
-docker run --name mongodb -d mongo:3.4
-docker run --name es -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "xpack.security.enabled=false" -v "$(pwd)/dev":/usr/share/elasticsearch/config docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+docker run --name mongodb -d mongo:3.4 mongod --replSet rso2r --smallfiles
+docker exec $(docker ps -qf "name=mongodb" bash -c "sleep 5; mongo --verbose --host mongodb --eval 'printjson(rs.initiate()); printjson(rs.conf()); printjson(rs.status()); printjson(rs.slaveOk());'"
+docker run --name es -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:5.6.3
 
 docker run -it --link mongodb --link es -e ELASTIC_SEARCH_URL=es:9200 -e FINDER_MONGODB=mongodb://mongodb -e MONGO_OPLOG_URL=mongodb://mongodb/muncher -e MONGO_DATA_URL=mongodb://mongodb/muncher -e DEBUG=finder -p 8084:8084 finder
 ```
@@ -152,7 +153,7 @@ The image can then be configured via environment variables.
 Start an Elasticsearch instance, mounting local configuration files (see [documentation](https://hub.docker.com/_/elasticsearch/) and the corresponding GitHub repository, which is the base for the directory `/dev`; an empty `scripts` directory is needed so that the whole directory `config` can be mounted without error), and exposing the default port on the host.
 
 ```bash
-docker run -it --name elasticsearch -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "xpack.security.enabled=false" -v "$(pwd)/dev":/usr/share/elasticsearch/config -p 9200:9200 docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+docker run -it --name elasticsearch -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "xpack.security.enabled=false" -p 9200:9200 docker.elastic.co/elasticsearch/elasticsearch:5.6.3
 ```
 
 **Important**: Starting with Elasticsearch 5, virtual memory configuration of the system (and in our case the host) requires some configuration, particularly of the `vm.max_map_count` setting, see https://www.elastic.co/guide/en/elasticsearch/reference/5.0/vm-max-map-count.html

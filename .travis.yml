@@ -12,13 +12,14 @@ before_install:
 install:
   - npm install
 before_script:
-  - docker run --name elasticsearch -d -p 9200:9200 docker.elastic.co/elasticsearch/elasticsearch:5.6.3
-  - docker run --name mongodb -d -p 27017:27017 mongo:3.4
+  - docker run --name elasticsearch -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "xpack.security.enabled=false" -p 9200:9200 docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+  - docker run --name mongodb -d -p 27017:27017 mongo:3.4 mongod --replSet rso2r --smallfiles
+  - docker run --name configmongodb -d --link mongodb mongo:3.4 bash -c "sleep 5; mongo --verbose --host mongodb --eval 'printjson(rs.initiate()); printjson(rs.conf()); printjson(rs.status()); printjson(rs.slaveOk());'"
   - docker build --tag finder .
-  - docker run --name testfinder -d -p 8084:8084 --link mongodb:mongodb -v $HOME:/tmp/o2r -v /var/run/docker.sock:/var/run/docker.sock -e MUNCHER_MONGODB=mongodb://mongodb:27017 -e DEBUG=finder,finder:* finder
+  - docker run --name testfinder -d -p 8084:8084  --link elasticsearch --link mongodb -v $HOME:/tmp/o2r -v /var/run/docker.sock:/var/run/docker.sock -e ELASTIC_SEARCH_URL=elasticsearch:9200 -e FINDER_MONGODB=mongodb://mongodb -e MONGO_OPLOG_URL=mongodb://mongodb/muncher -e MONGO_DATA_URL=mongodb://mongodb/muncher -e DEBUG=finder,finder:* finder
   - sleep 10
 script:
-  - npm run test_ci
+  - npm run test
 after_failure:
   - sleep 5
   - docker logs testfinder

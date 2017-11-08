@@ -34,7 +34,7 @@ RUN apk del \
 
 COPY lib lib
 COPY config config
-COPY esconfig esconfig
+COPY dev dev
 COPY controllers controllers
 COPY index.js index.js
 
