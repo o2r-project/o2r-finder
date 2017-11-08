@@ -153,7 +153,7 @@ The image can then be configured via environment variables.
 
 ## Development
 
-Start an Elasticsearch instance, mounting the corresponding GitHub repository; and exposing the default port on the host.
+Start an Elasticsearch instance and exposing the default port on the host:
 
 ```bash
 docker run -it --name elasticsearch -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "xpack.security.enabled=false" -p 9200:9200 docker.elastic.co/elasticsearch/elasticsearch:5.6.3
