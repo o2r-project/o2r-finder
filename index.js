@@ -16,7 +16,8 @@
  */
 
 const config = require('./config/config');
-const esConfig = require('./esconfig/config');
+const esMapping = require('./config/mapping');
+const esSettings = require('./config/settings');
 const debug = require('debug')('finder');
 
 // MongoDB > Elasticsearch sync
@@ -27,7 +28,8 @@ const ESMongoSync = require('node-elasticsearch-sync');
 const elasticsearch = require('elasticsearch');
 const esclient = new elasticsearch.Client({
   host: config.elasticsearch.location,
-  log: 'info'
+  log: 'info',
+  apiVersion: config.elasticsearch.apiVersion
 });
 
 const fs = require('fs');
@@ -188,15 +190,16 @@ function initApp(callback) {
             // Create a new index if: 1) index was deleted in the last step 2) index didn't exist in the beginning
             if (typeof resp === 'object' && resp.acknowledged) {
                 debug('Existing index %s successfully deleted. Response: %s', config.elasticsearch.index, JSON.stringify(resp));
+                debug('Recreating index with settings: %s', JSON.stringify(esSettings.settings));
                 return esclient.indices.create({
                     index: config.elasticsearch.index,
-                    body: esConfig.settings
+                    body: esSettings.settings
                 });
             } else if (!resp) {
-                debug('Creating index %s because it does not exist yet.', config.elasticsearch.index);
+                debug('Creating index %s with settings %s because it does not exist yet.', config.elasticsearch.index, JSON.stringify(esSettings.settings));
                 return esclient.indices.create({
                     index: config.elasticsearch.index,
-                    body: esConfig.settings
+                    body: esSettings.settings
                 });
             } else {
                 debug('Working with existing index %s.', config.elasticsearch.index);
@@ -205,14 +208,14 @@ function initApp(callback) {
         }).then(function (resp) {
             debug('Index (re)created: %s', JSON.stringify(resp));
             if (config.elasticsearch.putMappingOnStartup) {
-                debug('Using mapping found in "esconfig/config.js" for index %s', config.elasticsearch.index);
+                debug('Using mapping found in "config/mapping.js" for index %s: %s', config.elasticsearch.index, JSON.stringify(esMapping.mapping));
                 return esclient.indices.putMapping({
                     index: config.elasticsearch.index,
                     type: config.elasticsearch.type.compendia,
-                    body: esConfig.mapping
+                    body: esMapping.mapping
                 });
             } else {
-                debug('Not creating mapping because "putMappingOnStartup" is deactivated.');
+                debug('Not creating mapping because "config.elasticsearch.putMappingOnStartup" is deactivated.');
                 return false;
             }
         }).then(function (resp) {
@@ -256,30 +259,39 @@ const transformCompendium = function (watcher, compendium, cb) {
     delete compendium._id;
     delete compendium.__v;
 
-    // load file tree
-    let tree = null;
-    fs.accessSync(config.fs.compendium + id); // throws if does not exist
-    tree = dirTree(config.fs.compendium + id);
+    /*
+     * create file tree from file directory if:
+     *
+     * 1. compendium.files is not yet defined or
+     * 2. config.fs.reloadCompendiumFileTree is set to true
+     */
+    if (typeof compendium.files === 'undefined' || config.fs.fileTree.reload) {
+        // load file tree
+        let tree = null;
+        fs.accessSync(config.fs.compendium + id); // throws if does not exist
+        tree = dirTree(config.fs.compendium + id);
 
-    // create file tree for metadata
-    if (tree) {
-      // rewrite copy of tree to API urls, taken from o2r-muncher
-      let apiTree = rewriteTree(cloneDeep(tree),
-        config.fs.compendium.length + config.id_length, // remove local fs path and id
-        '/api/v1/compendium/' + id + '/data' // prepend proper location
-      );
-      compendium.files = apiTree;
-    }
+        // create file tree for metadata
+        if (tree) {
+            // rewrite copy of tree to API urls, taken from o2r-muncher
+            let apiTree = rewriteTree(cloneDeep(tree),
+                config.fs.compendium.length + config.id_length, // remove local fs path and id
+                '/api/v1/compendium/' + id + '/data' // prepend proper location
+            );
+            compendium.files = apiTree;
+        }
 
-    // load content of txt files as flat list
-    if (tree) {
-      let textTree = mimeTree(cloneDeep(tree));
-      readTextfileTree(textTree);
-      let list = [];
-      flattenTree(textTree,
-        config.fs.compendium.length + config.id_length + 1, // make path relative to compendium root
-        list);
-      compendium.texts = list;
+        // load content of txt files as flat list
+        if (tree) {
+            let textTree = mimeTree(cloneDeep(tree));
+            readTextfileTree(textTree);
+            let list = [];
+            flattenTree(textTree,
+                config.fs.compendium.length + config.id_length + 1, // make path relative to compendium root
+                list);
+            compendium.texts = list;
+        }
+
     }
 
     // attach binary files as base64
@@ -294,7 +306,7 @@ const transformCompendium = function (watcher, compendium, cb) {
   } catch (e) {
     transformLog.enq({ time: new Date().toISOString(), compendium: id, transform: 'error: ' + e.message });
     debug('Error while transforming %s : %s', id, e.message);
-    cb(null);
+    cb(null, new Error('Error while transforming: ' + e.message));
   }
 };
 
@@ -349,7 +361,8 @@ function startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds)
   // try to connect to ES before starting sync
   let EsClient = new elasticsearch.Client({
     host: process.env['ELASTIC_SEARCH_URL'],
-    keepAlive: true
+    keepAlive: true,
+    apiVersion: config.elasticsearch.apiVersion
   });
   debug('Ping Elasticsearch @ %s', process.env['ELASTIC_SEARCH_URL']);
   EsClient.ping({

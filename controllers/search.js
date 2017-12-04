@@ -17,15 +17,13 @@
 
 // General modules
 const config = require('../config/config');
-const debug = require('debug')('finder:search');
-
+const debug = require('debug')('finder');
 // standalone Elasticsearch client
 const elasticsearch = require('elasticsearch');
 const esclient = new elasticsearch.Client({
     host: config.elasticsearch.location,
     log: 'info'
 });
-
 
 exports.simpleSearch = (req, res) => {
     if (typeof req.query.q === 'undefined') {
@@ -34,45 +32,66 @@ exports.simpleSearch = (req, res) => {
         return;
     }
 
-    // escape forward slashes ("/") with ("\/")
-    let query = req.query.q.replace(/\//g, '\\$&');
+    let queryString = decodeURIComponent(req.query.q);
 
-    debug('Starting a simple search for query %s', query);
+    if (config.elasticsearch.supportURISearch) {
+        if (queryString.includes('://')) {
+            // remove colon from query string to allow exact matching for URIs in elasticsearch
+            queryString = '//' + queryString.split('://')[1];
+        }
+    }
+
+    // escape forward slashes ("/") with ("\/")
+    queryString = queryString.replace(/\//g, '\\$&');
+
+    debug('Starting a simple search for query %s', queryString);
 
     esclient.search({
         index: config.elasticsearch.index,
-        q: query,
-        analyzer: config.elasticsearch.analyzer
+        body: {
+            query: {
+                bool: {
+                    should : [
+                        {query_string: {default_field: "_all", query: queryString}},
+                        {query_string: {default_field: config.elasticsearch.specialCharField, query: queryString}},
+                    ]
+                }
+            }
+        }
     }).then(function (resp) {
-        //debug('Query successful. Got %s results', JSON.stringify(resp));
-        //todo send proper json response
+        debug('Simple query successful. Got %s results and took %s ms', resp.hits.total, resp.took);
         res.status(200).send(resp);
     }).catch(function (err) {
         debug('Error querying index: %s', err);
-        res.status(err.status).send({error: err.root_cause[err.root_cause.length-1].reason});
+        if (err.root_cause  && err.root_cause[0].reason) {
+            res.status(err.status).send({error: err.root_cause[0].reason});
+        } else {
+            res.status(err.status).send({error: 'simple query failed'});
+        }
     });
 };
 
 exports.complexSearch = (req, res) => {
     if (typeof req.body === 'undefined') {
         debug('no query defined, aborting');
-        res.status(404).send('{"error":"no query provided"}');
+        res.status(404).send({error: 'no query provided'});
         return;
     }
 
-    debug('Starting a complex search for query %s', req.body);
+    debug('Starting a complex search for query %s', JSON.stringify(req.body));
 
     esclient.search({
         index: config.elasticsearch.index,
         body: req.body,
-        analyzer: config.elasticsearch.analyzer
     }).then(function (resp) {
-        //debug('Query successful. Got %s results', JSON.stringify(resp));
-        //todo send proper json response
+        debug('Complex query successful. Got %s results and took %s ms', resp.hits.total, resp.took);
         res.status(200).send(resp);
     }).catch(function (err) {
         debug('Error querying index: %s', err);
-        res.status(err.status).send({error: err.root_cause[err.root_cause.length-1].reason});
+        if (err.root_cause  && err.root_cause[0].reason) {
+            res.status(err.status).send({error: err.root_cause[0].reason});
+        } else {
+            res.status(err.status).send({error: 'complex query failed'});
+        }
     });
-
 };

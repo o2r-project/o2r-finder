@@ -1,11 +1,12 @@
 {
   "name": "finder",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "all about discovery within o2r",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "debug": "DEBUG=finder,finder:* node index.js"
+    "debug": "DEBUG=finder,finder:* node index.js",
+    "test": "DEBUG=*,-modem,-mocha:* mocha"
   },
   "author": "o2r-project",
   "license": "Apache-2.0",
@@ -31,5 +32,17 @@
     "node-elasticsearch-sync": "github:o2r-project/node-elasticsearch-sync",
     "passport": "^0.4.0",
     "response-time": "2.3.2"
+  },
+  "devDependencies": {
+    "adm-zip": "^0.4.7",
+    "chai": "^4.1.2",
+    "chai-datetime": "^1.5.0",
+    "fs-extra": "^4.0.2",
+    "mocha": "^3.5.0",
+    "mongoimport": "^1.0.6",
+    "mongojs": "^2.4.1",
+    "request": "^2.83.0",
+    "sleep": "^5.1.1",
+    "tmp": "0.0.33"
   }
 }

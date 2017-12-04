@@ -1,16 +1,63 @@
 # o2r-finder
 
-[![](https://images.microbadger.com/badges/version/o2rproject/o2r-finder.svg)](https://microbadger.com/images/o2rproject/o2r-finder "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/o2rproject/o2r-finder.svg)](https://microbadger.com/images/o2rproject/o2r-finder "Get your own image badge on microbadger.com")
 
-Implementation of search features for the o2r API.
+![Travis CI](https://api.travis-ci.org/o2r-project/o2r-finder.svg)
+[![](https://images.microbadger.com/badges/image/o2rproject/o2r-finder.svg)](https://microbadger.com/images/o2rproject/o2r-finder "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/o2rproject/o2r-finder.svg)](https://microbadger.com/images/o2rproject/o2r-finder "Get your own version badge on microbadger.com")
+
+Implementation of search features and the endpoint `/api/v1/search` for the o2r API.
 
 ## Architecture
 
-Since we want a simple auto-suggest search functionality, which is not readily available with MongoDB (though it has [full text search](https://github.com/o2r-project/o2r-finder/issues/1)), the finder utilizes Elasticsearch.
+The finder utilizes Elasticsearch to provide means for
+
+- A simple auto-suggest search functionality,
+- spatial search,
+- temporal search,
+- and other Elasticsearch [queries](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html).
+
+The auto-suggest search is  is not readily available with MongoDB (though it has [full text search](https://github.com/o2r-project/o2r-finder/issues/1)).
 
 Since we don't want to worry about keeping things in sync, the finder simply re-indices the whole database at startup and then subscribes to changes in the MongoDB using [node-elasticsearch-sync](https://github.com/toystars/node-elasticsearch-sync) (for both steps).
 
-The Elasticsearch search endpoint is then published read-only via an nginx proxy.
+The `/api/v1/search` endpoint allows two types of queries:
+
+1) Simple queries via *GET*: as an [Elasticsearch query string](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-uri-request.html)
+
+2) Complex queries via *POST*: using the [Elasticsearch Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)
+
+For more details and examples see the [Search API](http://o2r.info/o2r-web-api/search/) documentation.
+
+### Special characters
+
+The finder supports searching for special characters for these fields:
+ 
+- `metadata.o2r.identifier.doi`
+- `metadata.o2r.identifier.doiurl`
+
+To support additional fields with special characters, the mapping in `config/mapping.js` has to be updated in order to copy the fields into the group field `_special`
+
+- When doing a simple query via a query string, both the `_special` and the `_all` fields are searched:
+
+`/api/v1/search?q=10.1006%2Fjeem.1994.1031`
+
+- When doing a complex query, the user has control over which fields are searched. To search both fields nest the queries like this:
+
+```
+"query": {
+    "bool": {
+        "should" : [
+            {"query_string": {"default_field": "_all", "query": [...]}},
+            {"query_string": {"default_field": "_special", "query": [...]}},
+        ]
+    }
+}
+```
+
+Other possible options to search both fields are:
+
+- [Elasticsearch Multi Search API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html)
+- [Elasticsearch Multi Match Query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html)
 
 ## Indexed information
 
@@ -76,8 +123,9 @@ This is not a complete configuration, useful for testing only.
 docker build -t finder .
 
 # start databases in containers (optional)
-docker run --name mongodb -d mongo:3.4
-docker run --name es -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "xpack.security.enabled=false" -v "$(pwd)/esconfig":/usr/share/elasticsearch/config docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+docker run --name mongodb -d mongo:3.4 mongod --replSet rso2r --smallfiles
+docker exec $(docker ps -qf "name=mongodb" bash -c "sleep 5; mongo --verbose --host mongodb --eval 'printjson(rs.initiate()); printjson(rs.conf()); printjson(rs.status()); printjson(rs.slaveOk());'"
+docker run --name es -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:5.6.3
 
 docker run -it --link mongodb --link es -e ELASTIC_SEARCH_URL=es:9200 -e FINDER_MONGODB=mongodb://mongodb -e MONGO_OPLOG_URL=mongodb://mongodb/muncher -e MONGO_DATA_URL=mongodb://mongodb/muncher -e DEBUG=finder -p 8084:8084 finder
 ```
@@ -105,10 +153,10 @@ The image can then be configured via environment variables.
 
 ## Development
 
-Start an Elasticsearch instance, mounting local configuration files (see [documentation](https://hub.docker.com/_/elasticsearch/) and the corresponding GitHub repository, which is the base for the directory `/esconfig`; an empty `scripts` directory is needed so that the whole directory `config` can be mounted without error), and exposing the default port on the host.
+Start an Elasticsearch instance and exposing the default port on the host:
 
 ```bash
-docker run -it --name elasticsearch -v "$(pwd)/esconfig":/usr/share/elasticsearch/config -p 9200:9200 elasticsearch:5
+docker run -it --name elasticsearch -d -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "xpack.security.enabled=false" -p 9200:9200 docker.elastic.co/elasticsearch/elasticsearch:5.6.3
 ```
 
 **Important**: Starting with Elasticsearch 5, virtual memory configuration of the system (and in our case the host) requires some configuration, particularly of the `vm.max_map_count` setting, see https://www.elastic.co/guide/en/elasticsearch/reference/5.0/vm-max-map-count.html
@@ -155,6 +203,19 @@ The following code assumes the Docker host is available under IP `172.17.0.1` wi
 ```bash
  docker run -it -e DEBUG=finder -e FINDER_MONGODB=mongodb://172.17.0.1 -e ELASTIC_SEARCH_URL=http://172.17.0.1:9200 -p 8084:8084 finder
 ```
+
+### Tests
+
+
+Required are running instances of *Elasticsearch*, *MongoDB* and the *o2r-finder* as described above.
+
+To run the included tests, execute
+
+```bash
+npm test
+```
+
+
 
 ## License
 

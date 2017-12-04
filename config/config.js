@@ -53,6 +53,7 @@ c.mongo.collection.compendia = env.FINDER_MONGODB_COLL_COMPENDIA || 'compendia';
 c.mongo.collection.jobs = env.FINDER_MONGODB_COLL_JOBS || 'jobs';
 c.mongo.collection.session = env.FINDER_MONGODB_COLL_SESSION || 'sessions';
 
+c.elasticsearch.apiVersion = '5.5';
 c.elasticsearch.index = env.FINDER_ELASTICSEARCH_INDEX || 'o2r';
 c.elasticsearch.deleteIndexOnStartup = true;
 c.elasticsearch.putMappingOnStartup = true;
@@ -61,8 +62,10 @@ c.elasticsearch.type.compendia = env.FINDER_ELASTICSEARCH_TYPE_COMPENDIA || 'com
 c.elasticsearch.type.jobs = env.FINDER_ELASTICSEARCH_TYPE_JOBS || 'jobs';
 
 c.elasticsearch.location = env.ELASTIC_SEARCH_URL || 'http://localhost:9200';
+c.elasticsearch.analyzer = 'doi_analyzer';
+c.elasticsearch.specialCharField = '_special';
 
-c.elasticsearch.analyzer = 'o2r_analyzer';
+c.elasticsearch.supportURISearch = true;
 
 // startup
 c.start = {};
@@ -91,6 +94,11 @@ c.session.cookieMaxAge = 60 * 60 * 24 * 7; // one week
 c.fs = {};
 c.fs.base = env.FILE_BASEPATH || '/tmp/o2r/';
 c.fs.compendium = c.fs.base + 'compendium/';
+
+// file tree creation from local files
+c.fs.fileTree = {};
+c.fs.fileTree.reload = false;
+c.fs.fileTree.failOnError = true; //todo implement to not fail on sync error
 
 c.id_length = 5; // must match other services
 
