@@ -28,7 +28,7 @@ const esclient = new elasticsearch.Client({
 exports.simpleSearch = (req, res) => {
     if (typeof req.query.q === 'undefined') {
         debug('no query string provided, aborting');
-        res.status(404).send('{"error":"no query provided"}');
+        res.status(404).send({ "error": "no query provided" });
         return;
     }
 
@@ -60,7 +60,9 @@ exports.simpleSearch = (req, res) => {
         }
     }).then(function (resp) {
         debug('Simple query successful. Got %s results and took %s ms', resp.hits.total, resp.took);
-        res.status(200).send(resp);
+        let answer = {};
+        answer.hits = resp.hits;
+        res.status(200).send(answer);
     }).catch(function (err) {
         debug('Error querying index: %s', err);
         if (err.root_cause  && err.root_cause[0].reason) {
@@ -85,7 +87,9 @@ exports.complexSearch = (req, res) => {
         body: req.body,
     }).then(function (resp) {
         debug('Complex query successful. Got %s results and took %s ms', resp.hits.total, resp.took);
-        res.status(200).send(resp);
+        let answer = {};
+        answer.hits = resp.hits;
+        res.status(200).send(answer);
     }).catch(function (err) {
         debug('Error querying index: %s', err);
         if (err.root_cause  && err.root_cause[0].reason) {
