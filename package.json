@@ -27,6 +27,8 @@
     "express-session": "^1.15.6",
     "fs": "0.0.2",
     "kerberos": "0.0.23",
+    "lodash.pick": "^4.4.0",
+    "lodash.unset": "^4.5.2",
     "mimos": "^4.0.0",
     "mongoose": "^4.13.5",
     "node-elasticsearch-sync": "github:o2r-project/node-elasticsearch-sync",
