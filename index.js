@@ -104,8 +104,8 @@ function initApp(callback) {
     debug('Initialize application');
 
     try {
-        // configure express-session, stores reference to authdetails in cookie.
-        // authdetails themselves are stored in MongoDBStore
+        // configure express-session, stores reference to auth details in cookie.
+        // auth details themselves are stored in MongoDBStore
         const mongoStore = new MongoDBStore({
             uri: config.mongo.location + config.mongo.database,
             collection: config.mongo.collection.session
@@ -238,9 +238,8 @@ function initApp(callback) {
 
         }).catch(function (err) {
             debug('Error creating index or mapping: %s', err);
+            callback(err);
         });
-
-
     } catch (err) {
         callback(err);
     }
@@ -415,7 +414,7 @@ dbBackoff.on('ready', function (number, delay) {
             });
             dbBackoff.backoff();
         } else {
-            // delay app startup to when MongoDB is available
+            // delay app startup to when MongoDB and Elasticsearch are available
             debug('Initial connection open to %s: %s', dbURI, mongoose.connection.readyState);
             initApp((err) => {
                 if (err) {

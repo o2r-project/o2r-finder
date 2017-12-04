@@ -15,20 +15,36 @@
  *
  */
 
-// General modules
 const config = require('../config/config');
 const debug = require('debug')('finder');
-// standalone Elasticsearch client
+const pick = require('lodash.pick');
+const unset = require('lodash.unset');
+
 const elasticsearch = require('elasticsearch');
 const esclient = new elasticsearch.Client({
     host: config.elasticsearch.location,
     log: 'info'
 });
 
+const unset_hit_properties = ["_index", "_type", "_id"];
+
+// build answer manually to only include public information (drop _index fields etc.)
+buildAnswer = (resp) => {
+    answer = {};
+    answer.hits = {};
+    answer.hits = pick(resp.hits, ["total", "max_score"]);
+    answer.hits.hits = resp.hits.hits.map(h => {
+        hit = pick(h, ["_score", "_source"]);
+        ["id", "createdAt", "updatedAt"].forEach(e => unset(hit._source, e));
+        return (hit);
+    });
+    return (answer);
+};
+
 exports.simpleSearch = (req, res) => {
     if (typeof req.query.q === 'undefined') {
-        debug('no query string provided, aborting');
-        res.status(404).send('{"error":"no query provided"}');
+        debug('No query string provided, returning error.');
+        res.status(404).send({ error: 'no query provided' });
         return;
     }
 
@@ -51,30 +67,32 @@ exports.simpleSearch = (req, res) => {
         body: {
             query: {
                 bool: {
-                    should : [
-                        {query_string: {default_field: "_all", query: queryString}},
-                        {query_string: {default_field: config.elasticsearch.specialCharField, query: queryString}},
+                    should: [
+                        { query_string: { default_field: "_all", query: queryString } },
+                        { query_string: { default_field: config.elasticsearch.specialCharField, query: queryString } },
                     ]
                 }
             }
         }
     }).then(function (resp) {
         debug('Simple query successful. Got %s results and took %s ms', resp.hits.total, resp.took);
-        res.status(200).send(resp);
+        answer = buildAnswer(resp);
+        res.status(200).send(answer);
+        debug('Sent response.');
     }).catch(function (err) {
         debug('Error querying index: %s', err);
-        if (err.root_cause  && err.root_cause[0].reason) {
-            res.status(err.status).send({error: err.root_cause[0].reason});
+        if (err.root_cause && err.root_cause[0].reason) {
+            res.status(err.status).send({ error: err.root_cause[0].reason });
         } else {
-            res.status(err.status).send({error: 'simple query failed'});
+            res.status(err.status).send({ error: 'simple query failed' });
         }
     });
 };
 
 exports.complexSearch = (req, res) => {
     if (typeof req.body === 'undefined') {
-        debug('no query defined, aborting');
-        res.status(404).send({error: 'no query provided'});
+        debug('No query string provided, returning error.');
+        res.status(404).send({ error: 'no query provided' });
         return;
     }
 
@@ -85,13 +103,15 @@ exports.complexSearch = (req, res) => {
         body: req.body,
     }).then(function (resp) {
         debug('Complex query successful. Got %s results and took %s ms', resp.hits.total, resp.took);
-        res.status(200).send(resp);
+        answer = buildAnswer(resp);
+        res.status(200).send(answer);
+        debug('Sent response.');
     }).catch(function (err) {
         debug('Error querying index: %s', err);
-        if (err.root_cause  && err.root_cause[0].reason) {
-            res.status(err.status).send({error: err.root_cause[0].reason});
+        if (err.root_cause && err.root_cause[0].reason) {
+            res.status(err.status).send({ error: err.root_cause[0].reason });
         } else {
-            res.status(err.status).send({error: 'complex query failed'});
+            res.status(err.status).send({ error: 'complex query failed' });
         }
     });
 };
