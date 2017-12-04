@@ -27,8 +27,8 @@ const esclient = new elasticsearch.Client({
 
 exports.simpleSearch = (req, res) => {
     if (typeof req.query.q === 'undefined') {
-        debug('no query string provided, aborting');
-        res.status(404).send({ "error": "no query provided" });
+        debug('No query string provided, returning error.');
+        res.status(404).send({ error: 'no query provided' });
         return;
     }
 
@@ -51,9 +51,9 @@ exports.simpleSearch = (req, res) => {
         body: {
             query: {
                 bool: {
-                    should : [
-                        {query_string: {default_field: "_all", query: queryString}},
-                        {query_string: {default_field: config.elasticsearch.specialCharField, query: queryString}},
+                    should: [
+                        { query_string: { default_field: "_all", query: queryString } },
+                        { query_string: { default_field: config.elasticsearch.specialCharField, query: queryString } },
                     ]
                 }
             }
@@ -65,18 +65,18 @@ exports.simpleSearch = (req, res) => {
         res.status(200).send(answer);
     }).catch(function (err) {
         debug('Error querying index: %s', err);
-        if (err.root_cause  && err.root_cause[0].reason) {
-            res.status(err.status).send({error: err.root_cause[0].reason});
+        if (err.root_cause && err.root_cause[0].reason) {
+            res.status(err.status).send({ error: err.root_cause[0].reason });
         } else {
-            res.status(err.status).send({error: 'simple query failed'});
+            res.status(err.status).send({ error: 'simple query failed' });
         }
     });
 };
 
 exports.complexSearch = (req, res) => {
     if (typeof req.body === 'undefined') {
-        debug('no query defined, aborting');
-        res.status(404).send({error: 'no query provided'});
+        debug('No query string provided, returning error.');
+        res.status(404).send({ error: 'no query provided' });
         return;
     }
 
@@ -92,10 +92,10 @@ exports.complexSearch = (req, res) => {
         res.status(200).send(answer);
     }).catch(function (err) {
         debug('Error querying index: %s', err);
-        if (err.root_cause  && err.root_cause[0].reason) {
-            res.status(err.status).send({error: err.root_cause[0].reason});
+        if (err.root_cause && err.root_cause[0].reason) {
+            res.status(err.status).send({ error: err.root_cause[0].reason });
         } else {
-            res.status(err.status).send({error: 'complex query failed'});
+            res.status(err.status).send({ error: 'complex query failed' });
         }
     });
 };
