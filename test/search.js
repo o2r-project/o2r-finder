@@ -32,10 +32,10 @@ const waitSecs = 2;
 const queries = require('./queries/queries');
 
 describe('Elasticsearch search API', function () {
+    var db = mongojs('localhost/muncher', ['compendia', 'jobs']);
 
     before(function (done) {
         this.timeout(20000);
-        let db = mongojs('localhost/muncher', ['users', 'sessions', 'compendia', 'jobs']);
         db.compendia.drop(function (err, doc) {
             if (err) console.log(err);
 
@@ -57,6 +57,11 @@ describe('Elasticsearch search API', function () {
                     db.close();
                 });
         });
+    });
+
+    after(function (done) {
+        db.close();
+        done();
     });
 
     describe('GET /api/v1/search with a simple query', () => {
