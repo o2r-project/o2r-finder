@@ -192,7 +192,7 @@ curl -XDELETE 'http://172.17.0.3:9200/o2r/'
 
 ### Local test proxy
 
-If you run the local test proxy from the project [o2r-platform](https://github.com/o2r-project/o2r-platform), you can run queries directly at the o2r API:
+If you run the web service proxy from the project [o2r-platform](https://github.com/o2r-project/o2r-platform), you can run queries directly at the o2r API:
 
 http://localhost/api/v1/search?q=*
 
