@@ -35,10 +35,10 @@ describe('Elasticsearch search API', function () {
     before(function (done) {
         this.timeout(20000);
         db.compendia.drop(function (err, doc) {
-            if (err) console.log(err);
+            //if (err) console.log(err);
 
             db.jobs.drop(function (err2, doc) {
-                if (err2) console.log(err2);
+                //if (err2) console.log(err2);
 
                 resetIndex()
                     .then(Promise.all([

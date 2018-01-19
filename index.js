@@ -18,11 +18,12 @@
 const config = require('./config/config');
 const esMappings = require('./config/mapping');
 const esSettings = require('./config/settings');
+const watchers = require('./lib/watchers');
+const transformLog = require('./lib/transform').log;
 const debug = require('debug')('finder');
 
 // MongoDB > Elasticsearch sync
 const ESMongoSync = require('node-elasticsearch-sync');
-
 
 // standalone Elasticsearch client
 const elasticsearch = require('elasticsearch');
@@ -56,11 +57,6 @@ var dbOptions = {
 mongoose.connection.on('error', (err) => {
     debug('Could not connect to MongoDB @ %s: %s', dbURI, err);
 });
-
-// rolling queue of the last n transformations
-const CircularBuffer = require('circular-buffer');
-const transformLog = new CircularBuffer(config.sync.logsize);
-debug('Logging last %s transformations in %s', transformLog.capacity(), transformLog);
 
 // Express modules and tools
 const compression = require('compression');
@@ -259,103 +255,6 @@ function createIndexAndPutMappings(indexToCreate) {
         });
 }
 
-// transform functions for node-elasticsearch-sync
-const transformCompendium = function (watcher, compendium, cb) {
-    let id = compendium.id;
-    debug('Transforming compendium %s', id);
-
-    try {
-        // shift IDs so that matching is made based on Mongo's _id
-        compendium.compendium_id = compendium.id;
-        compendium.id = compendium._id.toString(); // see https://github.com/toystars/node-elasticsearch-sync/issues/13
-        delete compendium._id;
-        delete compendium.__v;
-
-        /*
-         * create file tree from file directory if:
-         *
-         * 1. compendium.files is not yet defined or
-         * 2. config.fs.reloadCompendiumFileTree is set to true
-         */
-        if (typeof compendium.files === 'undefined' || config.fs.fileTree.reload) {
-            // load file tree
-            let tree = null;
-            fs.accessSync(config.fs.compendium + id); // throws if does not exist
-            tree = dirTree(config.fs.compendium + id);
-
-            // create file tree for metadata
-            if (tree) {
-                // rewrite copy of tree to API urls, taken from o2r-muncher
-                let apiTree = rewriteTree(cloneDeep(tree),
-                    config.fs.compendium.length + config.id_length, // remove local fs path and id
-                    '/api/v1/compendium/' + id + '/data' // prepend proper location
-                );
-                compendium.files = apiTree;
-            }
-
-            // load content of txt files as flat list
-            if (tree) {
-                let textTree = mimeTree(cloneDeep(tree));
-                readTextfileTree(textTree);
-                let list = [];
-                flattenTree(textTree,
-                    config.fs.compendium.length + config.id_length + 1, // make path relative to compendium root
-                    list);
-                compendium.texts = list;
-            }
-
-        }
-
-        // attach binary files as base64
-        // > https://www.elastic.co/guide/en/elasticsearch/plugins/current/mapper-attachments-usage.html
-        // > as nested documents to have many
-        //   > http://grokbase.com/t/gg/elasticsearch/148v29ymaf/how-can-we-index-array-of-attachments
-        //   > https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
-
-        transformLog.enq({ time: new Date().toISOString(), compendium: id, transform: 'successful' });
-        debug('Transformed compendium %s', id);
-        cb(compendium);
-    } catch (e) {
-        transformLog.enq({ time: new Date().toISOString(), compendium: id, transform: 'error: ' + e.message });
-        debug('Error while transforming %s : %s', id, e.message);
-        cb(null, new Error('Error while transforming: ' + e.message));
-    }
-};
-
-const transformJob = function (watcher, job, cb) {
-    debug('Transforming job %s', job.id);
-
-    // shift IDs
-    job.job_id = job.id;
-    job.id = job._id;
-    delete job._id;
-    delete job.__v;
-
-    debug('Transformed job %s', job.id);
-    cb(job);
-};
-
-// watchers for node-elasticsearch-sync
-const watchers = [];
-const compendiaWatcher = {
-    collectionName: config.mongo.collection.compendia,
-    index: config.elasticsearch.index.compendia, // elastic search index
-    type: config.elasticsearch.index.compendia, // elastic search type
-    transformFunction: transformCompendium, // can be null if no transformation is needed to be done
-    fetchExistingDocuments: config.sync.fetchExisting.compendia, // this will fetch all existing document in collection and index in elastic search
-    priority: 1 // defines order of watcher processing. Watchers with low priorities get processed ahead of those with high priorities
-};
-const jobsWatcher = {
-    collectionName: config.mongo.collection.jobs,
-    index: config.elasticsearch.index.jobs,
-    type: config.elasticsearch.index.jobs,
-    transformFunction: transformJob,
-    fetchExistingDocuments: config.sync.fetchExisting.jobs,
-    priority: 2
-};
-
-watchers.push(compendiaWatcher, jobsWatcher);
-
 // http://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -384,7 +283,7 @@ function startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds)
             debug('ElasticSearch no reachable, trying again in %s seconds', pauseSeconds);
             attempts++;
             sleep(pauseSeconds * 1000).then(() => {
-                startSyncWithRetry(watchers, maximumNumberOfAttempts, pauseSeconds);
+                startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds);
             });
         } else {
             debug('Pinged ElasticSearch at %s with result %s (status %s)', process.env['ELASTIC_SEARCH_URL'], response, status);
