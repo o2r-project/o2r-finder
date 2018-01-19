@@ -8,12 +8,7 @@
         "title": "Environmental quality and development: is there a Kuznets curve for air pollution",
         "publication_type": "other",
         "publication_date": "2017-08-21",
-        "license": {
-          "uibindings": "MIT",
-          "text": "CC0-1.0",
-          "data": "CC0-1.0",
-          "code": "MIT"
-        },
+        "license": "CC0-1.0",
         "keywords": [
           "lorem",
           "ipsum",

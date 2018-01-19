@@ -61,10 +61,10 @@ Other possible options to search both fields are:
 
 ## Indexed information
 
-- whole database _muncher_ (an _index_ in Elasticsearch)
-  - all compendia (_collection_ in MongoDB, a _type_ in Elasticsearch)
+- whole database _muncher_ (a _cluster_ or _instance_ of Elasticsearch)
+  - all compendia (_collection_ in MongoDB, an _index_ in Elasticsearch)
     - `text` documents (detected via mime type of the files) as fields in Elasticsearch
-  - all jobs (_collection_ in MongoDB, a _type_ in Elasticsearch)
+  - all jobs (_collection_ in MongoDB, an _index_ in Elasticsearch)
 
 ### Compendia
 
@@ -77,22 +77,31 @@ Example:
 ```json
 (...])
 "hits": {
-    "total": 5,
-    "max_score": 1.0,
+    "total": 6,
+    "max_score": 1,
     "hits": [
         {
-            "_index": "o2r",
-            "_type": "compendia",
-            "_id": "57b2eabfa0cd335b5d1192cc",
-            "_score": 1.0,
+            "_score": 1,
             "_source": {
-                "id": "57b2eabfa0cd335b5d1192cc",
-                "user": "0000-0001-6021-1617",
-                "jobs": [ ],
-                "created": "2016-08-16T10:28:15.744Z",
-                "compendium_id": "szSuZ"
+                "user": "0000-0001-6230-4374",
+                "metadata": {},
+                "jobs": [],
+                "created": "2017-08-21T14:31:27.376Z",
+                "files": {},
+                "compendium_id": "mQryh"
             }
-        }
+            },
+            {
+            "_score": 1,
+            "_source": {
+                "user": "0000-0001-6230-4374",
+                "metadata": {},
+                "jobs": [],
+                "created": "2017-08-21T14:31:47.623Z",
+                "files": {},
+                "compendium_id": "Ks1Bc"
+            }
+        },
     ]
     (...)
 }
@@ -140,9 +149,8 @@ The image can then be configured via environment variables.
 - `FINDER_MONGODB_COLL_COMPENDIA` Name of the MongoDB collection for compendia, default is `compendia`.
 - `FINDER_MONGODB_COLL_JOBS` Name of the MongoDB collection for jobs, default is `jobs`.
 - `FINDER_MONGODB_COLL_SESSION` Name of the MongoDB collection for session information, default is `sessions` (must match other microservices).
-- `FINDER_ELASTICSEARCH_INDEX` Name of the index in Elasticsearch, defaults to `o2r`.
-- `FINDER_ELASTICSEARCH_TYPE_COMPENDIA` Name of the Elasticsearch type for compendia, default is `compendia`
-- `FINDER_ELASTICSEARCH_TYPE_JOBS` Name of the Elasticsearch type for jobs, default is `jobs`.
+- `FINDER_ELASTICSEARCH_INDEX_COMPENDIA` Name of the Elasticsearch index for compendia, default is `compendia`
+- `FINDER_ELASTICSEARCH_INDEX_JOBS` Name of the Elasticsearch index for jobs, default is `jobs`.
 - `SESSION_SECRET` Secret used for session encryption, must match other services, default is `o2r`.
 - `FINDER_STATUS_LOGSIZE` Number of transformation results in the status log, default is `20`.
 - [node-elasticsearch-sync](https://github.com/o2r-project/node-elasticsearch-sync) parameters

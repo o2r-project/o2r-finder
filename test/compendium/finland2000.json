@@ -8,12 +8,7 @@
         "title": "Analysis of Properties of Reflectance Reference Targets for Permanent Radiometric Test Sites of High Resolution Airborne Imaging Systems",
         "publication_type": "other",
         "publication_date": "2017-08-21",
-        "license": {
-          "uibindings": "MIT",
-          "text": "CC0-1.0",
-          "data": "CC0-1.0",
-          "code": "MIT"
-        },
+        "license": "CC0-1.0",
         "keywords": [
           "lorem",
           "ipsum",

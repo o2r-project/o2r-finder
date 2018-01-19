@@ -8,12 +8,7 @@
         "title": "Review of the Governing Equations, Computational Algorithms, and Other Components of the Models-3 Community Multiscale Air Quality (CMAQ) Modeling System",
         "publication_type": "other",
         "publication_date": "2017-08-21",
-        "license": {
-          "uibindings": "MIT",
-          "text": "CC0-1.0",
-          "data": "CC0-1.0",
-          "code": "MIT"
-        },
+        "license": "CC0-1.0",
         "keywords": [
           "lorem",
           "ipsum",

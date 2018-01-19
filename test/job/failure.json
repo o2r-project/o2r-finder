@@ -1,0 +1,161 @@
+{
+    "createdAt": "2018-01-19T12:25:17.353Z",
+    "updatedAt": "2018-01-19T12:25:24.650Z",
+    "steps": {
+        "cleanup": {
+            "text": [
+                "Running regular cleanup",
+                "Kept image with tag erc:zOLwZ for job zOLwZ",
+                "Deleted temporary payload file."
+            ],
+            "status": "success",
+            "start": "2018-01-19T12:25:27.912Z",
+            "end": "2018-01-19T12:25:27.917Z"
+        },
+        "check": {
+            "checkSuccessful": false,
+            "images": [
+                {
+                    "imageIndex": 0,
+                    "resizeOperationCode": 0,
+                    "compareResults": {
+                        "differences": 230221,
+                        "dimension": 1290240
+                    }
+                }
+            ],
+            "display": {
+                "diff": "/api/v1/job/zOLwZ/data/diffHTML.html"
+            },
+            "start": "2018-01-19T12:25:27.090Z",
+            "end": "2018-01-19T12:25:27.863Z",
+            "errors": [],
+            "status": "failure",
+            "text": [
+                "Check failed"
+            ]
+        },
+        "image_execute": {
+            "text": [
+                "[started image execution]",
+                "R version 3.4.3 (2017-11-30) -- \"Kite-Eating Tree\"\r\nCopyright (C) 2017 The R Foundation for Statistical Computing\r\nPlatform: x86_64-pc-linux-gnu (64-bit)\r\n\r\nR is free software and comes with ABSOLUTELY NO WARRANTY.\r\nYou are welcome to redistribute it under certain conditions.\r\nType 'license()' or 'licence()' for distribution details.\r\n\r\nR is a collaborative project with many contributors.",
+                "Type 'contributors()' for more information and\r\n'citation()' on how to cite R or R packages in publications.\r\n\r\nType 'demo()' for some demos, 'help()' for on-line help, or\r\n'help.start()' for an HTML browser interface to help.\r\nType 'q()' to quit R.",
+                ">",
+                "rmarkdown::render(input = \"/erc/main.Rmd\", output_format = rmarkdown::html_document(, output_dir = \"/erc\", output_file = \"display.html\")",
+                "processing file: main.Rmd",
+                "|                                                                       \r  |                                                                 |   0%",
+                "|                                                                       \r  |......................                                           |  33%\r\n  ordinary text without R code",
+                "|",
+                "|...........................................                      |  67%",
+                "label: plot (with options) \r\nList of 1\r\n $ echo: logi FALSE",
+                "|                                                                       \r  |.................................................................| 100%",
+                "inline R code fragments",
+                "output file: main.knit.md",
+                "/usr/bin/pandoc +RTS -K512m -RTS main.utf8.md --to html --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output /erc/display.html --smart --email-obfuscation none --self-contained --standalone --section-divs --template /usr/local/lib/R/site-library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /tmp/RtmprJJ9WW/rmarkdown-str17669454f.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'",
+                "Output created: display.html",
+                "> \r\n>",
+                "[finished image execution]"
+            ],
+            "status": "success",
+            "start": "2018-01-19T12:25:24.819Z",
+            "statuscode": 0,
+            "end": "2018-01-19T12:25:27.086Z"
+        },
+        "image_build": {
+            "text": [
+                "Step 1/6 : FROM rocker/r-ver:3.4.3",
+                "---> b5baa636d2ac",
+                "Step 2/6 : LABEL maintainer \"o2r\"",
+                "---> 490629e87295",
+                "---> Using cache",
+                "---> Using cache",
+                "---> Using cache",
+                "---> 1eaff5ce9745",
+                "Step 3/6 : RUN export DEBIAN_FRONTEND=noninteractive; apt-get -y update  && apt-get install -y git-core \tpandoc \tpandoc-citeproc",
+                "Step 4/6 : RUN install2.r backports digest evaluate htmltools knitr magrittr Rcpp rmarkdown rprojroot stringi stringr yaml",
+                "Step 6/6 : CMD R --vanilla -e rmarkdown::render(input = \"/erc/main.Rmd\", output_format = rmarkdown::html_document(, output_dir = \"/erc\", output_file = \"display.html\")",
+                "---> a9f800aa242b",
+                "---> 584adbb4f49f",
+                "Step 5/6 : WORKDIR /erc/",
+                "---> Using cache",
+                "---> 1409a726ea9e",
+                "Successfully built 1409a726ea9e",
+                "Successfully tagged erc:zOLwZ",
+                "---> Using cache"
+            ],
+            "status": "success",
+            "start": "2018-01-19T12:25:24.688Z",
+            "end": "2018-01-19T12:25:24.802Z"
+        },
+        "image_prepare": {
+            "text": [
+                "payload with 897536 total bytes created"
+            ],
+            "status": "success",
+            "start": "2018-01-19T12:25:24.653Z",
+            "end": "2018-01-19T12:25:24.678Z"
+        },
+        "generate_manifest": {
+            "text": [
+                "R version 3.4.3 (2017-11-30) -- \"Kite-Eating Tree\"\r\nCopyright (C) 2017 The R Foundation for Statistical Computing\r\nPlatform: x86_64-pc-linux-gnu (64-bit)\r\n\r\nR is free software and comes with ABSOLUTELY NO WARRANTY.\r\nYou are welcome to redistribute it under certain conditions.\r\nType 'license()' or 'licence()' for distribution details.\r\n\r\nR is a collaborative project with many contributors.\r\nType 'contributors()' for more information and\r\n'citation()' on how to cite R or R packages in publications.\r\n\r\nType 'demo()' for some demos, 'help()' for on-line help, or\r\n'help.start()' for an HTML browser interface to help.\r\nType 'q()' to quit R.",
+                ">",
+                "write(x = dockerfile(from = '/erc/main.Rmd', maintainer = 'o2r', copy = NA, container_workdir = '/erc', cmd = CMD_Render('/erc/main.Rmd', output_dir = '/erc', output_file = 'display.html'), file = '/erc/Dockerfile'); file.remove('/erc/main.html', '/erc/main.pdf');",
+                "INFO [2018-01-19 12:25:20] Processing the given file d locally using rmarkdown::render(...)",
+                "INFO [2018-01-19 12:25:20] Creating an R session with the following arguments:\r\n\t R  --silent --vanilla -e \"rmarkdown::render(\\\"/erc/main.Rmd\\\")\" -e \"info <- sessionInfo()\" -e \"save(list = \\\"info\\\", file = \\\"/tmp/Rtmp6UEIJI/rdata-sessioninfo1670be491\\\")\"",
+                "> rmarkdown::render(\"/erc/main.Rmd\")",
+                "processing file: main.Rmd\r\n\r  |                                                                       \r  |                                                                 |   0%\r  |                                                                       \r  |......................                                           |  33%\r\n  ordinary text without R code\r\n\r\n\r  |                                                                       \r  |...........................................                      |  67%\r\nlabel: plot (with options) \r\nList of 1\r\n $ echo: logi FALSE\r\n\r\n\r  |                                                                       \r  |.................................................................| 100%\r\n   inline R code fragments\r\n\r\n\r\noutput file: main.knit.md\r\n\r\n/usr/local/bin/pandoc +RTS -K512m -RTS main.utf8.md --to html --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output main.html --smart --email-obfuscation none --self-contained --standalone --section-divs --template /usr/local/lib/R/site-library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /tmp/Rtmp9sm7eg/rmarkdown-str132b3ec9a5.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'",
+                "Output created: main.html",
+                "> info <- sessionInfo()",
+                "> save(list = \"info\", file = \"/tmp/Rtmp6UEIJI/rdata-sessioninfo1670be491\")",
+                ">",
+                ">",
+                "INFO [2018-01-19 12:25:22] Going online? TRUE  ... to retrieve system dependencies (sysreq-api)",
+                "INFO [2018-01-19 12:25:22] Trying to determine system requirements for the package(s) 'knitr, backports, magrittr, rprojroot, htmltools, yaml, Rcpp, stringi, rmarkdown, stringr, digest, evaluate' from sysreq online DB",
+                "INFO [2018-01-19 12:25:23] Adding CRAN packages: backports, digest, evaluate, htmltools, knitr, magrittr, Rcpp, rmarkdown, rprojroot, stringi, stringr, yaml",
+                "INFO [2018-01-19 12:25:23] Created Dockerfile-Object based on /erc/main.Rmd",
+                "INFO [2018-01-19 12:25:23] Writing dockerfile to /erc/Dockerfile",
+                "[1]  TRUE FALSE\r\nWarning message:\r\nIn file.remove(\"/erc/main.html\", \"/erc/main.pdf\") :\r\n  cannot remove file '/erc/main.pdf', reason 'No such file or directory'\r\n> \r\n>",
+                "R version 3.4.3 (2017-11-30)",
+                "Platform:",
+                "x86_64-pc-linux-gnu (64-bit)",
+                "Running under: Debian GNU/Linux 9 (stretch)\r\n\r\nMatrix products: default\r\nBLAS: /usr/lib/openblas-base/libblas.so.3",
+                "LAPACK: /usr/lib/libopenblasp-r0.2.19.so\r\n\r\nlocale:",
+                "[1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              \r\n [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    \r\n [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             \r\n [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 \r\n [9] LC_ADDRESS=C               LC_TELEPHONE=C            \r\n[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       \r\n\r\nattached base packages:\r\n[1] stats     graphics  grDevices utils     datasets  methods   base     \r\n\r\nother attached packages:\r\n[1] containerit_0.2.4   futile.logger_1.4.3\r\n\r\nloaded via a namespace (and not attached):\r\n [1] compiler_3.4.3       rjson_0.2.15         magrittr_1.5        \r\n [4] tools_3.4.3          lambda.r_1.2         Rcpp_0.12.14        \r\n [7] futile.options_1.0.0 stringi_1.1.6        stringr_1.2.0       \r\n[10] semver_0.2.0",
+                "CRAN \r\n\"https://mran.microsoft.com/snapshot/2017-12-31\"",
+                "generated manifest"
+            ],
+            "status": "success",
+            "start": "2018-01-19T12:25:17.506Z",
+            "end": "2018-01-19T12:25:24.642Z",
+            "manifest": "Dockerfile"
+        },
+        "validate_compendium": {
+            "text": [
+                "all checks passed"
+            ],
+            "status": "success",
+            "start": "2018-01-19T12:25:17.503Z",
+            "end": "2018-01-19T12:25:17.505Z"
+        },
+        "generate_configuration": {
+            "text": [
+                "configuration file already present"
+            ],
+            "status": "skipped",
+            "start": "2018-01-19T12:25:17.497Z",
+            "end": "2018-01-19T12:25:17.497Z"
+        },
+        "validate_bag": {
+            "text": [
+                "Not a bag"
+            ],
+            "status": "skipped",
+            "start": "2018-01-19T12:25:17.485Z",
+            "end": "2018-01-19T12:25:17.485Z"
+        }
+    },
+    "status": "failure",
+    "user": "0000-0001-6523-2935",
+    "compendium_id": "mMOqy",
+    "id": "zOLwZ"
+}

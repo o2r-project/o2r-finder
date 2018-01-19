@@ -19,6 +19,8 @@ const config = require('../config/config');
 const debug = require('debug')('finder');
 const pick = require('lodash.pick');
 const unset = require('lodash.unset');
+const sizeof = require('object-sizeof');
+const util = require('util');
 
 const elasticsearch = require('elasticsearch');
 const esclient = new elasticsearch.Client({
@@ -50,6 +52,20 @@ exports.simpleSearch = (req, res) => {
 
     let queryString = decodeURIComponent(req.query.q);
 
+    let indices = config.elasticsearch.default_indices;
+    if (req.query.resources) {
+        if (req.query.resources === "all") {
+            indices = config.elasticsearch.default_indices;
+        } else {
+            queryIndices = req.query.resources.split(',').map(f => { return f.trim(); }).filter(String);
+            if ((queryIndices).includes("all"))
+                indices = config.elasticsearch.default_indices;
+            else if (queryIndices.length > 0)
+                indices = queryIndices.join(',');
+
+        }
+    }
+
     if (config.elasticsearch.supportURISearch) {
         if (queryString.includes('://')) {
             // remove colon from query string to allow exact matching for URIs in elasticsearch
@@ -60,29 +76,37 @@ exports.simpleSearch = (req, res) => {
     // escape forward slashes ("/") with ("\/")
     queryString = queryString.replace(/\//g, '\\$&');
 
-    debug('Starting a simple search for query %s', queryString);
-
-    esclient.search({
-        index: config.elasticsearch.index,
-        body: {
-            query: {
-                bool: {
-                    should: [
-                        { query_string: { default_field: "_all", query: queryString } },
-                        { query_string: { default_field: config.elasticsearch.specialCharField, query: queryString } },
-                    ]
-                }
+    body = {
+        query: {
+            bool: {
+                should: [
+                    {
+                        query_string: {
+                            fields: ["_all", config.elasticsearch.specialCharField],
+                            query: queryString
+                        }
+                    }
+                ]
             }
         }
+    };
+
+    debug('Starting a simple search on indices %s: %s', indices, util.inspect(body, { depth: null, color: true }));
+
+    esclient.search({
+        index: indices,
+        body: body
     }).then(function (resp) {
         debug('Simple query successful. Got %s results and took %s ms', resp.hits.total, resp.took);
         answer = buildAnswer(resp);
         res.status(200).send(answer);
-        debug('Sent response.');
+        debug('Sent response of size %sB', sizeof(answer));
     }).catch(function (err) {
-        debug('Error querying index: %s', err);
+        debug('Error querying index: %s', util.inspect(err, {color: true}));
         if (err.root_cause && err.root_cause[0].reason) {
             res.status(err.status).send({ error: err.root_cause[0].reason });
+        } if (err.displayName) {
+            res.status(err.status).send({ error: err.displayName });
         } else {
             res.status(err.status).send({ error: 'simple query failed' });
         }
@@ -91,15 +115,15 @@ exports.simpleSearch = (req, res) => {
 
 exports.complexSearch = (req, res) => {
     if (typeof req.body === 'undefined') {
-        debug('No query string provided, returning error.');
-        res.status(404).send({ error: 'no query provided' });
+        debug('No query body provided, returning error.');
+        res.status(400).send({ error: 'no query provided' });
         return;
     }
 
-    debug('Starting a complex search for query %s', JSON.stringify(req.body));
+    debug('Starting a complex search for query %s', util.inspect(req.body, {depth: null, color: true}));
 
     esclient.search({
-        index: config.elasticsearch.index,
+        index: config.elasticsearch.default_indices,
         body: req.body,
     }).then(function (resp) {
         debug('Complex query successful. Got %s results and took %s ms', resp.hits.total, resp.took);

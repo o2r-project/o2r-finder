@@ -8,12 +8,7 @@
         "title": "Global Air Quality and Pollution",
         "publication_type": "other",
         "publication_date": "2017-08-21",
-        "license": {
-          "uibindings": "GPL-3.0",
-          "text": "CC-BY-NC-4.0",
-          "data": "CC-BY-NC-4.0",
-          "code": "GPL-3.0"
-        },
+        "license": "CC0-1.0",
         "keywords": [
           "lorem",
           "ipsum",

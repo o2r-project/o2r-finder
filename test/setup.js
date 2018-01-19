@@ -31,7 +31,7 @@ console.log('Testing endpoint at ' + global.test_host + ' using ' + global.test_
 
 before(function () {
     let dbpath = 'localhost/' + config.mongo.database;
-    const db = mongojs(dbpath, ['users', 'sessions', 'compendia']);
+    const db = mongojs(dbpath, ['users', 'sessions', 'compendia', 'jobs']);
 
     db.sessions.drop(function (err, doc) {
         //

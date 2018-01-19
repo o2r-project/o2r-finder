@@ -14,6 +14,9 @@
  * limitations under the License.
  *
  */
+const util = require('util');
+const debug = require('debug')('finder:config');
+
 var c = {};
 c.version = {};
 c.net = {};
@@ -38,13 +41,13 @@ if (c.mongo.location[c.mongo.location.length - 1] !== '/') {
     c.mongo.location += '/';
 }
 
-if(!env.MONGO_OPLOG_URL) {
+if (!env.MONGO_OPLOG_URL) {
     env.MONGO_OPLOG_URL = c.mongo.location + c.mongo.database;
 }
-if(!env.MONGO_DATA_URL) {
+if (!env.MONGO_DATA_URL) {
     env.MONGO_DATA_URL = c.mongo.location + c.mongo.database;
 }
-if(!env.BATCH_COUNT) {
+if (!env.BATCH_COUNT) {
     env.BATCH_COUNT = 20;
 }
 
@@ -54,18 +57,19 @@ c.mongo.collection.jobs = env.FINDER_MONGODB_COLL_JOBS || 'jobs';
 c.mongo.collection.session = env.FINDER_MONGODB_COLL_SESSION || 'sessions';
 
 c.elasticsearch.apiVersion = '5.5';
-c.elasticsearch.index = env.FINDER_ELASTICSEARCH_INDEX || 'o2r';
+c.elasticsearch.index = {};
+c.elasticsearch.index.compendia = env.FINDER_ELASTICSEARCH_INDEX_COMPENDIA || 'compendia';
+c.elasticsearch.index.jobs = env.FINDER_ELASTICSEARCH_INDEX_JOBS || 'jobs';
+
 c.elasticsearch.deleteIndexOnStartup = true;
 c.elasticsearch.putMappingOnStartup = true;
-c.elasticsearch.type = {};
-c.elasticsearch.type.compendia = env.FINDER_ELASTICSEARCH_TYPE_COMPENDIA || 'compendia';
-c.elasticsearch.type.jobs = env.FINDER_ELASTICSEARCH_TYPE_JOBS || 'jobs';
 
 c.elasticsearch.location = env.ELASTIC_SEARCH_URL || 'http://localhost:9200';
 c.elasticsearch.analyzer = 'doi_analyzer';
 c.elasticsearch.specialCharField = '_special';
 
 c.elasticsearch.supportURISearch = true;
+c.elasticsearch.default_indices = c.elasticsearch.index.compendia + ',' + c.elasticsearch.index.jobs;
 
 // startup
 c.start = {};
@@ -101,5 +105,7 @@ c.fs.fileTree.reload = false;
 c.fs.fileTree.failOnError = true; //todo implement to not fail on sync error
 
 c.id_length = 5; // must match other services
+
+debug('CONFIGURATION:\n%s', util.inspect(c, { depth: null, colors: true }));
 
 module.exports = c;

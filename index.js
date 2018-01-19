@@ -16,7 +16,7 @@
  */
 
 const config = require('./config/config');
-const esMapping = require('./config/mapping');
+const esMappings = require('./config/mapping');
 const esSettings = require('./config/settings');
 const debug = require('debug')('finder');
 
@@ -27,9 +27,9 @@ const ESMongoSync = require('node-elasticsearch-sync');
 // standalone Elasticsearch client
 const elasticsearch = require('elasticsearch');
 const esclient = new elasticsearch.Client({
-  host: config.elasticsearch.location,
-  log: 'info',
-  apiVersion: config.elasticsearch.apiVersion
+    host: config.elasticsearch.location,
+    log: 'info',
+    apiVersion: config.elasticsearch.apiVersion
 });
 
 const fs = require('fs');
@@ -75,8 +75,8 @@ const search = require('./controllers/search');
 app.use(compression());
 
 app.use((req, res, next) => {
-  debug(req.method + ' ' + req.path);
-  next();
+    debug(req.method + ' ' + req.path);
+    next();
 });
 
 app.use(responseTime());
@@ -90,14 +90,14 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 
 passport.serializeUser((user, cb) => {
-  cb(null, user.orcid);
+    cb(null, user.orcid);
 });
 passport.deserializeUser((id, cb) => {
-  debug('Deserialize for %s', id);
-  User.findOne({ orcid: id }, (err, user) => {
-    if (err) cb(err);
-    cb(null, user);
-  });
+    debug('Deserialize for %s', id);
+    User.findOne({ orcid: id }, (err, user) => {
+        if (err) cb(err);
+        cb(null, user);
+    });
 });
 
 function initApp(callback) {
@@ -168,61 +168,15 @@ function initApp(callback) {
         });
 
         /*
-         * Elasticsearch index and mapping setup
+         * Elasticsearch indexes and mappings setup
          */
-        esclient.indices.exists({index: config.elasticsearch.index})
-            .then(function (resp) {
-                // Delete possibly existing index if deleteIndexOnStartup is true
-                if (resp) {
-                    debug('Index %s already exists.', config.elasticsearch.index);
-                    if (config.elasticsearch.deleteIndexOnStartup) {
-                        debug('Deleting elasticsearch index %s.', config.elasticsearch.index);
-                        return esclient.indices.delete({index: config.elasticsearch.index});
-                    } else {
-                        debug('Index %s already exists and will not be recreated. Make sure that the mapping is compatible.', config.elasticsearch.index);
-                        return resp;
-                    }
-                } else {
-                    debug('Index %s not found.', config.elasticsearch.index);
-                    return false;
-                }
-            }).then(function (resp) {
-            // Create a new index if: 1) index was deleted in the last step 2) index didn't exist in the beginning
-            if (typeof resp === 'object' && resp.acknowledged) {
-                debug('Existing index %s successfully deleted. Response: %s', config.elasticsearch.index, JSON.stringify(resp));
-                debug('Recreating index with settings: %s', JSON.stringify(esSettings.settings));
-                return esclient.indices.create({
-                    index: config.elasticsearch.index,
-                    body: esSettings.settings
-                });
-            } else if (!resp) {
-                debug('Creating index %s with settings %s because it does not exist yet.', config.elasticsearch.index, JSON.stringify(esSettings.settings));
-                return esclient.indices.create({
-                    index: config.elasticsearch.index,
-                    body: esSettings.settings
-                });
-            } else {
-                debug('Working with existing index %s.', config.elasticsearch.index);
-                return false;
-            }
-        }).then(function (resp) {
-            debug('Index (re)created: %s', JSON.stringify(resp));
-            if (config.elasticsearch.putMappingOnStartup) {
-                debug('Using mapping found in "config/mapping.js" for index %s: %s', config.elasticsearch.index, JSON.stringify(esMapping.mapping));
-                return esclient.indices.putMapping({
-                    index: config.elasticsearch.index,
-                    type: config.elasticsearch.type.compendia,
-                    body: esMapping.mapping
-                });
-            } else {
-                debug('Not creating mapping because "config.elasticsearch.putMappingOnStartup" is deactivated.');
-                return false;
-            }
-        }).then(function (resp) {
-            debug('Index and mapping configured.');
-            if (typeof resp === 'object') {
-                debug('Mapping successfully created. Elasticsearch response: %s', JSON.stringify(resp));
-            }
+        Promise.all([
+            createIndexAndPutMappings(config.elasticsearch.index.compendia),
+            createIndexAndPutMappings(config.elasticsearch.index.jobs)
+        ]).then(function (resp) {
+            debug('Indexes %s created and mappings configured?',
+                JSON.stringify([config.elasticsearch.index.compendia, config.elasticsearch.index.jobs]),
+                JSON.stringify(resp));
 
             startSyncWithRetry(watchers, config.start.attempts, config.start.pauseSeconds);
 
@@ -247,150 +201,208 @@ function initApp(callback) {
     callback(null);
 }
 
+function createIndexAndPutMappings(indexToCreate) {
+    return esclient.indices.exists({ index: indexToCreate })
+        .then(function (resp) {
+            // Delete possibly existing index if deleteIndexOnStartup is true
+            if (resp) {
+                debug('Index %s already exists.', indexToCreate);
+                if (config.elasticsearch.deleteIndexOnStartup) {
+                    debug('Deleting elasticsearch index %s.', indexToCreate);
+                    return esclient.indices.delete({ index: indexToCreate });
+                } else {
+                    debug('Index %s already exists and will not be recreated. Make sure that the mapping is compatible.', indexToCreate);
+                    return resp;
+                }
+            } else {
+                debug('Index %s not found.', indexToCreate);
+                return false;
+            }
+        }).then(function (resp) {
+            // Create a new index if: 1) index was deleted in the last step 2) index didn't exist in the beginning
+            if (typeof resp === 'object' && resp.acknowledged) {
+                debug('Existing index %s successfully deleted. Response: %s', indexToCreate, JSON.stringify(resp));
+                debug('Recreating index with settings: %s', JSON.stringify(esSettings.settings));
+                return esclient.indices.create({
+                    index: indexToCreate,
+                    body: esSettings.settings
+                });
+            } else if (!resp) {
+                debug('Creating index %s with settings %s because it does not exist yet.', indexToCreate, JSON.stringify(esSettings.settings));
+                return esclient.indices.create({
+                    index: indexToCreate,
+                    body: esSettings.settings
+                });
+            } else {
+                debug('Working with existing index %s.', indexToCreate);
+                return false;
+            }
+        }).then(function (resp) {
+            debug('Index (re)created? %s', JSON.stringify(resp));
+            if (config.elasticsearch.putMappingOnStartup) {
+                mapping = esMappings[indexToCreate];
+                if (mapping) {
+                    debug('Using mapping found in "config/mapping.js" for index %s: %s', indexToCreate, mapping);
+                    return esclient.indices.putMapping({
+                        index: indexToCreate,
+                        type: indexToCreate,
+                        body: mapping
+                    });
+                } else {
+                    debug('No mapping found in "config/mapping.js" for index %s', indexToCreate);
+                    return true;
+                }
+            } else {
+                debug('Not creating mapping because "config.elasticsearch.putMappingOnStartup" is deactivated.');
+                return false;
+            }
+        });
+}
+
 // transform functions for node-elasticsearch-sync
 const transformCompendium = function (watcher, compendium, cb) {
-  let id = compendium.id;
-  debug('Transforming compendium %s', id);
+    let id = compendium.id;
+    debug('Transforming compendium %s', id);
 
-  try {
-    // shift IDs so that matching is made based on Mongo's _id
-    compendium.compendium_id = compendium.id;
-    compendium.id = compendium._id.toString(); // see https://github.com/toystars/node-elasticsearch-sync/issues/13
-    delete compendium._id;
-    delete compendium.__v;
+    try {
+        // shift IDs so that matching is made based on Mongo's _id
+        compendium.compendium_id = compendium.id;
+        compendium.id = compendium._id.toString(); // see https://github.com/toystars/node-elasticsearch-sync/issues/13
+        delete compendium._id;
+        delete compendium.__v;
 
-    /*
-     * create file tree from file directory if:
-     *
-     * 1. compendium.files is not yet defined or
-     * 2. config.fs.reloadCompendiumFileTree is set to true
-     */
-    if (typeof compendium.files === 'undefined' || config.fs.fileTree.reload) {
-        // load file tree
-        let tree = null;
-        fs.accessSync(config.fs.compendium + id); // throws if does not exist
-        tree = dirTree(config.fs.compendium + id);
+        /*
+         * create file tree from file directory if:
+         *
+         * 1. compendium.files is not yet defined or
+         * 2. config.fs.reloadCompendiumFileTree is set to true
+         */
+        if (typeof compendium.files === 'undefined' || config.fs.fileTree.reload) {
+            // load file tree
+            let tree = null;
+            fs.accessSync(config.fs.compendium + id); // throws if does not exist
+            tree = dirTree(config.fs.compendium + id);
 
-        // create file tree for metadata
-        if (tree) {
-            // rewrite copy of tree to API urls, taken from o2r-muncher
-            let apiTree = rewriteTree(cloneDeep(tree),
-                config.fs.compendium.length + config.id_length, // remove local fs path and id
-                '/api/v1/compendium/' + id + '/data' // prepend proper location
-            );
-            compendium.files = apiTree;
+            // create file tree for metadata
+            if (tree) {
+                // rewrite copy of tree to API urls, taken from o2r-muncher
+                let apiTree = rewriteTree(cloneDeep(tree),
+                    config.fs.compendium.length + config.id_length, // remove local fs path and id
+                    '/api/v1/compendium/' + id + '/data' // prepend proper location
+                );
+                compendium.files = apiTree;
+            }
+
+            // load content of txt files as flat list
+            if (tree) {
+                let textTree = mimeTree(cloneDeep(tree));
+                readTextfileTree(textTree);
+                let list = [];
+                flattenTree(textTree,
+                    config.fs.compendium.length + config.id_length + 1, // make path relative to compendium root
+                    list);
+                compendium.texts = list;
+            }
+
         }
 
-        // load content of txt files as flat list
-        if (tree) {
-            let textTree = mimeTree(cloneDeep(tree));
-            readTextfileTree(textTree);
-            let list = [];
-            flattenTree(textTree,
-                config.fs.compendium.length + config.id_length + 1, // make path relative to compendium root
-                list);
-            compendium.texts = list;
-        }
+        // attach binary files as base64
+        // > https://www.elastic.co/guide/en/elasticsearch/plugins/current/mapper-attachments-usage.html
+        // > as nested documents to have many
+        //   > http://grokbase.com/t/gg/elasticsearch/148v29ymaf/how-can-we-index-array-of-attachments
+        //   > https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
 
+        transformLog.enq({ time: new Date().toISOString(), compendium: id, transform: 'successful' });
+        debug('Transformed compendium %s', id);
+        cb(compendium);
+    } catch (e) {
+        transformLog.enq({ time: new Date().toISOString(), compendium: id, transform: 'error: ' + e.message });
+        debug('Error while transforming %s : %s', id, e.message);
+        cb(null, new Error('Error while transforming: ' + e.message));
     }
-
-    // attach binary files as base64
-    // > https://www.elastic.co/guide/en/elasticsearch/plugins/current/mapper-attachments-usage.html
-    // > as nested documents to have many
-    //   > http://grokbase.com/t/gg/elasticsearch/148v29ymaf/how-can-we-index-array-of-attachments
-    //   > https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
-
-    transformLog.enq({ time: new Date().toISOString(), compendium: id, transform: 'successful' });
-    debug('Transformed compendium %s', id);
-    cb(compendium);
-  } catch (e) {
-    transformLog.enq({ time: new Date().toISOString(), compendium: id, transform: 'error: ' + e.message });
-    debug('Error while transforming %s : %s', id, e.message);
-    cb(null, new Error('Error while transforming: ' + e.message));
-  }
 };
 
 const transformJob = function (watcher, job, cb) {
-  debug('Transforming job %s', job.id);
+    debug('Transforming job %s', job.id);
 
-  // shift IDs
-  job.job_id = job.id;
-  job.id = job._id;
-  delete job._id;
-  delete job.__v;
+    // shift IDs
+    job.job_id = job.id;
+    job.id = job._id;
+    delete job._id;
+    delete job.__v;
 
-  debug('Transformed job %s', job.id);
-  cb(job);
+    debug('Transformed job %s', job.id);
+    cb(job);
 };
 
 // watchers for node-elasticsearch-sync
 const watchers = [];
 const compendiaWatcher = {
-  collectionName: config.mongo.collection.compendia,
-  index: config.elasticsearch.index, // elastic search index
-  type: config.elasticsearch.type.compendia, // elastic search type
-  transformFunction: transformCompendium, // can be null if no transformation is needed to be done
-  fetchExistingDocuments: config.sync.fetchExisting.compendia, // this will fetch all existing document in collection and index in elastic search
-  priority: 1 // defines order of watcher processing. Watchers with low priorities get processed ahead of those with high priorities
+    collectionName: config.mongo.collection.compendia,
+    index: config.elasticsearch.index.compendia, // elastic search index
+    type: config.elasticsearch.index.compendia, // elastic search type
+    transformFunction: transformCompendium, // can be null if no transformation is needed to be done
+    fetchExistingDocuments: config.sync.fetchExisting.compendia, // this will fetch all existing document in collection and index in elastic search
+    priority: 1 // defines order of watcher processing. Watchers with low priorities get processed ahead of those with high priorities
 };
 const jobsWatcher = {
-  collectionName: config.mongo.collection.jobs,
-  index: config.elasticsearch.index,
-  type: config.elasticsearch.type.jobs,
-  transformFunction: transformJob,
-  fetchExistingDocuments: config.sync.fetchExisting.jobs,
-  priority: 10
+    collectionName: config.mongo.collection.jobs,
+    index: config.elasticsearch.index.jobs,
+    type: config.elasticsearch.index.jobs,
+    transformFunction: transformJob,
+    fetchExistingDocuments: config.sync.fetchExisting.jobs,
+    priority: 2
 };
 
 watchers.push(compendiaWatcher, jobsWatcher);
 
 // http://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 let attempts = 1;
 
 function startSyncWithRetry(watcherArray, maximumNumberOfAttempts, pauseSeconds) {
-  if (attempts > maximumNumberOfAttempts) {
-    debug('NOT STARTED, number of attempts to connect to Elasticsearch at %s (%s) has been reached.', process.env['ELASTIC_SEARCH_URL'], maximumNumberOfAttempts);
+    if (attempts > maximumNumberOfAttempts) {
+        debug('NOT STARTED, number of attempts to connect to Elasticsearch at %s (%s) has been reached.', process.env['ELASTIC_SEARCH_URL'], maximumNumberOfAttempts);
 
-    process.exit(1);
-  }
-
-  // try to connect to ES before starting sync
-  let EsClient = new elasticsearch.Client({
-    host: process.env['ELASTIC_SEARCH_URL'],
-    keepAlive: true,
-    apiVersion: config.elasticsearch.apiVersion
-  });
-  debug('Ping Elasticsearch @ %s', process.env['ELASTIC_SEARCH_URL']);
-  EsClient.ping({
-    requestTimeout: 2000
-  }, function (error, response, status) {
-    if (error) {
-      debug('ElasticSearch no reachable, trying again in %s seconds', pauseSeconds);
-      attempts++;
-      sleep(pauseSeconds * 1000).then(() => {
-        startSyncWithRetry(watchers, maximumNumberOfAttempts, pauseSeconds);
-      });
-    } else {
-      debug('Pinged ElasticSearch at %s with result %s (status %s)', process.env['ELASTIC_SEARCH_URL'], response, status);
-
-      // See https://github.com/toystars/node-elasticsearch-sync/blob/master/SAMPLE.js for options
-      // See also https://github.com/toystars/node-elasticsearch-sync/issues/10
-      debug('Starting ESMongoSync with mongo data "%s" | mongo oplog "%s" | elasticsearch "%s" | batch count "%s" | watchers: \n',
-        process.env['MONGO_DATA_URL'],
-        process.env['MONGO_OPLOG_URL'],
-        process.env['ELASTIC_SEARCH_URL'],
-        process.env['BATCH_COUNT'],
-        JSON.stringify(watchers));
-
-      ESMongoSync.init(watcherArray, null, () => {
-        debug('ESMongoSync initialized');
-      });
+        process.exit(1);
     }
-  });
+
+    // try to connect to ES before starting sync
+    let EsClient = new elasticsearch.Client({
+        host: process.env['ELASTIC_SEARCH_URL'],
+        keepAlive: true,
+        apiVersion: config.elasticsearch.apiVersion
+    });
+    debug('Ping Elasticsearch @ %s', process.env['ELASTIC_SEARCH_URL']);
+    EsClient.ping({
+        requestTimeout: 2000
+    }, function (error, response, status) {
+        if (error) {
+            debug('ElasticSearch no reachable, trying again in %s seconds', pauseSeconds);
+            attempts++;
+            sleep(pauseSeconds * 1000).then(() => {
+                startSyncWithRetry(watchers, maximumNumberOfAttempts, pauseSeconds);
+            });
+        } else {
+            debug('Pinged ElasticSearch at %s with result %s (status %s)', process.env['ELASTIC_SEARCH_URL'], response, status);
+
+            // See https://github.com/toystars/node-elasticsearch-sync/blob/master/SAMPLE.js for options
+            // See also https://github.com/toystars/node-elasticsearch-sync/issues/10
+            debug('Starting ESMongoSync with mongo data "%s" | mongo oplog "%s" | elasticsearch "%s" | batch count "%s" | watchers: \n',
+                process.env['MONGO_DATA_URL'],
+                process.env['MONGO_OPLOG_URL'],
+                process.env['ELASTIC_SEARCH_URL'],
+                process.env['BATCH_COUNT'],
+                JSON.stringify(watchers));
+
+            ESMongoSync.init(watcherArray, null, () => {
+                debug('ESMongoSync initialized');
+            });
+        }
+    });
 
 }
 

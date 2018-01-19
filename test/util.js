@@ -33,6 +33,8 @@ const esclient = new elasticsearch.Client({
     log: 'info'
 });
 
+const dbpath = 'localhost/' + config.mongo.database;
+
 function uploadCompendium(path, cookie) {
   var zip = new AdmZip();
   zip.addLocalFolder(path);
@@ -71,15 +73,14 @@ function resetIndex() {
          * Delete all documents in index config.elasticsearch.index
          */
         esclient.deleteByQuery({
-            index: config.elasticsearch.index,
+            index: config.elasticsearch.index.compendia + ',' + config.elasticsearch.index.jobs,
             body: {
                 query: {
                     match_all: {}
                 }
-            },
-            type: 'compendia'
+            }
         }).then(function (resp) {
-            console.log(`All documents from index ${config.elasticsearch.index} deleted.`);
+            console.log(`All documents from indexes deleted.`);
             resolve(true);
         }).catch(function (err) {
             console.log(err);
@@ -95,15 +96,35 @@ function resetIndex() {
 function importJSONCompendium(path) {
     return new Promise((resolve, reject) => {
 
-        let dbpath = 'localhost/' + config.mongo.database;
-        const db = mongojs(dbpath, ['compendia']);
+        var db = mongojs(dbpath, ['compendia']);
 
         fs.readFile(path, (err, data) => {
             if (err) throw err;
             db.compendia.save(JSON.parse(data), function (err, doc) {
                 if (err) reject(err);
                 db.close();
-                resolve(true);
+                resolve(path);
+            })
+        });
+
+    });
+}
+
+/**
+ * Imports a single job from JSON using db.collection.save()
+ * @param {string} path - The path to the JSON file
+ */
+function importJSONJob(path) {
+    return new Promise((resolve, reject) => {
+
+        var db = mongojs(dbpath, ['jobs']);
+
+        fs.readFile(path, (err, data) => {
+            if (err) throw err;
+            db.jobs.save(JSON.parse(data), function (err, doc) {
+                if (err) reject(err);
+                db.close();
+                resolve(path);
             })
         });
 
@@ -135,6 +156,7 @@ function importJSONCompendia(path) {
 
 module.exports.uploadCompendium = uploadCompendium;
 module.exports.importJSONCompendium = importJSONCompendium;
+module.exports.importJSONJob = importJSONJob;
 module.exports.importJSONCompendia = importJSONCompendia;
 module.exports.resetIndex = resetIndex;
 

@@ -17,43 +17,41 @@
 
 const config = require('./config');
 
-const mapping = {
-    "compendia": {
-        "properties": {
-            "_special": {
-                "type": "string",
-                "analyzer": config.elasticsearch.analyzer
-            },
-            "metadata": {
-                "properties": {
-                    "o2r": {
-                        "properties": {
-                            "spatial": {
-                                "properties": {
-                                    "union": {
-                                        "properties": {
-                                            "geojson": {
-                                                "properties": {
-                                                    "geometry": {
-                                                        "type": "geo_shape",
-                                                        "tree": "quadtree"
-                                                    }
+const compendia = {
+    "properties": {
+        "_special": {
+            "type": "string",
+            "analyzer": config.elasticsearch.analyzer
+        },
+        "metadata": {
+            "properties": {
+                "o2r": {
+                    "properties": {
+                        "spatial": {
+                            "properties": {
+                                "union": {
+                                    "properties": {
+                                        "geojson": {
+                                            "properties": {
+                                                "geometry": {
+                                                    "type": "geo_shape",
+                                                    "tree": "quadtree"
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            },
-                            "identifier": {
-                                "properties": {
-                                    "doi": {
-                                        "type": "string",
-                                        "copy_to": config.elasticsearch.specialCharField
-                                    },
-                                    "doiurl": {
-                                        "type": "string",
-                                        "copy_to": config.elasticsearch.specialCharField
-                                    }
+                            }
+                        },
+                        "identifier": {
+                            "properties": {
+                                "doi": {
+                                    "type": "string",
+                                    "copy_to": config.elasticsearch.specialCharField
+                                },
+                                "doiurl": {
+                                    "type": "string",
+                                    "copy_to": config.elasticsearch.specialCharField
                                 }
                             }
                         }
@@ -64,6 +62,4 @@ const mapping = {
     }
 };
 
-module.exports = {
-    mapping: mapping
-};
+module.exports[config.elasticsearch.index.compendia] = compendia;
