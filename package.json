@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "debug": "DEBUG=finder,finder:* node index.js",
-    "test": "DEBUG=*,-modem,-mocha:* mocha"
+    "test": "DEBUG=*,-modem,-mocha:* mocha --exit"
   },
   "author": "o2r-project",
   "license": "Apache-2.0",
