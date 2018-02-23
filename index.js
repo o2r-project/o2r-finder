@@ -33,14 +33,6 @@ const esclient = new elasticsearch.Client({
     apiVersion: config.elasticsearch.apiVersion
 });
 
-const fs = require('fs');
-const dirTree = require('directory-tree');
-const rewriteTree = require('./lib/tree').rewriteTree;
-const readTextfileTree = require('./lib/tree').readTextfileTree;
-const flattenTree = require('./lib/tree').flattenTree;
-const mimeTree = require('./lib/tree').mimeTree;
-const cloneDeep = require('clone-deep');
-
 // database connection for user authentication, ESMongoSync has own connection
 const mongoose = require('mongoose');
 const backoff = require('backoff');
@@ -217,14 +209,14 @@ function createIndexAndPutMappings(indexToCreate) {
         }).then(function (resp) {
             // Create a new index if: 1) index was deleted in the last step 2) index didn't exist in the beginning
             if (typeof resp === 'object' && resp.acknowledged) {
-                debug('Existing index %s successfully deleted. Response: %s', indexToCreate, JSON.stringify(resp));
-                debug('Recreating index with settings: %s', JSON.stringify(esSettings.settings));
+                debug('Existing index %s successfully deleted. Response: %o', indexToCreate, resp);
+                debug('Recreating index with settings %O', esSettings.settings);
                 return esclient.indices.create({
                     index: indexToCreate,
                     body: esSettings.settings
                 });
             } else if (!resp) {
-                debug('Creating index %s with settings %s because it does not exist yet.', indexToCreate, JSON.stringify(esSettings.settings));
+                debug('Creating index %s with because it does not exist yet, using settings %O', indexToCreate, esSettings.settings);
                 return esclient.indices.create({
                     index: indexToCreate,
                     body: esSettings.settings
@@ -234,7 +226,7 @@ function createIndexAndPutMappings(indexToCreate) {
                 return false;
             }
         }).then(function (resp) {
-            debug('Index (re)created? %s', JSON.stringify(resp));
+            debug('Index (re)created? %o', resp);
             if (config.elasticsearch.putMappingOnStartup) {
                 mapping = esMappings[indexToCreate];
                 if (mapping) {

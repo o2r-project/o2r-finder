@@ -33,7 +33,7 @@ describe('Elasticsearch search API', function () {
     var db = mongojs('localhost/muncher', ['compendia', 'jobs']);
 
     before(function (done) {
-        this.timeout(20000);
+        this.timeout(60000);
         db.compendia.drop(function (err, doc) {
             //if (err) console.log(err);
 

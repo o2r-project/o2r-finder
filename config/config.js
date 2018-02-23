@@ -15,6 +15,7 @@
  *
  */
 const util = require('util');
+const path = require('path');
 const debug = require('debug')('finder:config');
 
 var c = {};
@@ -97,7 +98,7 @@ c.session.cookieMaxAge = 60 * 60 * 24 * 7; // one week
 // fs paths
 c.fs = {};
 c.fs.base = env.FILE_BASEPATH || '/tmp/o2r/';
-c.fs.compendium = c.fs.base + 'compendium/';
+c.fs.compendium = path.join(c.fs.base, 'compendium');
 
 // file tree creation from local files
 c.fs.fileTree = {};
