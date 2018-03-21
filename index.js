@@ -43,7 +43,6 @@ var dbOptions = {
     reconnectTries: Number.MAX_VALUE,
     keepAlive: 30000,
     socketTimeoutMS: 30000,
-    useMongoClient: true,
     promiseLibrary: global.Promise // use ES6 promises for mongoose    
 };
 mongoose.connection.on('error', (err) => {
