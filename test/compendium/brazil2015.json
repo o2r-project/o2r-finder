@@ -164,7 +164,7 @@
       "paperSource": "document.Rmd",
       "paperLanguage": [],
       "license": {
-        "uibindings": "MIT",
+        "md": "CC-BY-4.0",
         "text": "CC0-1.0",
         "data": "CC0-1.0",
         "code": "MIT"
@@ -203,7 +203,6 @@
         "filepath": "0ShuS/data/document.Rmd",
         "filename": "document.Rmd"
       },
-      "ercIdentifier": "0ShuS",
       "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
       "depends": [
         {
@@ -391,7 +390,7 @@
       "paperSource": "document.Rmd",
       "paperLanguage": [],
       "license": {
-        "uibindings": "MIT",
+        "md": "CC-BY-4.0",
         "text": "CC0-1.0",
         "data": "CC0-1.0",
         "code": "MIT"
@@ -430,7 +429,6 @@
         "filepath": "0ShuS/data/document.Rmd",
         "filename": "document.Rmd"
       },
-      "ercIdentifier": "0ShuS",
       "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
       "depends": [
         {

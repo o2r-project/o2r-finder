@@ -160,7 +160,7 @@
       "paperSource": "document.Rmd",
       "paperLanguage": [],
       "license": {
-        "uibindings": "GPL-3.0",
+        "md": "CC-BY-4.0",
         "text": "CC-BY-NC-4.0",
         "data": "CC-BY-NC-4.0",
         "code": "GPL-3.0"
@@ -199,7 +199,6 @@
         "filepath": "mQryh/data/document.Rmd",
         "filename": "document.Rmd"
       },
-      "ercIdentifier": "mQryh",
       "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
       "depends": [
         {
@@ -382,7 +381,7 @@
       "paperSource": "document.Rmd",
       "paperLanguage": [],
       "license": {
-        "uibindings": "GPL-3.0",
+        "md": "CC-BY-4.0",
         "text": "CC-BY-NC-4.0",
         "data": "CC-BY-NC-4.0",
         "code": "GPL-3.0"
@@ -421,7 +420,6 @@
         "filepath": "mQryh/data/document.Rmd",
         "filename": "document.Rmd"
       },
-      "ercIdentifier": "mQryh",
       "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
       "depends": [
         {

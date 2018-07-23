@@ -166,7 +166,7 @@
       "paperSource": "document.Rmd",
       "paperLanguage": [],
       "license": {
-        "uibindings": "MIT",
+        "md": "CC-BY-4.0",
         "text": "CC0-1.0",
         "data": "CC0-1.0",
         "code": "MIT"
@@ -205,7 +205,6 @@
         "filepath": "Ks1Bc/data/document.Rmd",
         "filename": "document.Rmd"
       },
-      "ercIdentifier": "Ks1Bc",
       "description": "Tempus eget nunc eu, lobortis condimentum nulla. Nam sagittis massa nec libero luctus facilisis. Suspendisse ac ornare ligula. Morbi non dignissim sem. Pellentesque eleifend neque nec dui interdum varius.\n",
       "depends": [
         {
