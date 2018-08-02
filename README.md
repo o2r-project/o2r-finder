@@ -144,7 +144,7 @@ The image can then be configured via environment variables.
 ### Available environment variables
 
 - `FINDER_PORT` **Required** Port for HTTP requests, defaults to `8084`.
-- `FINDER_MONGODB` **Required** Location for the mongo db. Defaults to `mongodb://localhost/`. You will very likely need to change this (and maybe include the MongoDB port).
+- `FINDER_MONGODB` **Required** Location for the mongo db. Defaults to `mongodb://localhost:27017/`. You will very likely need to change this (and maybe include the MongoDB port).
 - `FINDER_MONGODB_DATABASE` Which database inside the mongo db should be used. Defaults to `muncher`.
 - `FINDER_MONGODB_COLL_COMPENDIA` Name of the MongoDB collection for compendia, default is `compendia`.
 - `FINDER_MONGODB_COLL_JOBS` Name of the MongoDB collection for jobs, default is `jobs`.

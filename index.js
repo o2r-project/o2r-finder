@@ -43,7 +43,9 @@ var dbOptions = {
     reconnectTries: Number.MAX_VALUE,
     keepAlive: 30000,
     socketTimeoutMS: 30000,
-    promiseLibrary: global.Promise // use ES6 promises for mongoose    
+    promiseLibrary: global.Promise, // use ES6 promises for mongoose    
+    useNewUrlParser: true
+    
 };
 mongoose.connection.on('error', (err) => {
     debug('Could not connect to MongoDB @ %s: %s', dbURI, err);

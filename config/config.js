@@ -31,7 +31,7 @@ c.api_version = 1;
 
 // network & databases
 c.net.port = env.FINDER_PORT || 8084;
-c.mongo.location = env.FINDER_MONGODB || 'mongodb://localhost/';
+c.mongo.location = env.FINDER_MONGODB || 'mongodb://localhost:27017/';
 c.mongo.database = env.FINDER_MONGODB_DATABASE || 'muncher';
 c.mongo.initial_connection_attempts = 30;
 c.mongo.initial_connection_max_delay = 5000;
